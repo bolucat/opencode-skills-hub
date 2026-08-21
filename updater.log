@@ -118,3 +118,113 @@
   已替换本地内容: /home/runner/work/opencode-skills-hub/opencode-skills-hub/zhaoxuya520-reverse-skill
 
 全部仓库更新完成。
+
+############################################################
+# skills-updater 运行时间: 2026-08-21 20:27:50
+############################################################
+
+============================================================
+[anthropics-skills] 开始更新 (https://github.com/anthropics/skills)
+  Diff 结果（本地 <-> 远程）:
+  [新增的文件]
+    + claude-api/python/claude-api/sdk-upgrade.md
+  [修改的文件]
+    ~ claude-api/SKILL.md
+    --- a/claude-api/SKILL.md
+    +++ b/claude-api/SKILL.md
+    @@ -57,6 +57,7 @@
+     |---|---|
+     | `migrate` | Migrate existing Claude API code to a newer model. **Read `shared/model-migration.md` immediately** and follow it in order: Step 0 (confirm scope — ask which files/directories before any edit), Step 1 (classify each file), then the per-target breaking-changes section. Do not summarize the guide — execute it. If the user did not name a target model, ask which model to migrate to in the same turn as the scope question. After the per-target changes are applied, audit the in-scope prompt text, tool descriptions, and request code against `shared/prompt-audit.md` — prompting written for the source model is part of every migration, and it does not announce itself. |
+     | `prompt-audit` | Audit existing prompts, skills, and tool descriptions for dated patterns ("cruft") written for older models. **Read `shared/prompt-audit.md` immediately** and follow it in order: Step 0 (establish scope and target model from the request and the repository — state the assumptions in the report, do not stop to ask), inventory, provenance, then the pattern scan. Produce both deliverables in full — the audit report (findings with `file:line`, pattern, why it's obsolete for the target model, confidence) and a proposed diff — without pausing for confirmation; apply edits only if the request explicitly asked for them. Do not summarize the guide — execute it. |
+    +| `upgrade` | Upgrade the project's Anthropic SDK dependency across a major version — currently the Python SDK, `anthropic` 0.x → 1.x. Trailing words may name the language and/or a scope (`upgrade python`, `upgrade python sdk src/`). **Read `python/claude-api/sdk-upgrade.md` immediately** and follow it in order: Step 0 (confirm scope, then establish the current and target versions — a published 1.x must exist before you write a pin), the Step 1 inventory, each numbered section, then verification and the report. Do not summarize the guide — execute it. If the detected or named language has no `sdk-upgrade.md` in this skill, say that no major-version upgrade guide is bundled for that SDK yet and point the user at that SDK's CHANGELOG (repositories in `shared/live-sources.md`); do not improvise one from the Python guide. This is not model migration — to move code to a newer Claude model, use `migrate`. |
+     
+     ---
+     
+    @@ -482,6 +483,8 @@
+     → Read `{lang}/claude-api/README.md` — see Compaction section
+     **Migrating to a newer model (Fable 5 / Opus 5 / Opus 4.8 / Opus 4.7 / Opus 4.6 / Sonnet 5 / Sonnet 4.6), replacing a retired model, or translating `budget_tokens` / prefill patterns to the current API:**
+     → Read `shared/model-migration.md`
+    +**Upgrading the Anthropic SDK package itself across a major version (`anthropic` 0.x → 1.x: `httpx2`, awaited async `.with_raw_response`, removed deprecated parameters / aliases / Text Completions, Python ≥ 3.10) — or writing new code against a project already on 1.x:**
+    +→ Read `{lang}/claude-api/sdk-upgrade.md` (currently Python only; other SDKs have no bundled major-version guide yet — use that SDK's CHANGELOG via `shared/live-sources.md`)
+     **Prompting or tuning Fable 5 (long turns, effort, verbosity, autonomous runs, sub-agents):**
+     → Read `shared/model-migration.md` → Migrating to Fable 5 → Behavioral shifts (prompt-tunable) + Long-running agent recommendations
+     **Prompt caching / optimize caching / "why is my cache hit rate low":**
+    ~ claude-api/python/claude-api/README.md
+    --- a/claude-api/python/claude-api/README.md
+    +++ b/claude-api/python/claude-api/README.md
+    @@ -41,16 +41,16 @@
+     
+     ### Timeouts
+     
+    -Default request timeout is 10 minutes. Pass a float (seconds) or an `httpx.Timeout` for granular control. On timeout the SDK raises `anthropic.APITimeoutError` (and retries per `max_retries`).
+    -
+    -```python
+    -import httpx
+    -
+    +Default request timeout is 10 minutes. Pass a float (seconds) or an `anthropic.Timeout` for granular control. On timeout the SDK raises `anthropic.APITimeoutError` (and retries per `max_retries`).
+    +
+    +```python
+     client = anthropic.Anthropic(timeout=20.0)
+     client = anthropic.Anthropic(
+    -    timeout=httpx.Timeout(60.0, read=5.0, write=10.0, connect=2.0),
+    -)
+    -```
+    +    timeout=anthropic.Timeout(60.0, read=5.0, write=10.0, connect=2.0),
+    +)
+    +```
+    +
+    +`anthropic` 1.x is built on [`httpx2`](https://pypi.org/project/httpx2/), not `httpx`. `anthropic.Timeout` is `httpx2.Timeout`; if you import the HTTP library yourself, write `import httpx2 as httpx` — an object from the `httpx` package (`httpx.Timeout`, `httpx.Client`, transports, limits) is rejected or fails at request time. Existing `httpx`-era code is covered by the [v1 migration guide](https://github.com/anthropics/anthropic-sdk-python/blob/main/MIGRATION.md) and `/claude-api upgrade python`.
+     
+     ### Retries
+     
+    @@ -58,7 +58,7 @@
+     
+     ### Async performance (aiohttp backend)
+     
+    -For high-concurrency async workloads, install `anthropic[aiohttp]` and pass `DefaultAioHttpClient` instead of the default httpx backend:
+    +For high-concurrency async workloads, install `anthropic[aiohttp]` and pass `DefaultAioHttpClient` instead of the default httpx2 backend:
+     
+     ```python
+     from anthropic import AsyncAnthropic, DefaultAioHttpClient
+    @@ -69,7 +69,7 @@
+     
+     ### Custom HTTP client (proxy, base URL)
+     
+    -Use `DefaultHttpxClient` / `DefaultAsyncHttpxClient` — not raw `httpx.Client` — so the SDK's default timeouts and connection limits are preserved:
+    +Use `DefaultHttpxClient` / `DefaultAsyncHttpxClient` — not a raw `httpx2.Client` (and never a client from the `httpx` package) — so the SDK's default timeouts and connection limits are preserved:
+     
+     ```python
+     from anthropic import Anthropic, DefaultHttpxClient
+    ~ claude-api/shared/live-sources.md
+    --- a/claude-api/shared/live-sources.md
+    +++ b/claude-api/shared/live-sources.md
+    @@ -132,6 +132,14 @@
+     
+     Each SDK repo also ships runnable programs under `examples/` — including the refusal-fallback / `fallbacks` examples (client-side middleware registration, fallback state, server-side `fallbacks` param). Fetch those for exact per-language syntax instead of translating another language's example.
+     
+    +### SDK major-version upgrade guides
+    +
+    +Authoritative change lists for upgrading the SDK package itself across a major version. The bundled `{lang}/claude-api/sdk-upgrade.md` is the executable form; when the two disagree, the repository guide wins.
+    +
+    +| SDK                | URL                                                                         | Extraction Prompt                                                                                                   |
+    +| ------------------ | --------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+    +| Python (0.x → 1.x) | `https://github.com/anthropics/anthropic-sdk-python/blob/main/MIGRATION.md` | "Extract every breaking change with its before/after code, the new minimum Python version, and the upgrade command" |
+    +
+     ---
+     
+     ## Fallback Strategy
+  已替换本地内容: /home/runner/work/opencode-skills-hub/opencode-skills-hub/anthropics-skills
+
+============================================================
+[Jeffallan-claude-skills] 开始更新 (https://github.com/Jeffallan/claude-skills)
+  Diff 结果（本地 <-> 远程）:
+  无变化
+  已替换本地内容: /home/runner/work/opencode-skills-hub/opencode-skills-hub/Jeffallan-claude-skills
+
+============================================================
+[zhaoxuya520-reverse-skill] 开始更新 (https://github.com/zhaoxuya520/reverse-skill)
+  Diff 结果（本地 <-> 远程）:
+  无变化
+  已替换本地内容: /home/runner/work/opencode-skills-hub/opencode-skills-hub/zhaoxuya520-reverse-skill
+
+全部仓库更新完成。

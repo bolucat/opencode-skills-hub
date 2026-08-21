@@ -1,0 +1,96 @@
+
+############################################################
+# skills-updater 运行时间: 2026-08-21 18:32:11
+############################################################
+
+============================================================
+[anthropics-skills] 开始更新 (https://github.com/anthropics/skills)
+  Diff 结果（本地 <-> 远程）:
+  无变化
+  已替换本地内容: /home/runner/work/opencode-skills-hub/opencode-skills-hub/anthropics-skills
+
+============================================================
+[Jeffallan-claude-skills] 开始更新 (https://github.com/Jeffallan/claude-skills)
+  Diff 结果（本地 <-> 远程）:
+  无变化
+  已替换本地内容: /home/runner/work/opencode-skills-hub/opencode-skills-hub/Jeffallan-claude-skills
+
+============================================================
+[zhaoxuya520-reverse-skill] 开始更新 (https://github.com/zhaoxuya520/reverse-skill)
+  Diff 结果（本地 <-> 远程）:
+  [修改的文件]
+    ~ apk-reverse/scripts/decode.ps1
+      (二进制文件或无法解码，仅标记为已修改)
+    ~ apk-reverse/scripts/frida-run.ps1
+      (二进制文件或无法解码，仅标记为已修改)
+    ~ apk-reverse/scripts/manifest-summary.ps1
+      (二进制文件或无法解码，仅标记为已修改)
+    ~ apk-reverse/scripts/rebuild-sign-install.ps1
+      (二进制文件或无法解码，仅标记为已修改)
+    ~ browser-automation/scripts/setup.ps1
+      (二进制文件或无法解码，仅标记为已修改)
+    ~ ida-reverse/scripts/IdaOpenHelpers.ps1
+      (二进制文件或无法解码，仅标记为已修改)
+    ~ ida-reverse/scripts/install-autostart.ps1
+      (二进制文件或无法解码，仅标记为已修改)
+    ~ ida-reverse/scripts/open.ps1
+      (二进制文件或无法解码，仅标记为已修改)
+    ~ ida-reverse/scripts/start-gui.ps1
+      (二进制文件或无法解码，仅标记为已修改)
+    ~ ida-reverse/scripts/start.ps1
+      (二进制文件或无法解码，仅标记为已修改)
+    ~ ida-reverse/scripts/watchdog.ps1
+      (二进制文件或无法解码，仅标记为已修改)
+    ~ radare2/scripts/recon.ps1
+      (二进制文件或无法解码，仅标记为已修改)
+    ~ scripts/append-evidence.ps1
+      (二进制文件或无法解码，仅标记为已修改)
+    ~ scripts/bootstrap-reverse.ps1
+      (二进制文件或无法解码，仅标记为已修改)
+    ~ scripts/case-guard.ps1
+      (二进制文件或无法解码，仅标记为已修改)
+    ~ scripts/case-init.ps1
+      (二进制文件或无法解码，仅标记为已修改)
+    ~ scripts/extract-summaries.ps1
+      (二进制文件或无法解码，仅标记为已修改)
+    ~ scripts/lib/BootstrapSupplyChain.ps1
+      (二进制文件或无法解码，仅标记为已修改)
+    ~ scripts/lib/HostRuntime.ps1
+      (二进制文件或无法解码，仅标记为已修改)
+    ~ scripts/lib/RouteScope.ps1
+      (二进制文件或无法解码，仅标记为已修改)
+    ~ scripts/lib/ToolDiscovery.ps1
+      (二进制文件或无法解码，仅标记为已修改)
+    ~ scripts/lib/WorkRoot.ps1
+      (二进制文件或无法解码，仅标记为已修改)
+    ~ scripts/master-route.ps1
+      (二进制文件或无法解码，仅标记为已修改)
+    ~ scripts/refresh-tool-index.ps1
+      (二进制文件或无法解码，仅标记为已修改)
+    ~ scripts/scan-leaks.ps1
+      (二进制文件或无法解码，仅标记为已修改)
+    ~ scripts/smoke.ps1
+      (二进制文件或无法解码，仅标记为已修改)
+    ~ scripts/test-bootstrap-codex-encoding.ps1
+      (二进制文件或无法解码，仅标记为已修改)
+    ~ scripts/test-bootstrap-supply-chain.ps1
+      (二进制文件或无法解码，仅标记为已修改)
+    ~ scripts/test-client-neutral-bootstrap.ps1
+      (二进制文件或无法解码，仅标记为已修改)
+    ~ scripts/test-p0-friction.ps1
+      (二进制文件或无法解码，仅标记为已修改)
+    ~ scripts/test-parse-contracts.ps1
+      (二进制文件或无法解码，仅标记为已修改)
+    ~ scripts/test-routing.ps1
+      (二进制文件或无法解码，仅标记为已修改)
+    ~ scripts/test-workflow-title-safety.ps1
+      (二进制文件或无法解码，仅标记为已修改)
+    ~ scripts/update-star-history.ps1
+      (二进制文件或无法解码，仅标记为已修改)
+    ~ scripts/verify-doc-facts.ps1
+      (二进制文件或无法解码，仅标记为已修改)
+    ~ scripts/verify-routing-coherence.ps1
+      (二进制文件或无法解码，仅标记为已修改)
+  已替换本地内容: /home/runner/work/opencode-skills-hub/opencode-skills-hub/zhaoxuya520-reverse-skill
+
+全部仓库更新完成。

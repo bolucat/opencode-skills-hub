@@ -5,9 +5,9 @@ on:
   schedule:
     - cron: "0 18 */1 * *"
 
-name: rules
+name: skills-updater
 jobs:
-  sync:
+  updater:
     runs-on: ubuntu-22.04
     env:
       TZ: Europe/Busingen

@@ -228,3 +228,2367 @@
   已替换本地内容: /home/runner/work/opencode-skills-hub/opencode-skills-hub/zhaoxuya520-reverse-skill
 
 全部仓库更新完成。
+
+############################################################
+# skills-updater 运行时间: 2026-08-22 20:20:26
+############################################################
+
+============================================================
+[anthropics-skills] 开始更新 (https://github.com/anthropics/skills)
+  Diff 结果（本地 <-> 远程）:
+  无变化
+  已替换本地内容: /home/runner/work/opencode-skills-hub/opencode-skills-hub/anthropics-skills
+
+============================================================
+[Jeffallan-claude-skills] 开始更新 (https://github.com/Jeffallan/claude-skills)
+  Diff 结果（本地 <-> 远程）:
+  无变化
+  已替换本地内容: /home/runner/work/opencode-skills-hub/opencode-skills-hub/Jeffallan-claude-skills
+
+============================================================
+[zhaoxuya520-reverse-skill] 开始更新 (https://github.com/zhaoxuya520/reverse-skill)
+  Diff 结果（本地 <-> 远程）:
+  [新增的文件]
+    + threat-intelligence/SKILL.md
+    + threat-intelligence/references/x-public-intelligence.md
+  [修改的文件]
+    ~ config/routing.json
+    --- a/config/routing.json
+    +++ b/config/routing.json
+    @@ -212,6 +212,14 @@
+             { "must": "threat.?hunt|detection.?engineer|blue.?team|sigma.?rule|\\bsigma\\b|威胁.?狩猎|检测.?工程|蓝队.?狩猎|检测.?规则" }
+           ]
+         },
+    +    "R44": {
+    +      "label": "Threat intelligence / OSINT",
+    +      "skill": "threat-intelligence/SKILL.md",
+    +      "keywords": [
+    +        { "must": "\\bosint\\b|open.?source.?intelligence|threat.?intelligence|\\bcti\\b|ioc.?enrichment|indicator.?enrichment|威胁.?情报|开源.?情报|ioc.?扩充|ioc.?富化" },
+    +        { "must": "twitter|tweet|x\\.com|x.?post|推文|社交.?媒体", "mustAll": ["ioc|threat|malware|campaign|actor|phish|scam|impersonat|indicator|情报|威胁|恶意|钓鱼|诈骗|仿冒"], "note": "要求安全上下文，避免把通用社交分析路由到威胁情报" }
+    +      ]
+    +    },
+         "R28": {
+           "label": "OT / ICS",
+           "skill": "ot-ics/SKILL.md",
+    @@ -316,7 +324,7 @@
+       "priority": [
+         "R4", "R1", "R2", "R3", "R30", "R31", "R33", "R5", "R9", "R21",
+         "R22", "R6", "R7", "R8", "R34", "R28", "R17", "R16", "R18", "R24",
+    -    "R37", "R23", "R35", "R25", "R36", "R29", "R38", "R32", "R26", "R27",
+    +    "R37", "R23", "R35", "R25", "R44", "R36", "R29", "R38", "R32", "R26", "R27",
+         "R10", "R11", "R12", "R13", "R14", "R15", "R19", "R40", "R20", "R39", "R41", "R0"
+       ]
+     }
+    ~ ops/timeline-workitem.md
+    --- a/ops/timeline-workitem.md
+    +++ b/ops/timeline-workitem.md
+    @@ -32,10 +32,23 @@
+     - result_summary:
+     - artifacts: []      # relative paths under this case
+     - evidence_ids: []   # E-xxx when promoted
+    +- decision_delta: [] # only decisions changed since the previous transition
+    +- carry_forward_refs: [scope.md] # unchanged authoritative state is referenced, not re-serialized
+     - next:
+     ```
+     
+     **MUST NOT** 删除或改写已有 `##` 时间块（更正用新条目 + `corrects: {timestamp}`）。
+    +
+    +### Decision delta boundary
+    +
+    +`scope.md`、`workitems.md` 与现有 Evidence 是当前 authoritative state。`timeline.md` 记录 transition，不复制完整 snapshot。
+    +
+    +- 每个真实 stage/turn transition **MUST** 写 `decision_delta`；只列从上一状态到当前状态真正改变、且会影响后续动作的 decision。没有变化时写 `[]`。
+    +- 未改变的 route、auth、scope、network profile、tool capability、既有 hypothesis/Evidence **MUST NOT** 为了交接再次展开；放在 `carry_forward_refs` 中引用 authoritative 文件或条目。
+    +- consumer **MUST** 先解析 `carry_forward_refs`，再把 `decision_delta` 覆盖到工作上下文；不得把 delta 当成完整状态。
+    +- 只有存在两个或以上 materially different、evidence-supported 分支，且用户选择会改变下一动作时才是 genuine decision boundary；确定性 transition 直接继续，不为制造菜单而重述上下文。
+    +
+    +代表性 transition：`Triage -> Static` 若 auth/scope/route 未变，只记录 `decision_delta: [phase=triage->static]`，并以 `carry_forward_refs: [scope.md, evidence/E-triage.md]` 继承其余状态。
+     
+     ## workitems.md 模板
+     
+    ~ reverse-engineering/SKILL.md
+    --- a/reverse-engineering/SKILL.md
+    +++ b/reverse-engineering/SKILL.md
+    @@ -30,7 +30,7 @@
+     - 默认偏向离线分析，不主动联系外部服务。
+     - 除非用户明确选择了需要外部交互的分支，否则不执行未知样本、不修改原始文件、不执行状态变更操作。
+     - 当细节缺失时做出安全假设，并简要说明假设内容。
+    -- 通过在每个实质性阶段结束时提供编号的下一步菜单来让用户保持控制。
+    +- 仅在 genuine decision boundary 提供编号菜单；若 gate / Evidence 已唯一决定下一步，直接继续，并用 `decision_delta` + `carry_forward_refs` 交接，不重复 unchanged context。
+     - 对于破坏性或状态变更的操作，只在 case 工作空间内的副本上执行。
+     
+     如果任务描述模糊，从安全的本地分诊开始，只提出那个能实质性改变下一步行动的单一问题。
+    ~ reverse-engineering/references/nonpe-format-cookbook.md
+    --- a/reverse-engineering/references/nonpe-format-cookbook.md
+    +++ b/reverse-engineering/references/nonpe-format-cookbook.md
+    @@ -1,25 +1,37 @@
+    -# 非 PE / 多格式 Agent 响应菜谱 U–AV（Issue #65）
+    +# 非 PE / 多格式 Agent 响应菜谱 U–AV + AW–DN
+     
+     > 与 PE 反调试菜谱 A–T（../anti-analysis.md）并列：按**文件类型**给出「触发 → 动作一行 → Evidence」。  
+     > **不是**第二套主流程。Triage 识别类型后跳转到对应 skill + 本表。  
+     > 默认 **授权隔离 lab / 已授权样本与设备**。格机、BYOVD、反射注入等写**检测与取证**，不写未授权破坏/利用教程。  
+     > 绕过或还原失败也 MUST 记 Evidence；禁止静默当「无害」。
+    +>
+    +> §1–§8 / U–AV = 原始规则（Issue #65）。§9–§23 / AW–DN = 扩展规则（Issue #87，去重后 + 语义增强 + edge-case 补丁）。
+     
+     ## 0. 路由速查
+     
+     | 类型线索 | 主 skill | 本表章节 |
+     |----------|----------|----------|
+    -| .bat / .cmd / 批处理 | malware-analysis | §1 |
+    -| .ps1 / PowerShell | malware-analysis | §2 |
+    -| Office 宏 / VBA / .docm/.xlsm | malware-analysis | §3 |
+    -| Web/前端 JS 混淆、JSVMP | js-reverse | §4 |
+    -| .sys / 内核驱动 | 
+    -everse-engineering/kernel-driver-reverse.md + cre | §5 |
+    -| .dll 侧重点 | malware-analysis / 
+    -e-agent-workflow | §6（与 A–T 去重） |
+    -| APK / Magisk / 隐藏图标 | pk-reverse | §7–§8 |
+    -
+    -Triage 文件类型为脚本/宏/JS/APK/DLL/SYS 时：完成本类型 **P0 锚点 Evidence** 后再深挖；PE 反调试仍走 A–T。
+    +| .bat / .cmd / 批处理 | malware-analysis | §1, §19 |
+    +| .ps1 / PowerShell | malware-analysis | §2, §20 |
+    +| Office 宏 / VBA / XLM / .docm/.xlsm | malware-analysis | §3 (含 DD OLE 提取, DJ XLM 宏) |
+    +| .docx/.xlsx/.pptx OOXML 外链 / DDE / .rtf OLE | malware-analysis | §10 (含 DK RTF) |
+    +| Web/前端 JS 混淆、JSVMP | js-reverse | §4, §21 (含 DE/DF) |
+    +| .sys / 内核驱动 | reverse-engineering/kernel-driver-reverse.md + cre | §5 |
+    +| .dll 侧重点 | malware-analysis / re-agent-workflow | §6（与 A–T 去重） |
+    +| APK / Magisk / 隐藏图标 | apk-reverse | §7–§8, §23 |
+    +| .pdf / PDF 文档 | malware-analysis | §9 |
+    +| .wasm / WebAssembly | reverse-engineering | §11 |
+    +| .jar/.class / Java 字节码 | reverse-engineering | §12 |
+    +| .exe(AutoIt) / .au3 | malware-analysis | §13 |
+    +| .hta / HTML Application | malware-analysis | §14 |
+    +| .wsf/.jse/.vbe | malware-analysis | §15 |
+    +| .msi / Windows Installer | malware-analysis | §16 |
+    +| .reg / 注册表脚本 | malware-analysis | §17 |
+    +| .vbs / VBScript | malware-analysis | §18 |
+    +| Xposed/LSPosed 模块 | apk-reverse | §22 |
+    +| ELF / Linux 二进制 | reverse-engineering | → elf-analysis.md, anti-analysis.md |
+    +| Mach-O / macOS/iOS | reverse-engineering | → platforms.md |
+    +| Python 字节码 | reverse-engineering | → languages.md |
+     
+     ## 1. BAT/CMD（U V W）
+     
+    @@ -38,13 +50,15 @@
+     | **X** | 多层 FromBase64String / Gzip / Compress / 嵌套 -replace | **逐层**解码；每层结果单独记；工具可选（PowerDecode 等），无工具则手工/脚本 | E-ps-decode-layer-N | P0 |
+     | **Z** | 字符串倒序、碎片 + 拼接后 Invoke-Expression/IEX | 还原完整串；对 IEX 下断或脚本块日志；明文命令入 Evidence | E-ps-string-restore | P1 |
+     
+    -## 3. VBA 宏（AA AB AC）
+    +## 3. VBA 宏 / XLM（AA AB AC DD DJ）
+     
+     | ID | 触发 | 动作（摘要） | Evidence | 优先 |
+     |----|------|--------------|----------|------|
+     | **AA** | olevba/OLEDump 仅见 P-Code、源码流空（VBA Stomping） | P-Code 反编译工具；不全则 Word/Excel 宏调试观察；写清限制 | E-vba-pcode | P0 |
+     | **AB** | 大量 Chr() 拼接或 Base64 串，疑 shellcode/嵌套脚本 | 立即窗口/脚本还原串；解码后判类型；动态盯 CreateObject/Shell | E-vba-str-decode | P1 |
+     | **AC** | 无意义 If 1=2、或 InsertLines/DeleteLines 自修改 | 静跟真分支；动态 bp 自修改 API 并 dump 改后宏 | E-vba-selfmod | P2 |
+    +| **DD** | olevba/oledump 检出 VBA 宏项目（vbaProject.bin）；扩展名 .docm/.xlsm/.pptm | oledump.py 检查 OLE 流结构；olevba 提取 VBA 源码检测可疑 API；检查 AutoOpen/Workbook_Open 等自动执行宏 | E-office-vba | P0 |
+    +| **DJ** | .xls/.xlsm 含 Excel 4.0/XLM 宏（隐藏在单元格公式中，非 VBA 流）；olevba 检出 XLM 宏标记 | olevba --xlm 提取 XLM 宏公式；检查隐藏工作表中的 EXEC/CALL/REGISTER 函数；XLMMacroDeobfuscator 动态仿真还原 | E-office-xlm | P0 |
+     
+     ## 4. JavaScript（AD AE AF）→ 主路径 js-reverse
+     
+    @@ -77,10 +91,9 @@
+     | **AP** | 无文件映射/反射加载线索 | 内存特征、加载器行为、无路径模块；授权环境取证 | E-dll-reflective | P1 |
+     | **AQ** | 仅因导出名「不像恶意」降风险 | **禁止**只凭导出名判安全；结合段权限、入口、字符串、动态行为 | E-dll-export-priority | P1 |
+     
+    -DLL/SYS 硬门仍：E-imports + E-exports（见 
+    -e-agent-workflow）。
+    -
+    -## 7. Android 格机 / 持久化（AR AS AT）→ pk-reverse
+    +DLL/SYS 硬门仍：E-imports + E-exports（见 re-agent-workflow）。
+    +
+    +## 7. Android 格机 / 持久化（AR AS AT）→ apk-reverse
+     
+     > **仅授权样本、镜像或测试设备。** 动作是检测、提取 IOC 与持久化路径，不是实施破坏。
+     
+    @@ -90,30 +103,196 @@
+     | **AS** | 循环 curl|sh / 远程拉脚本、非常规 C2 URL | 提 URL；分析下载体是否含格机命令；记临时路径 | E-android-wiper-backdoor | P0 |
+     | **AT** | /data/adb/service.d、post-fs-data.d、可疑 /system/priv-app 等 | 列持久化脚本/APK；内容摘要入证 | E-android-persistence | P1 |
+     
+    -## 8. Android 透明/隐藏图标（AU AV）→ pk-reverse
+    -
+    -| ID | 触发 | 动作（摘要） | Evidence | 优先 |
+    -|----|------|--------------|----------|------|
+    -| **AU** | LAUNCHER 图标全透明/空 label、Theme.NoDisplay、无 LAUNCHER category、组件 disabled | apt dump badging + manifest；反编译查图标像素；异常项入证 | E-android-hidden-icon-manifest | P0 |
+    +## 8. Android 透明/隐藏图标（AU AV）→ apk-reverse
+    +
+    +| ID | 触发 | 动作（摘要） | Evidence | 优先 |
+    +|----|------|--------------|----------|------|
+    +| **AU** | LAUNCHER 图标全透明/空 label、Theme.NoDisplay、无 LAUNCHER category、组件 disabled | aapt dump badging + manifest；反编译查图标像素；异常项入证 | E-android-hidden-icon-manifest | P0 |
+     | **AV** | 已装但桌面无图标，后台流量/自启/高危权限/动态恢复图标 | pm list vs 桌面；dumpsys package；广播与 device_admin；行为入证 | E-android-hidden-icon-behavior | P1 |
+     
+    -## 9. 约束（全局）
+    -
+    -1. **不平行主流程**：阶段门闩仍以 
+    -e-agent-workflow / 各 skill 为准。  
+    +---
+    +
+    +> **以下 §9–§23 为 Issue #87 扩展规则（AW–DC）。**
+    +> 已去除与现有文件重复的 ELF（→ elf-analysis.md）、Mach-O（→ platforms.md）、Python（→ languages.md）章节。
+    +
+    +## 9. PDF 恶意文档（AW AX AY AZ）
+    +
+    +| ID | 触发 | 动作（摘要） | Evidence | 优先 |
+    +|----|------|--------------|----------|------|
+    +| **AW** | pdfid 检出 /JS、/JavaScript、/OpenAction、/AA、/Launch 计数 >0（含 hex 编码名称如 /4A#61#76#61... 的混淆计数） | pdfid -e 统计（对比 plain vs obfuscated 计数）；pdf-parser 提取可疑对象；peepdf 交互分析 + JS 仿真 | E-pdf-autoaction | P0 |
+    +| **AX** | pdfid 检出 /EmbeddedFile >0；对象流含 FlateDecode/ASCIIHexDecode 级联过滤器链；或 /Annot 对象中隐藏编码载荷 | pdf-parser 提取流数据；peepdf 解码多层级联过滤器（含 AES 加密流 security handler r5/r6）；检查 Annotation 对象；file 识别解码结果类型 | E-pdf-embedded | P0 |
+    +| **AY** | 提取的 PDF JS 含大量 eval、unescape、String.fromCharCode、atob | peepdf JS 仿真环境执行跟踪；逐层解码 Base64/Hex/ROT13；CyberChef 辅助 | E-pdf-js-deobf | P1 |
+    +| **AZ** | PDF 结构异常：/JBIG2Decode、XREF 表被操纵、对象编号跳跃 | pdfid -d 重命名可疑关键字；检查已知 CVE 利用模式；提取 exploit 触发条件 | E-pdf-exploit | P1 |
+    +
+    +## 10. Office OOXML / DDE / RTF（BA BB DK）→ 与 §3 VBA 互补
+    +
+    +| ID | 触发 | 动作（摘要） | Evidence | 优先 |
+    +|----|------|--------------|----------|------|
+    +| **BA** | docx/xlsx/pptx ZIP 解压后 word/_rels/ 或 xl/_rels/ 中含可疑外部关系（含 remote template injection） | 检查 *.rels 外部链接；检查 vbaData.xml；提取嵌入 OLE 对象；检查协议处理器滥用（ms-msdt: / search-ms: / ms-officecmd:） | E-office-ooxml | P0 |
+    +| **BB** | 文档含 DDEAUTO 或 DDEEXEC 域代码，通过域执行外部命令 | olevba --dde 扫描；提取 DDE 命令参数；检查是否指向 PowerShell/外部 exe | E-office-dde | P0 |
+    +| **DK** | .rtf 文件含嵌入 OLE 对象（非 OOXML、非经典 OLE 复合文档） | rtfobj 提取嵌入 OLE 对象；oleobj 分析对象类型；检查 Equation Editor 漏洞利用（CVE-2017-11882 等）；file 识别提取物类型 | E-rtf-ole | P0 |
+    +
+    +## 11. WebAssembly（BC BD BE）
+    +
+    +| ID | 触发 | 动作（摘要） | Evidence | 优先 |
+    +|----|------|--------------|----------|------|
+    +| **BC** | 文件以 \x00asm 魔术字节开头；或 JS 代码含 WebAssembly 实例化逻辑 | wasm2wat 转文本；检查 import 段识别宿主环境导入函数；wasm-decompile 生成伪代码；检查 Emscripten 胶水签名（__wasm_call_ctors）判断是否由 JS 编译而来 | E-wasm-struct | P0 |
+    +| **BD** | WASM 函数数量多但逻辑简单、函数体被拆分为微小函数；或存在无意义 block/loop 嵌套 | diswasm 评估函数最小化级别；JEB Pro / IDA WASM 插件深度分析；动态追踪执行日志 | E-wasm-obfuscation | P1 |
+    +| **BE** | WASM 模块通过 JS 导入/导出函数与浏览器交互，存在 WebSocket、fetch、WebGL 调用 | 同时分析 JS 胶水代码和 WASM 模块；浏览器 DevTools 追踪数据交换；提取网络通信 URL/域名 | E-wasm-c2 | P1 |
+    +
+    +## 12. Java JAR/Class（BF BG BH BI）
+    +
+    +| ID | 触发 | 动作（摘要） | Evidence | 优先 |
+    +|----|------|--------------|----------|------|
+    +| **BF** | JD-GUI/jadx 打开 JAR 时类名/方法名为无意义短字符（a.a.a / _0x 前缀 / 数字类名）；或大量 while/switch 控制流混淆 | 识别混淆器类型（ProGuard / Allatori / ZKM）；Java Deobfuscator 静态反混淆；高强度时动态调试追踪关键逻辑 | E-java-obfuscation | P0 |
+    +| **BG** | 大量 Class.forName()、Method.invoke()、Constructor.newInstance()；或自定义 ClassLoader + defineClass() 从字节数组内存加载类；导入表无害但运行时动态加载恶意类 | javap -c -v 查看反射调用细节；追踪 Class.forName 参数字符串；检查 defineClass() 字节数组来源；动态对 Method.invoke 下断 | E-java-reflection | P0 |
+    +| **BH** | JAR 含 .so（Linux/Android）或 .dll（Windows）；或 System.loadLibrary() 调用 | 提取原生库文件；file 识别格式；转入 ELF/PE 独立分析流程 | E-java-native | P1 |
+    +| **BI** | JAR/ZIP 解压后含嵌套 JAR/WAR/EAR；/resources、/assets 中存在高熵 .dat/.bin/.img 文件 | 递归解压所有嵌套归档；熵值分析判断加密/压缩；检查 META-INF/MANIFEST.MF 和 pom.xml | E-java-nested | P1 |
+    +
+    +## 13. AutoIt（BJ BK BL DM）
+    +
+    +| ID | 触发 | 动作（摘要） | Evidence | 优先 |
+    +|----|------|--------------|----------|------|
+    +| **BJ** | PE 字符串含 AutoIt / AU3 / EA05 / EA06 签名；或资源节含 AutoIt 脚本资源（注意与 AutoHotKey 区分，MITRE T1059.010 两者共用） | autoit-ripper 提取编译脚本；识别编码家族（EA05 = AutoIt3.00 / EA06 = AutoIt3.26）；EA06 头部后提取 8 字节解密密钥用于解密载荷；还原源码 | E-autoit-extract | P0 |
+    +| **BK** | 提取脚本含大量 StringEncrypt/_StringEncrypt；或 Execute 动态执行 + 无意义变量名 | myAutToExe 静态反编译；识别反调试技术；分析混淆后控制流 | E-autoit-deobf | P1 |
+    +| **BL** | 脚本含 RegWrite（注册表持久化）、FileInstall（文件释放）、InetGet（网络下载）、Run/RunWait | 标记敏感 API 调用序列；分析 InetGet URL；追踪 FileInstall 释放路径 | E-autoit-malicious | P0 |
+    +| **DM** | AutoIt 作为 loader 执行进程空洞注入（process hollowing）：CallWindowProc/EnumWindows 回调 + shellcode + 注入合法进程（regsvcs.exe 等），释放 .NET 载荷（DarkGate / Snake Keylogger / ArechClient2 模式） | 检查 DllCall/DllCallbackRegister 对 kernel32 注入 API 的调用链；提取 shellcode 数据；识别被注入目标进程；提取 .NET 载荷独立分析 | E-autoit-hollowing | P0 |
+    +
+    +## 14. HTA / HTML Application（BM BN BO）
+    +
+    +| ID | 触发 | 动作（摘要） | Evidence | 优先 |
+    +|----|------|--------------|----------|------|
+    +| **BM** | HTML 含 HTA:APPLICATION 标签、window.execScript 或 CreateObject 调用 | 检查 HTA:APPLICATION 属性（Application、WindowState）；提取 script 标签中的 VBS/JS | E-hta-bypass | P0 |
+    +| **BN** | HTA 通过 mshta.exe 启动后 XMLHttpRequest / ActiveXObject 远程拉 Payload 执行 | 提取网络请求 URL；跟踪 ActiveXObject 创建（ADODB.Stream 等）；还原完整下载执行链 | E-hta-download-chain | P0 |
+    +| **BO** | HTA 仅含单行极长混淆字符串，经 eval / execScript 执行 | 提取 Base64/Hex 编码载荷解码；CyberChef 递归检测编码类型；还原载荷 | E-hta-oneline | P1 |
+    +
+    +## 15. WSF / JSE / VBE（BP BQ BR BS）
+    +
+    +| ID | 触发 | 动作（摘要） | Evidence | 优先 |
+    +|----|------|--------------|----------|------|
+    +| **BP** | .wsf 含 \<job\> + \<script language="..."\> 标签，混合 JScript/VBScript/Python | 按 \<script language\> 分割代码块；分别按对应语言规则分析 | E-wsf-multi | P0 |
+    +| **BQ** | .jse/.vbe 开头含 #@~^ 签名，Microsoft Script Encoder 编码 | screnc-decoder 解码；无工具时动态执行 + dump 解码脚本 | E-jse-decode | P0 |
+    +| **BR** | WSF 多 \<script\> 块 + \<package\> 引用外部资源 + \<component\> 引用 COM 组件 | 建立跨块调用图；追踪 \<script\> 之间函数调用；还原完整执行流程 | E-wsf-call-chain | P1 |
+    +| **BS** | WSF 含 WshShell.SendKeys 绕过 UAC、WshShell.Run 配合 0 窗口隐藏、WScript.Sleep 延时绕过 | 检查用户模拟操作是否用于绕过安全提示；记录隐蔽执行参数 | E-wsf-anti-detect | P1 |
+    +
+    +## 16. MSI 安装包（BT BU BV）
+    +
+    +| ID | 触发 | 动作（摘要） | Evidence | 优先 |
+    +|----|------|--------------|----------|------|
+    +| **BT** | MSI 文件含 CustomAction 表（Binary / Script / DLL 类型自定义操作） | msiexec /a 或 lessmsi 提取内容；检查 CustomAction 表；提取自定义操作二进制文件 | E-msi-custom-action | P0 |
+    +| **BU** | MSI Binary 表含 VBScript/JScript 自定义操作脚本 | 从 Binary 表提取脚本二进制解码为可读脚本；按 VBS/JS 规则分析 | E-msi-script | P1 |
+    +| **BV** | MSI 通过 /quiet /passive /qn 静默安装；ALLUSERS=1 提权 | 记录安装命令行参数；分析 Property 表权限设置；标记静默+提权组合 | E-msi-privilege | P1 |
+    +
+    +## 17. REG 注册表脚本（BW BX BY）
+    +
+    +| ID | 触发 | 动作（摘要） | Evidence | 优先 |
+    +|----|------|--------------|----------|------|
+    +| **BW** | .reg 写入 HKCU\...\Run 或 HKLM\...\Run 等自动启动路径 | 提取所有路径；标记 Run 路径条目为持久化；记录完整路径和值 | E-reg-persistence | P0 |
+    +| **BX** | .reg 修改 HKCR\...\shell\open\command（文件关联）或 HKCR\CLSID\{...}\InprocServer32（DLL 注入） | 检查 shell\open\command 是否为非常规 exe；检查 InprocServer32 DLL 路径 | E-reg-hijack | P0 |
+    +| **BY** | .reg 修改 HKLM\...\Policies\System（UAC 级别）、EnableLUA、ConsentPromptBehaviorAdmin | 检查修改前默认安全配置；分析对 UAC 的影响；标记降级行为 | E-reg-uac-bypass | P1 |
+    +
+    +## 18. VBScript（BZ CA CB CC DN）
+    +
+    +| ID | 触发 | 动作（摘要） | Evidence | 优先 |
+    +|----|------|--------------|----------|------|
+    +| **BZ** | .vbs/.js 同时被 VBScript 和 JScript 解析；条件编译（@_win32）或语言特性交叉执行 | 分离 VBScript/JScript 代码块；分别语法分析；识别混合执行逻辑 | E-vbs-mixed | P1 |
+    +| **CA** | 脚本含 CreateObject("WScript.Shell") / CreateObject("Shell.Application") / Scripting.FileSystemObject | 标注高危 COM 对象调用；跟踪 Run/Exec 参数；追踪 FSO 创建的文件路径 | E-vbs-com-abuse | P0 |
+    +| **CB** | 脚本开头 #@~^ 签名，Microsoft Script Encoder 编码（VBS 专有） | screnc-decoder 解码；无工具时动态执行 + dump 解码脚本 | E-vbs-encoded | P0 |
+    +| **CC** | VBA/VBScript 含 WScript.Shell.Run + cmd /c + PowerShell，后续进程注入 | 追踪 CreateObject COM 对象链；分析 Run 参数中注入特征；记录完整进程创建链 | E-vbs-inject-chain | P0 |
+    +| **DN** | VBScript/JScript 通过 WMI ActiveScriptEventConsumer 实现无文件持久化（无启动文件夹/注册表 Run 键） | 检查 WMI 事件订阅（__EventFilter + __FilterToConsumerBinding + ActiveScriptEventConsumer）；提取绑定脚本内容；标记无文件持久化 | E-vbs-wmi-persist | P0 |
+    +
+    +## 19. BAT/CMD 高级混淆（CD–CI）→ 与 §1 U–W 互补
+    +
+    +| ID | 触发 | 动作（摘要） | Evidence | 优先 |
+    +|----|------|--------------|----------|------|
+    +| **CD** | setlocal enabledelayedexpansion + !var! + 动态变量名（!var_%i%!） | 启用延迟扩展后逐条展开；Batch-Dump --expand 自动展开 | E-bat-delayed-expand | P0 |
+    +| **CE** | 通过 type/more/findstr 读取自身或文件的 :stream ADS 替代数据流执行 | 检查 : 后缀引用（file.bat:payload）；dir /r 列 ADS；type file:stream 提取 | E-bat-ads-hidden | P0 |
+    +| **CF** | 大量 echo 逐行写入 .tmp/.cmd 临时文件再 call 执行 | 提取所有 echo 重定向还原临时文件内容；监控临时目录生成的脚本 | E-bat-temp-gen | P1 |
+    +| **CG** | for %%i in (...) do set var=%%i 累加变量；for /f 逐行解析命令输出 | 逐条展开 for 循环记录每次迭代赋值；序列化还原 for /f 结果 | E-bat-for-expand | P1 |
+    +| **CH** | 主批处理通过 %1 %* 接收参数，由父进程/下载器传入混淆指令 | 检查调用上下文记录传入参数；Base64 参数解码还原；还原完整调用链 | E-bat-param-call | P1 |
+    +| **CI** | certutil -decode / powershell -Command / echo \| findstr 组合解码执行 | 提取 Base64/Hex 字符串解码；检查解码结果是否为可执行脚本/PE | E-bat-encoded-exec | P0 |
+    +
+    +## 20. PowerShell 高级绕过（CJ–CO, DL）→ 与 §2 X–Z 互补
+    +
+    +| ID | 触发 | 动作（摘要） | Evidence | 优先 |
+    +|----|------|--------------|----------|------|
+    +| **CJ** | [Ref].Assembly.GetType('...AmsiUtils') / amsiInitFailed / GetTypes() 等 AMSI 绕过（含硬件断点绕过：CPU 调试寄存器，无内存写入/VirtualProtect） | 识别绕过模式（Patch / 注册表 / 环境变量 / 硬件断点）；动态确认生效；标记绕过技术类型 | E-ps-amsi | P0 |
+    +| **CK** | [PSConstraintLanguage] 类型操作或通过 DefaultRunspace 修改会话状态绕过 CLM | 识别 CLM 绕过模式；标记 bypass-clm；分析绕过后执行上下文 | E-ps-clm-bypass | P0 |
+    +| **CL** | [ScriptBlock]::Create / $ExecutionContext.InvokeCommand 构造器；或覆盖 ScriptBlock 日志设置 | 检查脚本是否禁用日志记录；动态验证日志是否被绕过 | E-ps-sb-log-bypass | P1 |
+    +| **CM** | IEX (New-Object Net.WebClient).DownloadString(...) 或 [Reflection.Assembly]::Load(FromBase64...) 无文件执行 | 提取下载 URL 检查域名/IP 信誉；PS 日志捕获内存加载代码；隔离网络模拟提取载荷 | E-ps-reflect-load | P0 |
+    +| **CN** | 三层以上编码嵌套：外层 Base64 → Gzip → XOR → 明文（超出 §2 X 的两层范围） | 递归解码到明文或无法继续；每层记中间状态；PowerDecode 自动化；每层结果入证 | E-ps-multi-decode | P0 |
+    +| **CO** | Set-Alias 将 IEX 映射为单字符别名；Get-ChildItem variable: 动态获取变量值 | 展开所有别名映射替换回原始命令名；AST 分析还原变量 | E-ps-alias-decode | P1 |
+    +| **DL** | 脚本含 ntdll.dll EtwEventWrite 补丁（stomping）静默遥测；常与 AMSI 绕过组合使用 | 检查是否存在 EtwEventWrite 地址获取 + 内存补丁（ret 0xC3）；与 CJ AMSI 绕过同时检查；标记双绕过组合 | E-ps-etw-bypass | P0 |
+    +
+    +## 21. JavaScript 高级混淆（CP CQ DE DF）→ 与 §4 AD–AF 互补
+    +
+    +| ID | 触发 | 动作（摘要） | Evidence | 优先 |
+    +|----|------|--------------|----------|------|
+    +| **CP** | JS 使用 Proxy 对象拦截属性访问 + Reflect API 动态调用方法绕过静态分析 | 识别 Proxy get/set/apply 陷阱函数；追踪 Reflect.get 实际目标；标记动态拦截行为 | E-js-proxy | P1 |
+    +| **CQ** | JS 含 _0x... 十六进制字符串数组 + while(!![]) 死循环 + for+switch 控制流（obfuscator.io 特征） | 识别 obfuscator.io 特征（字符串数组+死循环）；de4js / jsnice 自动反混淆；还原后代码入证 | E-js-obfuscator | P0 |
+    +| **DE** | JS 主体为大型字节码数组 + VM 解释器循环（多 while/switch），入口指向 eval/Function 构造器；业务逻辑完全不可读（§4 AD 的深化） | 识别 VM 入口函数跟踪 opcode→处理函数映射；浏览器动态执行 Hook eval 输出；JSimplifier AST 重构；记录 opcode 映射表 | E-jsvmp-deep | P0 |
+    +| **DF** | JS 含 eval 动态生成新代码并立即执行、document.write 重写页面、或 Function 构造器动态构造函数体 | Hook eval 和 Function 构造函数记录生成的代码；浏览器动态执行捕获自修改内容 | E-js-selfmod | P1 |
+    +
+    +## 22. Xposed/LSPosed 模块分析（CR–CX）→ apk-reverse
+    +
+    +> 分析 Xposed/LSPosed **模块本身**作为逆向目标（非工具使用场景）。
+    +
+    +| ID | 触发 | 动作（摘要） | Evidence | 优先 |
+    +|----|------|--------------|----------|------|
+    +| **CR** | AndroidManifest.xml 无 android:name 入口 Activity；meta-data 指定 xposedmodule=true | 检查 assets/xposed_init 确定入口类；搜索 IXposedHookLoadPackage/ZygoteInit/CmdInit 接口实现 | E-xp-entry | P0 |
+    +| **CS** | 代码含 XposedHelpers.findAndHookMethod / XposedBridge.hookMethod / findClass | 提取 findAndHookMethod 第一参数（目标类）+ 第二参数（目标方法）；建立目标应用清单 | E-xp-hook-targets | P0 |
+    +| **CT** | 模块含 DexClassLoader/PathClassLoader 动态加载；或 Runtime.exec / ProcessBuilder 执行命令 | 追踪 DexClassLoader 构造参数；提取动态加载 DEX 独立分析；检查 exec 命令参数 | E-xp-dynamic-load | P0 |
+    +| **CU** | Hook 目标涉及支付/生物识别/短信/通讯录/位置/加密密钥等敏感 API | 对 Hook 目标类/方法进行敏感度分类；标记支付类/生物识别类/短信通讯录类；汇总威胁等级 | E-xp-sensitive-hooks | P0 |
+    +| **CV** | 代码含 XposedBridge 检测规避 / Zygote 注入痕迹清除 / 自定义网络通信 | 检查 stacktrace 修改 / XposedBridge 类引用清除；检查独立网络请求（OkHttp/Socket）；识别 C2 目标 | E-xp-anti-detection | P1 |
+    +| **CW** | 代码含 Resources 动态替换 / View 绘制拦截 / AccessibilityService 声明 | 检查 AssetManager 替换 / Resources.updateConfiguration；检查 AccessibilityService 配置；识别 UI 劫持 | E-xp-ui-hijack | P1 |
+    +| **CX** | AndroidManifest.xml 声明 lsposed xposedscope meta-data；或代码含包名白名单检查 | 解析 xposedscope 目标应用范围；检查动态白名单绕过（反射修改 scope）；识别全局 Hook 越权 | E-xp-scope-bypass | P1 |
+    +
+    +## 23. Magisk 模块深度分析（CY–DC, DG–DI）→ 与 §7 AR–AT 互补
+    +
+    +> §7 聚焦格机/破坏行为。本节覆盖非破坏性但可疑的模块行为：安装脚本分析、文件释放、Zygisk 注入、反检测、持久化、提权、横向感染。
+    +
+    +| ID | 触发 | 动作（摘要） | Evidence | 优先 |
+    +|----|------|--------------|----------|------|
+    +| **DG** | Magisk 模块 ZIP 根目录含 config.sh / install.sh；META-INF/com/google/android/update-binary 为非标准安装器 | 提取 config.sh/install.sh 中 on_install/print_modname/set_permissions 函数；检查 update-binary 是否含额外载荷；标记 pm install / dd 块设备 / mount -o remount,rw 操作 | E-mg-install-script | P0 |
+    +| **DH** | ZIP 内含 system/ / vendor/ / data/ 目录结构；或 post-fs-data.sh / service.sh 等开机执行脚本 | 提取释放文件路径识别是否释放 APK 到 /system/priv-app/；检查 service.sh + post-fs-data.sh 内容识别开机自启/后台保活/C2 通信；标记所有写入系统分区操作 | E-mg-file-drop | P0 |
+    +| **CY** | 模块含 zygisk/ 目录（arm64-v8a.so 等原生库）；或 config.sh 声明 IS_ZYGISK=true | 提取 zygisk/ 原生库分析 ZygiskModule 回调（onLoad / preAppSpecialize / postAppSpecialize）；检查 JNI Hook | E-mg-zygisk | P0 |
+    +| **DI** | 模块脚本写入 /data/adb/service.d/ 或 /data/adb/post-fs-data.d/；或修改 crontab/init.rc（§7 AT 的深化） | 提取写入 service.d + post-fs-data.d 的脚本内容；检查卸载时自动感染其他模块的逻辑（post-uninstall.sh / 模块目录监控）；检查 magisk --remove-modules 触发保护机制 | E-mg-persistence | P0 |
+    +| **CZ** | 模块脚本含 resetprop 修改系统属性 / magiskhide / DenyList；或集成 Shamiko（隐藏 Zygisk 本身）/ TrickyStore（篡改证书链）/ PlayIntegrityFork（伪造 Play Integrity API） | 提取所有 resetprop 调用识别被修改属性（ro.debuggable / ro.build.tags 等）；检查 DenyList 隐藏自身；识别 Shamiko/TrickyStore/PlayIntegrityFork 模块级反检测 | E-mg-anti-detect | P0 |
+    +| **DA** | 模块脚本含 setenforce 0 / mount -o rw,remount /system / chmod 777 敏感目录 | 检查 SELinux 操作（setenforce/chcon/restorecon）；检查系统分区挂载 + dm-verity 禁用；标记高危提权 | E-mg-privilege | P0 |
+    +| **DB** | 释放 APK/脚本含 curl/wget/HTTP 客户端；或释放 APK 申请 INTERNET + READ_CONTACTS/SMS 等敏感权限 | 提取网络请求目标 URL/IP；分析释放 APK 权限声明；识别数据外传逻辑 | E-mg-c2 | P0 |
+    +| **DC** | 脚本遍历 /data/adb/modules/ 目录、修改其他模块文件、或写入自身副本到其他模块 | 检查 module.prop 注入恶意指令；检查其他模块 service.sh 追加恶意代码；识别"寄生"逻辑 | E-mg-cross-infect | P0 |
+    +
+    +---
+    +
+    +## 24. 约束（全局）
+    +
+    +1. **不平行主流程**：阶段门闩仍以 re-agent-workflow / 各 skill 为准。  
+     2. **Evidence 必记**：含失败、半还原、quality= 标注。  
+     3. **与 A–T 去重**：PE 反调试不重复；AM→R；AJ 补 DLL 视角不推翻 TLS 火箭。  
+     4. **工具缺失**：记 n/a + 手工等价，不假装已用商业套件。  
+     5. **授权**：破坏性/注入/驱动漏洞类只做防御分析与取证表述。
+    -
+    -## 10. P0 最小勾选（类型命中时）
+    -
+    -`	ext
+    -□ bat/cmd → U（+ 需要时 V/W）
+    -□ ps1 → X（+ Z）
+    -□ vba → AA（+ AB/AC）
+    -□ js 强混淆 → AD 或 AE（+ AF）
+    +6. **扩展规则去重**：ELF → elf-analysis.md；Mach-O → platforms.md；Python → languages.md。本表不重复这些格式的规则。
+    +
+    +## 25. P0 最小勾选（类型命中时）
+    +
+    +```text
+    +□ bat/cmd → U（+ 需要时 V/W；高级 CD–CI）
+    +□ ps1 → X（+ Z；高级 CJ–CO + DL ETW）
+    +□ vba/xlm → AA + DD + DJ（+ AB/AC）
+    +□ office ooxml/rtf → BA + DK（+ BB 若疑 DDE）
+    +□ js 强混淆 → AD 或 AE（+ AF；高级 CP/CQ/DE/DF）
+     □ sys → AG + AH（+ AI 若疑 BYOVD）
+     □ dll → AJ + AK/AL；Delay-Load 走 R
+     □ apk 破坏/隐藏 → AR/AS 或 AU（+ AT/AV）
+    -`
+    +□ pdf → AW + AX（+ AY/AZ）
+    +□ wasm → BC（+ BD/BE）
+    +□ jar/class → BF + BG（+ BH/BI）
+    +□ autoit → BJ + BL + DM（+ BK）
+    +□ hta → BM + BN（+ BO）
+    +□ wsf/jse/vbe → BP + BQ（+ BR/BS）
+    +□ msi → BT（+ BU/BV）
+    +□ reg → BW + BX（+ BY）
+    +□ vbs → CA + CB + CC + DN（+ BZ）
+    +□ xposed 模块 → CR + CS + CT + CU（+ CV–CX）
+    +□ magisk 深度 → DG + DH + CY + DI + CZ + DA（+ DB/DC）
+    +```
+    ~ reverse-engineering/references/re-agent-workflow.md
+    --- a/reverse-engineering/references/re-agent-workflow.md
+    +++ b/reverse-engineering/references/re-agent-workflow.md
+    @@ -11,6 +11,17 @@
+     □ tool-index：file/strings/r2/ida/frida 等实际路径
+     □ 角色：cre（ops/role-map）
+     ```
+    +
+    +## 0.1 Transition handoff（decision delta）
+    +
+    +阶段之间不重新注入完整 case context。`scope.md` / `workitems.md` / Evidence 保持 authoritative；`timeline.md` 只承载 transition delta：
+    +
+    +1. stage/turn 结束时只写真正改变后续动作的 `decision_delta`；无变化写 `[]`。
+    +2. unchanged route/auth/scope/network profile/tool state/hypothesis 只放 `carry_forward_refs`，consumer 依引用读取，不重新 serialize / emit。
+    +3. `decision_delta` 不是完整 state；consumer 必须先继承 refs，再应用 delta。
+    +4. 只有两个或以上 evidence-supported 分支会导致不同下一动作时才停在 next-step menu；确定性 gate 直接推进。
+    +
+    +例：Triage 完成且唯一合法下一步是 Static 时，transition 只需 `decision_delta: [phase=triage->static]` + `carry_forward_refs: [scope.md, evidence/E-triage.md]`。
+     
+     ## 0.5 用户指令可行性门闩（Issue #65）
+     
+    ~ scripts/bootstrap-manifest.json
+    --- a/scripts/bootstrap-manifest.json
+    +++ b/scripts/bootstrap-manifest.json
+    @@ -118,6 +118,19 @@
+           "pinnedVersion": "0.3.4"
+         },
+         {
+    +      "name": "xquik-mcp",
+    +      "bootstrapKind": "remote-http-mcp",
+    +      "mcpNames": [
+    +        "xquik"
+    +      ],
+    +      "mcpUrl": "https://xquik.com/mcp",
+    +      "docsUrl": "https://docs.xquik.com/mcp/overview",
+    +      "canAutoInstall": true,
+    +      "pinPolicy": "remote-service-no-local-install",
+    +      "verificationMode": "registration-only",
+    +      "note": "Registers the first-party remote MCP URL only. OAuth is completed in the selected MCP client. No local package, bridge, or credential is installed."
+    +    },
+    +    {
+           "name": "anything-analyzer",
+           "bootstrapKind": "local-http-mcp",
+           "repoUrl": "https://github.com/Mouseww/anything-analyzer",
+    ~ scripts/bootstrap-reverse.ps1
+      (二进制文件或无法解码，仅标记为已修改)
+    ~ scripts/bootstrap-reverse.sh
+    --- a/scripts/bootstrap-reverse.sh
+    +++ b/scripts/bootstrap-reverse.sh
+    @@ -181,7 +181,7 @@
+       bash skills/scripts/bootstrap-reverse.sh --list
+     
+     Capabilities (parity with bootstrap-reverse.ps1):
+    -  jadx apktool frida frida-ps idalib-mcp jshookmcp reqable-mcp anything-analyzer idapro
+    +  jadx apktool frida frida-ps idalib-mcp jshookmcp reqable-mcp xquik-mcp anything-analyzer idapro
+       r2 rabin2 adb agent-browser ghidra-mcp seclists proxycat burpsuite-mcp
+       nmap pentestswarm binwalk yara pwntools
+     
+    @@ -202,7 +202,7 @@
+     }
+     
+     ALL_CAPABILITIES=(
+    -  jadx apktool jeb-pro frida frida-ps idalib-mcp jshookmcp reqable-mcp anything-analyzer idapro
+    +  jadx apktool jeb-pro frida frida-ps idalib-mcp jshookmcp reqable-mcp xquik-mcp anything-analyzer idapro
+       r2 rabin2 adb agent-browser ghidra-mcp seclists proxycat burpsuite-mcp
+       nmap pentestswarm binwalk yara pwntools
+     )
+    @@ -748,6 +748,20 @@
+       log_warn "Reqable MCP requires the separately installed Reqable desktop application and its local API."
+     }
+     
+    +ensure_xquik_mcp() {
+    +  local url payload
+    +  url=$(manifest_field xquik-mcp mcpUrl) || return 1
+    +  payload=$(python3 - "$url" <<'PY'
+    +import json, sys
+    +print(json.dumps({'url': sys.argv[1]}))
+    +PY
+    +)
+    +  write_mcp_server "xquik" "$payload"
+    +  if ! $LAST_CAPABILITY_REGISTRATION_REQUIRED; then
+    +    log_ok "xquik remote MCP registered; complete OAuth in the selected MCP client"
+    +  fi
+    +}
+    +
+     ensure_anything_analyzer() {
+       local dir="$TOOLS_ROOT/anything-analyzer"
+       local repo commit
+    @@ -1014,6 +1028,7 @@
+         idalib-mcp) ensure_idalib_mcp ;;
+         jshookmcp) ensure_jshookmcp ;;
+         reqable-mcp) ensure_reqable_mcp ;;
+    +    xquik-mcp) ensure_xquik_mcp ;;
+         anything-analyzer) ensure_anything_analyzer ;;
+         idapro) ensure_idapro ;;
+         r2|rabin2) ensure_r2 ;;
+    ~ scripts/case-guard.sh
+    --- a/scripts/case-guard.sh
+    +++ b/scripts/case-guard.sh
+    @@ -15,7 +15,7 @@
+         -Force|--force) FORCE=1; shift ;;
+         -Quiet|--quiet) QUIET=1; shift ;;
+         -h|--help) sed -n '2,6p' "$0"; exit 0 ;;
+    -    *) echo "Unknown arg: $1" >&2; exit 1 ;;
+    +    *) echo "Unknown arg: \"$1\"" >&2; exit 1 ;;
+       esac
+     done
+     
+    ~ scripts/case-init.ps1
+      (二进制文件或无法解码，仅标记为已修改)
+    ~ scripts/case-init.sh
+    --- a/scripts/case-init.sh
+    +++ b/scripts/case-init.sh
+    @@ -39,7 +39,7 @@
+         -h|--help) sed -n '2,8p' "$0"; exit 0 ;;
+         *)
+           if [[ -z "$HINT" && "$1" != -* ]]; then HINT="$1"; shift
+    -      else echo "Unknown arg: $1" >&2; exit 2; fi
+    +      else echo "Unknown arg: \"$1\"" >&2; exit 2; fi
+           ;;
+       esac
+     done
+    @@ -302,6 +302,8 @@
+     - result_summary: $timeline_summary
+     - artifacts: [scope.md, workitems.md]
+     - evidence_ids: []
+    +- decision_delta: [case_initialized]
+    +- carry_forward_refs: [scope.md]
+     - next: $timeline_next
+     EOF
+     
+    ~ scripts/lib/ToolDiscovery.ps1
+      (二进制文件或无法解码，仅标记为已修改)
+    ~ scripts/master-route.sh
+    --- a/scripts/master-route.sh
+    +++ b/scripts/master-route.sh
+    @@ -18,7 +18,7 @@
+           ;;
+         *)
+           if [[ -z "$HINT" && "$1" != -* ]]; then HINT="$1"; shift
+    -      else echo "Unknown arg: $1" >&2; exit 2; fi
+    +      else echo "Unknown arg: \"$1\"" >&2; exit 2; fi
+           ;;
+       esac
+     done
+    ~ scripts/refresh-tool-index.ps1
+      (二进制文件或无法解码，仅标记为已修改)
+    ~ scripts/refresh-tool-index.sh
+    --- a/scripts/refresh-tool-index.sh
+    +++ b/scripts/refresh-tool-index.sh
+    @@ -98,6 +98,7 @@
+         macos:binwalk) echo "brew: brew install binwalk" ;;
+         macos:yara) echo "brew: brew install yara" ;;
+         macos:pwntools) echo "pipx: pipx install pwntools" ;;
+    +    linux:xquik-mcp|macos:xquik-mcp) echo "remote MCP: register https://xquik.com/mcp in the selected host, then complete OAuth" ;;
+         *) echo "see PLATFORMS.md and docs/platforms/${PLATFORM}.md" ;;
+       esac
+     }
+    @@ -131,6 +132,7 @@
+       "seclists|pentest-tools|Security wordlists|none|none|$HOME/tools/SecLists;/usr/share/seclists"
+       "jshookmcp|js-reverse|JS/CDP/Hook MCP capability (requires registration + npx runtime)|none|none|"
+       "reqable-mcp|pentest-tools|Reqable MCP capability (requires registration + npx runtime)|none|none|"
+    +  "xquik-mcp|threat-intelligence|Remote public X threat-intelligence MCP (requires registration + OAuth)|none|none|"
+       "jeb-pro|apk-reverse|Commercial Android/ARM decompiler (manual licensed install)|jeb,jeb_wincon|jeb --version|$HOME/tools/JEB/jeb;$HOME/JEB/jeb;/opt/jeb/jeb"
+       "anything-analyzer|browser-automation|Browser/HTTP analyzer MCP project|none|none|$HOME/tools/anything-analyzer;$REPO_ROOT/../anything-analyzer"
+       "burp-mcp-full|burp-mcp|Local Burp MCP extension and stdio bridge|none|none|$REPO_ROOT/burp-mcp-full/mcp-bridge.js"
+    @@ -188,7 +190,7 @@
+       if [[ "$version_spec" != "none" ]]; then
+         read -r ver_cmd ver_arg1 ver_arg2 <<< "$version_spec"
+         if has_cmd "$ver_cmd"; then
+    -      version="$(run_version "$ver_cmd" ${ver_arg1:-} ${ver_arg2:-})"
+    +      version="$(run_version "$ver_cmd" "${ver_arg1:-}" "${ver_arg2:-}")"
+         fi
+       fi
+     
+    @@ -312,7 +314,9 @@
+         runtime_ready = bool(tool_available.get('npx', False)) if bootstrap_kind == 'npm-mcp' else tool_ready
+     
+         if mcp_names:
+    -        if verification_mode == 'service-and-registration':
+    +        if verification_mode == 'registration-only':
+    +            ready = registered
+    +        elif verification_mode == 'service-and-registration':
+                 ready = registered and service_online
+             elif verification_mode == 'service-or-registration':
+                 ready = registered or service_online
+    ~ scripts/scan-leaks.ps1
+      (二进制文件或无法解码，仅标记为已修改)
+    ~ scripts/smoke.ps1
+      (二进制文件或无法解码，仅标记为已修改)
+    ~ scripts/test-bootstrap-codex-encoding.ps1
+      (二进制文件或无法解码，仅标记为已修改)
+    ~ scripts/test-bootstrap-manifest.sh
+    --- a/scripts/test-bootstrap-manifest.sh
+    +++ b/scripts/test-bootstrap-manifest.sh
+    @@ -202,7 +202,10 @@
+       expect_line 'apt-get|install|-y|python3'
+     fi
+     expect_line "npm|install|-g|$(json_value agent-browser npmPackage)"
+    -! grep -Fq '|pip|install|' "$CALL_LOG"
+    +if grep -Fq '|pip|install|' "$CALL_LOG"; then
+    +  echo "unexpected pip install invocation" >&2
+    +  exit 1
+    +fi
+     
+     # A required empty manifest field fails before any package-manager sink.
+     BROKEN_DIR="$SCRATCH/broken-bootstrap"
+    @@ -223,10 +226,13 @@
+     broken_rc=$?
+     set -e
+     [[ $broken_rc -ne 0 ]]
+    -! grep -Eq '^npm\|install\|-g(\||$)' "$CALL_LOG"
+    +if grep -Eq '^npm\|install\|-g(\||$)' "$CALL_LOG"; then
+    +  echo "unexpected global npm install invocation" >&2
+    +  exit 1
+    +fi
+     
+     # Table: each generic package-manager sink receives its canonical manifest value.
+    -while IFS='|' read -r capability field expected; do
+    +while IFS='|' read -r capability _field expected; do
+       : > "$CALL_LOG"
+       STUB_PIPX_VERSION=1.16.5 run_generic "$capability" --skip-refresh >/dev/null
+       expect_line "$expected"
+    @@ -240,10 +246,15 @@
+     
+     # pipx itself is pinned; a failed pinned install has no mutable fallback.
+     : > "$CALL_LOG"
+    -STUB_FAIL_PIP_INSTALL=1 run_generic frida --skip-refresh >/dev/null 2>&1 && exit 1 || true
+    +if STUB_FAIL_PIP_INSTALL=1 run_generic frida --skip-refresh >/dev/null 2>&1; then
+    +  exit 1
+    +fi
+     expect_line "python3|-m|pip|install|--user|--upgrade|$pipx_package"
+     [[ $(grep -c '|pip|install|' "$CALL_LOG") -eq 1 ]]
+    -! grep -Eq '^pipx\|(install|upgrade)' "$CALL_LOG"
+    +if grep -Eq '^pipx\|(install|upgrade)' "$CALL_LOG"; then
+    +  echo "unexpected pipx invocation" >&2
+    +  exit 1
+    +fi
+     
+     # Generic Anything Analyzer: staged checkout, pinned pnpm, frozen install, clean recheck, then dev.
+     : > "$CALL_LOG"
+    ~ scripts/test-p0-friction.ps1
+      (二进制文件或无法解码，仅标记为已修改)
+    ~ scripts/verify-routing-coherence.ps1
+      (二进制文件或无法解码，仅标记为已修改)
+    ~ tests/routing-benchmark.json
+    --- a/tests/routing-benchmark.json
+    +++ b/tests/routing-benchmark.json
+    @@ -1,850 +1,875 @@
+     {
+    -    "meta":  {
+    -                 "description":  "reverse-skill 路由回归基准。每条用例 = (hint, expect)。修改路由规则后必须保持此基准全绿；新增路由场景请同步添加用例。",
+    -                 "runner":  "skills/scripts/test-routing.ps1",
+    -                 "generated":  "2026-08-02",
+    -                 "quickNote":  "quick=true 的用例是每个路由的最小回归集（smoke 快速模式使用）"
+    -             },
+    -    "cases":  [
+    -                  {
+    -                      "hint":  "decompile APK with jadx apktool smali",
+    -                      "expect":  "R1",
+    -                      "quick":  true
+    -                  },
+    -                  {
+    -                      "hint":  "安卓 APK 加固 反编译",
+    -                      "expect":  "R1",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "重打包 APK 修改 smali",
+    -                      "expect":  "R1",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "frida hook android app",
+    -                      "expect":  "R1",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "绕过 root 检测 证书校验",
+    -                      "expect":  "R1",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "apk certificate pinning bypass",
+    -                      "expect":  "R1",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "ios reverse objection mobsf",
+    -                      "expect":  "R2",
+    -                      "quick":  true
+    -                  },
+    -                  {
+    -                      "hint":  "IPA 逆向",
+    -                      "expect":  "R2",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "iphone jailbreak detection bypass",
+    -                      "expect":  "R2",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "iOS 越狱 检测绕过",
+    -                      "expect":  "R2",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "js reverse webpack encrypted param",
+    -                      "expect":  "R3",
+    -                      "quick":  true
+    -                  },
+    -                  {
+    -                      "hint":  "前端签名 加密参数 js逆向",
+    -                      "expect":  "R3",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "jshookmcp cdp hook",
+    -                      "expect":  "R3",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "抓包 分析请求 重放",
+    -                      "expect":  "R3",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "dsl vm reverse fireye",
+    -                      "expect":  "R4",
+    -                      "quick":  true
+    -                  },
+    -                  {
+    -                      "hint":  "自定义虚拟机 指令集逆向",
+    -                      "expect":  "R4",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "opcode vm reverse",
+    -                      "expect":  "R4",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  ".net reverse dnspy de4dot",
+    -                      "expect":  "R5",
+    -                      "quick":  true
+    -                  },
+    -                  {
+    -                      "hint":  "C# 逆向 confuserex 脱壳",
+    -                      "expect":  "R5",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "dotnet 脱混淆",
+    -                      "expect":  "R5",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "IDA decompile PE",
+    -                      "expect":  "R6",
+    -                      "quick":  true
+    -                  },
+    -                  {
+    -                      "hint":  "反汇编 静态分析 二进制",
+    -                      "expect":  "R6",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "r2 disassemble",
+    -                      "expect":  "R6",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "radare2 analyze binary",
+    -                      "expect":  "R7",
+    -                      "quick":  true
+    -                  },
+    -                  {
+    -                      "hint":  "r2xsql query imports",
+    -                      "expect":  "R7",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "radius2 solve crackme",
+    -                      "expect":  "R7",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "r2mcp analyze binary",
+    -                      "expect":  "R7",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "firmware binwalk iot",
+    -                      "expect":  "R8",
+    -                      "quick":  true
+    -                  },
+    -                  {
+    -                      "hint":  "固件逆向 路由器",
+    -                      "expect":  "R8",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "malware analysis yara",
+    -                      "expect":  "R9",
+    -                      "quick":  true
+    -                  },
+    -                  {
+    -                      "hint":  "恶意样本分析 沙箱",
+    -                      "expect":  "R9",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "sandbox malware sample",
+    -                      "expect":  "R9",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "ransomware 勒索软件 分析",
+    -                      "expect":  "R9",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "full pentest attack chain",
+    -                      "expect":  "R10",
+    -                      "quick":  true
+    -                  },
+    -                  {
+    -                      "hint":  "红队 横向移动 内网渗透",
+    -                      "expect":  "R10",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "从外网打到域控",
+    -                      "expect":  "R10",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "nmap nuclei sqlmap",
+    -                      "expect":  "R11",
+    -                      "quick":  true
+    -                  },
+    -                  {
+    -                      "hint":  "渗透测试 端口扫描 sql注入",
+    -                      "expect":  "R11",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "bug bounty src 漏洞挖掘",
+    -                      "expect":  "R11",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "burpsuite intruder 爆破",
+    -                      "expect":  "R11",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "api security graphql bola",
+    -                      "expect":  "R12",
+    -                      "quick":  true
+    -                  },
+    -                  {
+    -                      "hint":  "越权 未授权访问 接口安全",
+    -                      "expect":  "R12",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "oauth attack",
+    -                      "expect":  "R12",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "sbom trivy supply chain",
+    -                      "expect":  "R13",
+    -                      "quick":  true
+    -                  },
+    -                  {
+    -                      "hint":  "供应链 依赖扫描 gitleaks",
+    -                      "expect":  "R13",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "llm prompt injection",
+    -                      "expect":  "R14",
+    -                      "quick":  true
+    -                  },
+    -                  {
+    -                      "hint":  "提示词注入 模型越狱",
+    -                      "expect":  "R14",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "agent security garak",
+    -                      "expect":  "R14",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "bindiff symbol migration",
+    -                      "expect":  "R15",
+    -                      "quick":  true
+    -                  },
+    -                  {
+    -                      "hint":  "符号迁移 PDB 缺失",
+    -                      "expect":  "R15",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "n-day patch diff",
+    -                      "expect":  "R16",
+    -                      "quick":  true
+    -                  },
+    -                  {
+    -                      "hint":  "补丁差分 CVE 复现",
+    -                      "expect":  "R16",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "pwn rop ret2libc",
+    -                      "expect":  "R17",
+    -                      "quick":  true
+    -                  },
+    -                  {
+    -                      "hint":  "栈溢出 堆溢出 exploit",
+    -                      "expect":  "R17",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "buffer overflow kernel pwn",
+    -                      "expect":  "R17",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "edr bypass syscall",
+    -                      "expect":  "R18",
+    -                      "quick":  true
+    -                  },
+    -                  {
+    -                      "hint":  "免杀 AMSI patch",
+    -                      "expect":  "R18",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "playwright browser automation",
+    -                      "expect":  "R19",
+    -                      "quick":  true
+    -                  },
+    -                  {
+    -                      "hint":  "浏览器自动化 填表",
+    -                      "expect":  "R19",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "write pentest report",
+    -                      "expect":  "R11",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "渗透测试报告 写报告",
+    -                      "expect":  "R11",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "draw attack path diagram",
+    -                      "expect":  "R39",
+    -                      "quick":  true
+    -                  },
+    -                  {
+    -                      "hint":  "流程图 架构图 mermaid",
+    -                      "expect":  "R39",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "protobuf custom protocol reverse",
+    -                      "expect":  "R21",
+    -                      "quick":  true
+    -                  },
+    -                  {
+    -                      "hint":  "协议逆向 pcap wireshark",
+    -                      "expect":  "R21",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "ghidra headless decompile",
+    -                      "expect":  "R22",
+    -                      "quick":  true
+    -                  },
+    -                  {
+    -                      "hint":  "无 IDA 用 ghidra 反编译",
+    -                      "expect":  "R22",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "kubernetes container escape",
+    -                      "expect":  "R23",
+    -                      "quick":  true
+    -                  },
+    -                  {
+    -                      "hint":  "容器逃逸 k8s 云安全",
+    -                      "expect":  "R23",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "bloodhound kerberoast active directory",
+    -                      "expect":  "R24",
+    -                      "quick":  true
+    -                  },
+    -                  {
+    -                      "hint":  "域渗透 kerberos 攻击",
+    -                      "expect":  "R24",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "AD CS certipy impacket",
+    -                      "expect":  "R24",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "volatility memory dump forensics",
+    -                      "expect":  "R25",
+    -                      "quick":  true
+    -                  },
+    -                  {
+    -                      "hint":  "内存取证 应急响应",
+    -                      "expect":  "R25",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "手机取证 磁盘取证",
+    -                      "expect":  "R25",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "semgrep code audit",
+    -                      "expect":  "R26",
+    -                      "quick":  true
+    -                  },
+    -                  {
+    -                      "hint":  "白盒 代码审计 sast",
+    -                      "expect":  "R26",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "threat hunting sigma",
+    -                      "expect":  "R27",
+    -                      "quick":  true
+    -                  },
+    -                  {
+    -                      "hint":  "威胁狩猎 检测工程",
+    -                      "expect":  "R27",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "scada plc modbus",
+    -                      "expect":  "R28",
+    -                      "quick":  true
+    -                  },
+    -                  {
+    -                      "hint":  "工控 OT ICS 安全",
+    -                      "expect":  "R28",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "wifi aircrack wireless",
+    -                      "expect":  "R29",
+    -                      "quick":  true
+    -                  },
+    -                  {
+    -                      "hint":  "无线渗透 wifi攻击",
+    -                      "expect":  "R29",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "chrome extension reverse",
+    -                      "expect":  "R30",
+    -                      "quick":  true
+    -                  },
+    -                  {
+    -                      "hint":  "浏览器扩展 逆向 crx",
+    -                      "expect":  "R30",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "macos mach-o reverse",
+    -                      "expect":  "R31",
+    -                      "quick":  true
+    -                  },
+    -                  {
+    -                      "hint":  "mac 逆向 Mach-O",
+    -                      "expect":  "R31",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "thick client electron app",
+    -                      "expect":  "R32",
+    -                      "quick":  true
+    -                  },
+    -                  {
+    -                      "hint":  "厚客户端 安全测试",
+    -                      "expect":  "R32",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "golang binary reverse",
+    -                      "expect":  "R33",
+    -                      "quick":  true
+    -                  },
+    -                  {
+    -                      "hint":  "go 二进制 逆向 stripped",
+    -                      "expect":  "R33",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "uart jtag hardware debug",
+    -                      "expect":  "R34",
+    -                      "quick":  true
+    -                  },
+    -                  {
+    -                      "hint":  "硬件调试 UART 串口",
+    -                      "expect":  "R34",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "database security mysql",
+    -                      "expect":  "R35",
+    -                      "quick":  true
+    -                  },
+    -                  {
+    -                      "hint":  "数据库安全 mongodb redis",
+    -                      "expect":  "R35",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "phishing email analysis spf dmarc",
+    -                      "expect":  "R36",
+    -                      "quick":  true
+    -                  },
+    -                  {
+    -                      "hint":  "钓鱼邮件分析",
+    -                      "expect":  "R36",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "saml oidc sso",
+    -                      "expect":  "R37",
+    -                      "quick":  true
+    -                  },
+    -                  {
+    -                      "hint":  "联邦身份 单点登录",
+    -                      "expect":  "R37",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "sdr hackrf gnu radio",
+    -                      "expect":  "R38",
+    -                      "quick":  true
+    -                  },
+    -                  {
+    -                      "hint":  "射频 SDR 信号分析",
+    -                      "expect":  "R38",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "reverse engineering binary",
+    -                      "expect":  "R0",
+    -                      "quick":  true
+    -                  },
+    -                  {
+    -                      "hint":  "逆向 反调试 ollvm",
+    -                      "expect":  "R0",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "gdb angr unicorn 符号执行",
+    -                      "expect":  "R0",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "越狱 提示词 红队 ai",
+    -                      "expect":  "R10",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "jailbreak iphone",
+    -                      "expect":  "R2",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "LLM 越狱",
+    -                      "expect":  "R14",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "iOS 越狱 检测绕过",
+    -                      "expect":  "R2",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "域渗透 完整渗透 攻击链",
+    -                      "expect":  "R10",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "打到域控",
+    -                      "expect":  "R10",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "frida hook native so",
+    -                      "expect":  "R0",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "frida hook apk",
+    -                      "expect":  "R1",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "oauth2 oidc sso 联邦",
+    -                      "expect":  "R37",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "stack overflow",
+    -                      "expect":  "R17",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "radio 信号",
+    -                      "expect":  "R0",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "sdr",
+    -                      "expect":  "R38",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "git 仓库",
+    -                      "expect":  "R0",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "docker escape",
+    -                      "expect":  "R23",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "k8s 渗透",
+    -                      "expect":  "R23",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "wpa handshake",
+    -                      "expect":  "R29",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "macOS 逆向",
+    -                      "expect":  "R31",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "electron app 逆向",
+    -                      "expect":  "R32",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "rust binary",
+    -                      "expect":  "R33",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "go malware",
+    -                      "expect":  "R33",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "Windows AD 域渗透 kerberos",
+    -                      "expect":  "R24",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "AD 域控攻击",
+    -                      "expect":  "R24",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "pdf",
+    -                      "expect":  "R0",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "writeup",
+    -                      "expect":  "R20",
+    -                      "quick":  true
+    -                  },
+    -                  {
+    -                      "hint":  "report",
+    -                      "expect":  "R20",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "metasploit msf",
+    -                      "expect":  "R11",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "sql 注入 数据库",
+    -                      "expect":  "R11",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "iot 设备",
+    -                      "expect":  "R8",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "ot 安全评估",
+    -                      "expect":  "R28",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "forensics 取证",
+    -                      "expect":  "R25",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "burpsuite 抓包 重放",
+    -                      "expect":  "R3",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "ctf 逆向题",
+    -                      "expect":  "R41",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "awd 靶场",
+    -                      "expect":  "R41",
+    -                      "quick":  true
+    -                  },
+    -                  {
+    -                      "hint":  "CTF pwn 栈溢出",
+    -                      "expect":  "R17",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "符号执行 angr",
+    -                      "expect":  "R0",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "mermaid 时序图",
+    -                      "expect":  "R39",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "攻击路径图",
+    -                      "expect":  "R39",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "威胁狩猎 检测规则 sigma",
+    -                      "expect":  "R27",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "蓝牙 BLE 分析",
+    -                      "expect":  "R38",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "wifi 密码 破解",
+    -                      "expect":  "R29",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "usb 设备 逆向",
+    -                      "expect":  "R34",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "so 文件 native 分析",
+    -                      "expect":  "R6",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "unity 游戏 逆向",
+    -                      "expect":  "R0",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "dump 内存 分析",
+    -                      "expect":  "R25",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "js 加密 解密 逆向",
+    -                      "expect":  "R3",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "接口 越权 IDOR",
+    -                      "expect":  "R12",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "渗透 报告 输出",
+    -                      "expect":  "R20",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "mimikatz 抓取凭证",
+    -                      "expect":  "R24",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "wireshark 分析流量",
+    -                      "expect":  "R21",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "linux 提权",
+    -                      "expect":  "R11",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "linux 权限提升 提权",
+    -                      "expect":  "R11",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "云安全 存储桶 泄露",
+    -                      "expect":  "R23",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "s3 bucket 权限",
+    -                      "expect":  "R23",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "frida 动态调试 so",
+    -                      "expect":  "R0",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "安卓 动态调试",
+    -                      "expect":  "R1",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "app 抓包 https",
+    -                      "expect":  "R3",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "sqlmap 注入",
+    -                      "expect":  "R11",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "hashcat 破解",
+    -                      "expect":  "R11",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "webshell 检测",
+    -                      "expect":  "R9",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "webshell",
+    -                      "expect":  "R9",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "应急响应",
+    -                      "expect":  "R25",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "安全评估 报告",
+    -                      "expect":  "R11",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "风险评估",
+    -                      "expect":  "R11",
+    -                      "quick":  false
+    -                  },
+    -                  {
+    -                      "hint":  "case review evidence chain traceability",
+    -                      "expect":  "R40",
+    -                      "quick":  true
+    -                  }
+    -              ]
+    +  "meta": {
+    +    "description": "reverse-skill 路由回归基准。每条用例 = (hint, expect)。修改路由规则后必须保持此基准全绿；新增路由场景请同步添加用例。",
+    +    "runner": "skills/scripts/test-routing.ps1",
+    +    "generated": "2026-08-02",
+    +    "quickNote": "quick=true 的用例是每个路由的最小回归集（smoke 快速模式使用）"
+    +  },
+    +  "cases": [
+    +    {
+    +      "hint": "decompile APK with jadx apktool smali",
+    +      "expect": "R1",
+    +      "quick": true
+    +    },
+    +    {
+    +      "hint": "安卓 APK 加固 反编译",
+    +      "expect": "R1",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "重打包 APK 修改 smali",
+    +      "expect": "R1",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "frida hook android app",
+    +      "expect": "R1",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "绕过 root 检测 证书校验",
+    +      "expect": "R1",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "apk certificate pinning bypass",
+    +      "expect": "R1",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "ios reverse objection mobsf",
+    +      "expect": "R2",
+    +      "quick": true
+    +    },
+    +    {
+    +      "hint": "IPA 逆向",
+    +      "expect": "R2",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "iphone jailbreak detection bypass",
+    +      "expect": "R2",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "iOS 越狱 检测绕过",
+    +      "expect": "R2",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "js reverse webpack encrypted param",
+    +      "expect": "R3",
+    +      "quick": true
+    +    },
+    +    {
+    +      "hint": "前端签名 加密参数 js逆向",
+    +      "expect": "R3",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "jshookmcp cdp hook",
+    +      "expect": "R3",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "抓包 分析请求 重放",
+    +      "expect": "R3",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "dsl vm reverse fireye",
+    +      "expect": "R4",
+    +      "quick": true
+    +    },
+    +    {
+    +      "hint": "自定义虚拟机 指令集逆向",
+    +      "expect": "R4",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "opcode vm reverse",
+    +      "expect": "R4",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": ".net reverse dnspy de4dot",
+    +      "expect": "R5",
+    +      "quick": true
+    +    },
+    +    {
+    +      "hint": "C# 逆向 confuserex 脱壳",
+    +      "expect": "R5",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "dotnet 脱混淆",
+    +      "expect": "R5",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "IDA decompile PE",
+    +      "expect": "R6",
+    +      "quick": true
+    +    },
+    +    {
+    +      "hint": "反汇编 静态分析 二进制",
+    +      "expect": "R6",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "r2 disassemble",
+    +      "expect": "R6",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "radare2 analyze binary",
+    +      "expect": "R7",
+    +      "quick": true
+    +    },
+    +    {
+    +      "hint": "r2xsql query imports",
+    +      "expect": "R7",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "radius2 solve crackme",
+    +      "expect": "R7",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "r2mcp analyze binary",
+    +      "expect": "R7",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "firmware binwalk iot",
+    +      "expect": "R8",
+    +      "quick": true
+    +    },
+    +    {
+    +      "hint": "固件逆向 路由器",
+    +      "expect": "R8",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "malware analysis yara",
+    +      "expect": "R9",
+    +      "quick": true
+    +    },
+    +    {
+    +      "hint": "恶意样本分析 沙箱",
+    +      "expect": "R9",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "sandbox malware sample",
+    +      "expect": "R9",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "ransomware 勒索软件 分析",
+    +      "expect": "R9",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "full pentest attack chain",
+    +      "expect": "R10",
+    +      "quick": true
+    +    },
+    +    {
+    +      "hint": "红队 横向移动 内网渗透",
+    +      "expect": "R10",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "从外网打到域控",
+    +      "expect": "R10",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "nmap nuclei sqlmap",
+    +      "expect": "R11",
+    +      "quick": true
+    +    },
+    +    {
+    +      "hint": "渗透测试 端口扫描 sql注入",
+    +      "expect": "R11",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "bug bounty src 漏洞挖掘",
+    +      "expect": "R11",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "burpsuite intruder 爆破",
+    +      "expect": "R11",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "api security graphql bola",
+    +      "expect": "R12",
+    +      "quick": true
+    +    },
+    +    {
+    +      "hint": "越权 未授权访问 接口安全",
+    +      "expect": "R12",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "oauth attack",
+    +      "expect": "R12",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "sbom trivy supply chain",
+    +      "expect": "R13",
+    +      "quick": true
+    +    },
+    +    {
+    +      "hint": "供应链 依赖扫描 gitleaks",
+    +      "expect": "R13",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "llm prompt injection",
+    +      "expect": "R14",
+    +      "quick": true
+    +    },
+    +    {
+    +      "hint": "提示词注入 模型越狱",
+    +      "expect": "R14",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "agent security garak",
+    +      "expect": "R14",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "bindiff symbol migration",
+    +      "expect": "R15",
+    +      "quick": true
+    +    },
+    +    {
+    +      "hint": "符号迁移 PDB 缺失",
+    +      "expect": "R15",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "n-day patch diff",
+    +      "expect": "R16",
+    +      "quick": true
+    +    },
+    +    {
+    +      "hint": "补丁差分 CVE 复现",
+    +      "expect": "R16",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "pwn rop ret2libc",
+    +      "expect": "R17",
+    +      "quick": true
+    +    },
+    +    {
+    +      "hint": "栈溢出 堆溢出 exploit",
+    +      "expect": "R17",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "buffer overflow kernel pwn",
+    +      "expect": "R17",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "edr bypass syscall",
+    +      "expect": "R18",
+    +      "quick": true
+    +    },
+    +    {
+    +      "hint": "免杀 AMSI patch",
+    +      "expect": "R18",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "playwright browser automation",
+    +      "expect": "R19",
+    +      "quick": true
+    +    },
+    +    {
+    +      "hint": "浏览器自动化 填表",
+    +      "expect": "R19",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "write pentest report",
+    +      "expect": "R11",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "渗透测试报告 写报告",
+    +      "expect": "R11",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "draw attack path diagram",
+    +      "expect": "R39",
+    +      "quick": true
+    +    },
+    +    {
+    +      "hint": "流程图 架构图 mermaid",
+    +      "expect": "R39",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "protobuf custom protocol reverse",
+    +      "expect": "R21",
+    +      "quick": true
+    +    },
+    +    {
+    +      "hint": "协议逆向 pcap wireshark",
+    +      "expect": "R21",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "ghidra headless decompile",
+    +      "expect": "R22",
+    +      "quick": true
+    +    },
+    +    {
+    +      "hint": "无 IDA 用 ghidra 反编译",
+    +      "expect": "R22",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "kubernetes container escape",
+    +      "expect": "R23",
+    +      "quick": true
+    +    },
+    +    {
+    +      "hint": "容器逃逸 k8s 云安全",
+    +      "expect": "R23",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "bloodhound kerberoast active directory",
+    +      "expect": "R24",
+    +      "quick": true
+    +    },
+    +    {
+    +      "hint": "域渗透 kerberos 攻击",
+    +      "expect": "R24",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "AD CS certipy impacket",
+    +      "expect": "R24",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "volatility memory dump forensics",
+    +      "expect": "R25",
+    +      "quick": true
+    +    },
+    +    {
+    +      "hint": "内存取证 应急响应",
+    +      "expect": "R25",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "手机取证 磁盘取证",
+    +      "expect": "R25",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "semgrep code audit",
+    +      "expect": "R26",
+    +      "quick": true
+    +    },
+    +    {
+    +      "hint": "白盒 代码审计 sast",
+    +      "expect": "R26",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "threat hunting sigma",
+    +      "expect": "R27",
+    +      "quick": true
+    +    },
+    +    {
+    +      "hint": "威胁狩猎 检测工程",
+    +      "expect": "R27",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "scada plc modbus",
+    +      "expect": "R28",
+    +      "quick": true
+    +    },
+    +    {
+    +      "hint": "工控 OT ICS 安全",
+    +      "expect": "R28",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "wifi aircrack wireless",
+    +      "expect": "R29",
+    +      "quick": true
+    +    },
+    +    {
+    +      "hint": "无线渗透 wifi攻击",
+    +      "expect": "R29",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "chrome extension reverse",
+    +      "expect": "R30",
+    +      "quick": true
+    +    },
+    +    {
+    +      "hint": "浏览器扩展 逆向 crx",
+    +      "expect": "R30",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "macos mach-o reverse",
+    +      "expect": "R31",
+    +      "quick": true
+    +    },
+    +    {
+    +      "hint": "mac 逆向 Mach-O",
+    +      "expect": "R31",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "thick client electron app",
+    +      "expect": "R32",
+    +      "quick": true
+    +    },
+    +    {
+    +      "hint": "厚客户端 安全测试",
+    +      "expect": "R32",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "golang binary reverse",
+    +      "expect": "R33",
+    +      "quick": true
+    +    },
+    +    {
+    +      "hint": "go 二进制 逆向 stripped",
+    +      "expect": "R33",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "uart jtag hardware debug",
+    +      "expect": "R34",
+    +      "quick": true
+    +    },
+    +    {
+    +      "hint": "硬件调试 UART 串口",
+    +      "expect": "R34",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "database security mysql",
+    +      "expect": "R35",
+    +      "quick": true
+    +    },
+    +    {
+    +      "hint": "数据库安全 mongodb redis",
+    +      "expect": "R35",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "phishing email analysis spf dmarc",
+    +      "expect": "R36",
+    +      "quick": true
+    +    },
+    +    {
+    +      "hint": "钓鱼邮件分析",
+    +      "expect": "R36",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "saml oidc sso",
+    +      "expect": "R37",
+    +      "quick": true
+    +    },
+    +    {
+    +      "hint": "联邦身份 单点登录",
+    +      "expect": "R37",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "sdr hackrf gnu radio",
+    +      "expect": "R38",
+    +      "quick": true
+    +    },
+    +    {
+    +      "hint": "射频 SDR 信号分析",
+    +      "expect": "R38",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "reverse engineering binary",
+    +      "expect": "R0",
+    +      "quick": true
+    +    },
+    +    {
+    +      "hint": "逆向 反调试 ollvm",
+    +      "expect": "R0",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "gdb angr unicorn 符号执行",
+    +      "expect": "R0",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "越狱 提示词 红队 ai",
+    +      "expect": "R10",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "jailbreak iphone",
+    +      "expect": "R2",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "LLM 越狱",
+    +      "expect": "R14",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "iOS 越狱 检测绕过",
+    +      "expect": "R2",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "域渗透 完整渗透 攻击链",
+    +      "expect": "R10",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "打到域控",
+    +      "expect": "R10",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "frida hook native so",
+    +      "expect": "R0",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "frida hook apk",
+    +      "expect": "R1",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "oauth2 oidc sso 联邦",
+    +      "expect": "R37",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "stack overflow",
+    +      "expect": "R17",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "radio 信号",
+    +      "expect": "R0",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "sdr",
+    +      "expect": "R38",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "git 仓库",
+    +      "expect": "R0",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "docker escape",
+    +      "expect": "R23",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "k8s 渗透",
+    +      "expect": "R23",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "wpa handshake",
+    +      "expect": "R29",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "macOS 逆向",
+    +      "expect": "R31",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "electron app 逆向",
+    +      "expect": "R32",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "rust binary",
+    +      "expect": "R33",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "go malware",
+    +      "expect": "R33",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "Windows AD 域渗透 kerberos",
+    +      "expect": "R24",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "AD 域控攻击",
+    +      "expect": "R24",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "pdf",
+    +      "expect": "R0",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "writeup",
+    +      "expect": "R20",
+    +      "quick": true
+    +    },
+    +    {
+    +      "hint": "report",
+    +      "expect": "R20",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "metasploit msf",
+    +      "expect": "R11",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "sql 注入 数据库",
+    +      "expect": "R11",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "iot 设备",
+    +      "expect": "R8",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "ot 安全评估",
+    +      "expect": "R28",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "forensics 取证",
+    +      "expect": "R25",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "burpsuite 抓包 重放",
+    +      "expect": "R3",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "ctf 逆向题",
+    +      "expect": "R41",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "awd 靶场",
+    +      "expect": "R41",
+    +      "quick": true
+    +    },
+    +    {
+    +      "hint": "CTF pwn 栈溢出",
+    +      "expect": "R17",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "符号执行 angr",
+    +      "expect": "R0",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "mermaid 时序图",
+    +      "expect": "R39",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "攻击路径图",
+    +      "expect": "R39",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "威胁狩猎 检测规则 sigma",
+    +      "expect": "R27",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "蓝牙 BLE 分析",
+    +      "expect": "R38",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "wifi 密码 破解",
+    +      "expect": "R29",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "usb 设备 逆向",
+    +      "expect": "R34",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "so 文件 native 分析",
+    +      "expect": "R6",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "unity 游戏 逆向",
+    +      "expect": "R0",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "dump 内存 分析",
+    +      "expect": "R25",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "js 加密 解密 逆向",
+    +      "expect": "R3",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "接口 越权 IDOR",
+    +      "expect": "R12",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "渗透 报告 输出",
+    +      "expect": "R20",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "mimikatz 抓取凭证",
+    +      "expect": "R24",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "wireshark 分析流量",
+    +      "expect": "R21",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "linux 提权",
+    +      "expect": "R11",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "linux 权限提升 提权",
+    +      "expect": "R11",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "云安全 存储桶 泄露",
+    +      "expect": "R23",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "s3 bucket 权限",
+    +      "expect": "R23",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "frida 动态调试 so",
+    +      "expect": "R0",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "安卓 动态调试",
+    +      "expect": "R1",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "app 抓包 https",
+    +      "expect": "R3",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "sqlmap 注入",
+    +      "expect": "R11",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "hashcat 破解",
+    +      "expect": "R11",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "webshell 检测",
+    +      "expect": "R9",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "webshell",
+    +      "expect": "R9",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "应急响应",
+    +      "expect": "R25",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "安全评估 报告",
+    +      "expect": "R11",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "风险评估",
+    +      "expect": "R11",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "case review evidence chain traceability",
+    +      "expect": "R40",
+    +      "quick": true
+    +    },
+    +    {
+    +      "hint": "Collect public X and Twitter posts about this IOC for OSINT threat intelligence",
+    +      "expect": "R44",
+    +      "quick": true
+    +    },
+    +    {
+    +      "hint": "公开 X 推文补充这个恶意域名的威胁情报",
+    +      "expect": "R44",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "CTI indicator enrichment for this phishing campaign",
+    +      "expect": "R44",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "track an impersonation scam from public Twitter posts",
+    +      "expect": "R44",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "Twitter marketing sentiment for our product",
+    +      "expect": "R0",
+    +      "quick": false
+    +    }
+    +  ]
+     }
+  已替换本地内容: /home/runner/work/opencode-skills-hub/opencode-skills-hub/zhaoxuya520-reverse-skill
+
+全部仓库更新完成。

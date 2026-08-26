@@ -2699,3 +2699,41 @@
   已替换本地内容: /home/runner/work/opencode-skills-hub/opencode-skills-hub/zhaoxuya520-reverse-skill
 
 全部仓库更新完成。
+
+############################################################
+# skills-updater 运行时间: 2026-08-26 21:41:59
+############################################################
+
+============================================================
+[anthropics-skills] 开始更新 (https://github.com/anthropics/skills)
+  Diff 结果（本地 <-> 远程）:
+  无变化
+  已替换本地内容: /home/runner/work/opencode-skills-hub/opencode-skills-hub/anthropics-skills
+
+============================================================
+[Jeffallan-claude-skills] 开始更新 (https://github.com/Jeffallan/claude-skills)
+  Diff 结果（本地 <-> 远程）:
+  无变化
+  已替换本地内容: /home/runner/work/opencode-skills-hub/opencode-skills-hub/Jeffallan-claude-skills
+
+============================================================
+[zhaoxuya520-reverse-skill] 开始更新 (https://github.com/zhaoxuya520/reverse-skill)
+  Diff 结果（本地 <-> 远程）:
+  [修改的文件]
+    ~ reverse-engineering/SKILL.md
+    --- a/reverse-engineering/SKILL.md
+    +++ b/reverse-engineering/SKILL.md
+    @@ -19,6 +19,10 @@
+     3. `NEXT`: 读取 `../tool-index.md`，校验工具可用性和实际路径
+     4. `NEXT`: 缺工具时调用 bootstrap，不要猜路径
+     5. `ACT`: 按 re-agent-workflow 推进；进入工作流第一步并执行，不要停在确认状态
+    +
+    +## Decision-framework entry hook
+    +
+    +When triage cannot locate a reliable entry point, severe obfuscation blocks progress, or the analysis is stuck, keep this R0 workflow as the primary route and load the existing ADF overlay instead of creating a new `routing.json` PRIMARY. Follow `references/re-agent-workflow.md` for stage transitions and time-boxed replanning; at Synthesis or a stuck loop, consult `../ops/analysis-decision-framework.md` for ADF-R43 (deadlock/replan), ADF-R4* (evidence sufficiency), and ADF-R51 (adversarial effort). Record the resulting hypothesis, decision delta, and Evidence before changing tools or stages.
+     
+     ## 默认沙盒上下文（Default Sandbox Context）
+     
+  已替换本地内容: /home/runner/work/opencode-skills-hub/opencode-skills-hub/zhaoxuya520-reverse-skill
+
+全部仓库更新完成。

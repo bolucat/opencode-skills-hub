@@ -13673,3 +13673,295 @@
   已替换本地内容: /home/runner/work/opencode-skills-hub/opencode-skills-hub/zhaoxuya520-reverse-skill
 
 全部仓库更新完成。
+
+############################################################
+# skills-updater 运行时间: 2026-09-10 22:19:45
+############################################################
+
+============================================================
+[anthropics-skills] 开始更新 (https://github.com/anthropics/skills)
+  Diff 结果（本地 <-> 远程）:
+  [修改的文件]
+    ~ claude-api/SKILL.md
+    --- a/claude-api/SKILL.md
+    +++ b/claude-api/SKILL.md
+    @@ -411,6 +411,8 @@
+     **When the user wants to set up a Managed Agent from scratch** (e.g. "how do I get started", "walk me through creating one", "set up a new agent"): read `shared/managed-agents-onboarding.md` and run its interview - same flow as the `managed-agents-onboard` subcommand.
+     
+     **When the user asks "how do I write the client code for X":** reach for `shared/managed-agents-client-patterns.md` - covers lossless stream reconnect, `processed_at` queued/processed gate, interrupt, `tool_confirmation` round-trip, the correct idle/terminated break gate, post-idle status race, stream-first ordering, file-mount gotchas, etc. For credentials, lead with vault `environment_variable` credentials - the first-class mechanism; secrets are substituted at egress and never enter the sandbox (`shared/managed-agents-tools.md` -> Vaults). Keeping credentials host-side via custom tools is the fallback where vault credentials don't fit (e.g. self-hosted sandboxes).
+    +
+    +**When the user asks about tool approvals, permission policies, or "auto mode"** (which tool calls need a human, letting the server evaluate calls, `evaluated_permission` / `evaluation` on tool-use events): read `shared/managed-agents-tools.md` § Permission Policies - `always_allow` / `always_ask` / `auto` and the three `auto` outcomes (runs, denied as high-risk, pauses when indeterminate). For attaching a terminal to a live session (`ant beta:sessions connect`): `shared/anthropic-cli.md`.
+     
+     **When the user wants the agent to run on a schedule** (cron, "every night", "weekly report"): read `shared/managed-agents-scheduled-deployments.md` - deployments fire sessions autonomously on a cron cadence, with per-firing run records and lifecycle controls (pause/unpause/archive).
+     
+    ~ claude-api/shared/anthropic-cli.md
+    --- a/claude-api/shared/anthropic-cli.md
+    +++ b/claude-api/shared/anthropic-cli.md
+    @@ -187,6 +187,29 @@
+     ant beta:sessions:events list --session-id "$SID" --transform 'content.0.text' -r
+     ant beta:sessions:events stream --session-id "$SID"   # live event stream
+     ```
+    +
+    +### Attach a terminal to a session (`ant beta:sessions connect`)
+    +
+    +`ant beta:sessions connect <session-id>` attaches your terminal to an existing session: it loads the transcript, follows it live, and lets you step in - send a message, interrupt, or allow/deny a tool call that is waiting for approval. Ctrl+C detaches; the session keeps running, and reconnecting reloads the full history. Read-only if the session is `terminated` or archived.
+    +
+    +```sh
+    +ant beta:sessions connect sesn_011CZkZAtmR3yMPDzynEDxu7          # terminal view
+    +ant beta:sessions connect sesn_011CZkZAtmR3yMPDzynEDxu7 --web    # Console session viewer, served locally
+    +```
+    +
+    +| Key | Action |
+    +|---|---|
+    +| Enter | Send input as a `user.message` (Alt+Enter / Ctrl+J for a newline) |
+    +| Esc | Interrupt the running agent (`user.interrupt`) |
+    +| Ctrl+O | Toggle detail: tool inputs/results, token usage, status events (`--verbose` / `-v` starts expanded) |
+    +| PgUp / PgDn | Scroll; scrolling up pauses following, End resumes |
+    +| Ctrl+C (or Ctrl+D on empty input) | Detach |
+    +
+    +When a call is waiting for approval (`always_ask`, or `auto` with no determination), the input line becomes **Allow tool call?** with **Yes** / **No** / **No, and tell the agent why** - the CLI sends `user.tool_confirmation`, with your typed reason as `deny_message`. In multiagent sessions the terminal view follows the primary thread only (which includes coordinator<->subagent messages).
+    +
+    +`--web` serves the Console's session viewer from a local server on `127.0.0.1`, prints the URL, and opens the browser (`--no-browser` to skip). The URL works once, within two minutes (reloading that tab is fine; to open it elsewhere, run the command again). The page talks only to the local `ant` process, which makes the API calls, so credentials never leave the CLI; the server runs until Ctrl+C. Unlike the terminal view, the browser viewer follows every thread of a multiagent session.
+    +
+    +Needs an interactive terminal (except `--web`) - for scripts use `ant beta:sessions:events stream` / `send`, below.
+     
+     ### Interactive session loop (stream-before-send)
+     
+    ~ claude-api/shared/live-sources.md
+    --- a/claude-api/shared/live-sources.md
+    +++ b/claude-api/shared/live-sources.md
+    @@ -105,7 +105,7 @@
+     | Events and Streaming  | `https://platform.claude.com/docs/en/managed-agents/events-and-streaming.md`     | "Extract event stream types, stream-first ordering, reconnect/dedupe, and steering patterns"    |
+     | Tools                 | `https://platform.claude.com/docs/en/managed-agents/tools.md`                    | "Extract built-in toolset, custom tool definitions, and tool result wire format"                |
+     | Files                 | `https://platform.claude.com/docs/en/managed-agents/files.md`                    | "Extract file upload, mount paths, session resources, and listing/downloading session outputs"  |
+    -| Permission Policies   | `https://platform.claude.com/docs/en/managed-agents/permission-policies.md`      | "Extract permission policy types (allow/deny/confirm) and per-tool config"                     |
+    +| Permission Policies   | `https://platform.claude.com/docs/en/managed-agents/permission-policies.md`      | "Extract permission policy types (`always_allow` / `always_ask` / `auto`), the three `auto` outcomes, the `evaluated_permission` + `evaluation` event fields, and per-tool config" |
+     | Multi-Agent           | `https://platform.claude.com/docs/en/managed-agents/multiagent-orchestration.md` | "Extract multi-agent composition patterns, sub-agent invocation, and result handoff"            |
+     | Observability         | `https://platform.claude.com/docs/en/managed-agents/observability.md`            | "Extract logging, tracing, and usage telemetry exposed by managed agents"                       |
+     | Webhooks              | `https://platform.claude.com/docs/en/managed-agents/webhooks.md`                 | "Extract webhook endpoint registration, HMAC signature verification, supported event types, and delivery semantics" |
+    @@ -125,6 +125,7 @@
+     | Topic         | URL                                                     | Extraction Prompt                                                                                  |
+     | ------------- | ------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+     | Anthropic CLI | `https://platform.claude.com/docs/en/api/sdks/cli.md`   | "Extract CLI install, authentication, command structure, and the beta:agents/environments/sessions commands" |
+    +| `ant beta:sessions connect` | `https://platform.claude.com/docs/en/cli-sdks-libraries/cli/sessions-connect.md` | "Extract the interactive session viewer: keybindings, tool-call allow/deny prompt, `--web` local viewer and its URL/lifetime rules" |
+     | Authentication overview | `https://platform.claude.com/docs/en/manage-claude/authentication.md` | "Extract the credential options (API keys, interactive OAuth login, Workload Identity Federation) and when to use each" |
+     | WIF reference | `https://platform.claude.com/docs/en/manage-claude/wif-reference.md`  | "Extract credential precedence order, the profile configuration file schema, and the configuration directory layout" |
+     
+    ~ claude-api/shared/managed-agents-client-patterns.md
+    --- a/claude-api/shared/managed-agents-client-patterns.md
+    +++ b/claude-api/shared/managed-agents-client-patterns.md
+    @@ -81,11 +81,11 @@
+     
+     ## 4. `tool_confirmation` round-trip
+     
+    -When the agent has `permission_policy: { type: 'always_ask' }`, any call to that tool fires an `agent.tool_use` event with `evaluated_permission === 'ask'` and the session goes idle waiting for a decision. Respond with `user.tool_confirmation`.
+    -
+    -```ts
+    -for await (const event of stream) {
+    -  if (event.type === 'agent.tool_use' && event.evaluated_permission === 'ask') {
+    +When a call evaluates to `ask` - the tool has `permission_policy: { type: 'always_ask' }`, or it has `{ type: 'auto' }` and the server reached no determination - the `agent.tool_use` / `agent.mcp_tool_use` event carries `evaluated_permission === 'ask'` and the session goes idle waiting for a decision. Respond with `user.tool_confirmation`.
+    +
+    +```ts
+    +for await (const event of stream) {
+    +  if ((event.type === 'agent.tool_use' || event.type === 'agent.mcp_tool_use') && event.evaluated_permission === 'ask') {
+         await client.beta.sessions.events.send(session.id, {
+           events: [{
+             type: 'user.tool_confirmation',
+    @@ -101,7 +101,9 @@
+     Key points:
+     - `tool_use_id` is `event.id` (typically `sevt_...`), **not** a `toolu_...` ID.
+     - `result` is `'allow' | 'deny'`. Use `deny_message` to tell the model *why* you denied - it gets surfaced back to the agent.
+    -- Multiple pending tools: respond once per `agent.tool_use` event with `evaluated_permission === 'ask'`.
+    +- Multiple pending tools: respond once per `agent.tool_use` / `agent.mcp_tool_use` event with `evaluated_permission === 'ask'`.
+    +- Gate on `evaluated_permission === 'ask'`, not on the policy you configured - it covers `always_ask` and `auto`-indeterminate alike. Calls the server **denies** under `auto` (`evaluated_permission === 'deny'`, `evaluation.evaluated_permission.reason_code === 'high_risk'`) never enter this flow: the agent gets an error tool result and the session keeps running; sending a confirmation for one is a 400.
+    +- Log `event.evaluation` for audit (`type` + `reason_code`), and tolerate a `type` or `reason_code` you don't recognize - branch on known values, pass unknown ones through.
+     
+     Reference: `tool-permissions.ts`.
+     
+    @@ -123,7 +125,7 @@
+     ```
+     
+     `stop_reason.type` values on `session.status_idle`:
+    -- `requires_action` - agent is waiting on a client-side event (tool confirmation, custom tool result). Handle it, don't break. **Self-hosted exception:** if the session went `requires_action`-idle with no pending `agent.tool_use` (always_ask) or `agent.custom_tool_use` to answer, the worker failed the claimed work item (typically a memory-store mount error, logged only on the worker host). Don't `continue` forever on that - surface it, fix the host, and send `user.interrupt` to re-queue the work (`shared/managed-agents-self-hosted-sandboxes.md` § Memory stores -> Troubleshooting).
+    +- `requires_action` - agent is waiting on a client-side event (tool confirmation, custom tool result). Handle it, don't break. **Self-hosted exception:** if the session went `requires_action`-idle with no pending `agent.tool_use` / `agent.mcp_tool_use` (`ask`) or `agent.custom_tool_use` to answer, the worker failed the claimed work item (typically a memory-store mount error, logged only on the worker host). Don't `continue` forever on that - surface it, fix the host, and send `user.interrupt` to re-queue the work (`shared/managed-agents-self-hosted-sandboxes.md` § Memory stores -> Troubleshooting).
+     - `retries_exhausted` - terminal failure. Break, then check `sessions.retrieve()` for the error state.
+     - `end_turn` - normal completion.
+     - `budget_reached` - the session hit its spend cap and paused. Not terminal and not resumable by any event: change (typically raise) or remove the session's `budget` to resume, or treat it as done. A `session.usage` event with the final cost immediately precedes this idle. See `shared/managed-agents-core.md` § Session budgets.
+    ~ claude-api/shared/managed-agents-events.md
+    --- a/claude-api/shared/managed-agents-events.md
+    +++ b/claude-api/shared/managed-agents-events.md
+    @@ -10,7 +10,7 @@
+     | ------------------------- | --------------------------------------------------- |
+     | `user.message`            | Send a user message |
+     | `user.interrupt`          | Interrupt the agent while it's running |
+    -| `user.tool_confirmation`  | Approve/deny a tool call (when `always_ask` policy) |
+    +| `user.tool_confirmation`  | Approve/deny a tool call that paused for approval (`always_ask`, or `auto` when the server reached no determination) |
+     | `user.custom_tool_result` | Provide result for a custom tool call |
+     | `user.define_outcome`     | Start a rubric-graded iterate loop - see `shared/managed-agents-outcomes.md` |
+     | `system.message`          | Append privileged system-level context for this turn and every turn after it; see § Adding system context mid-session |
+    @@ -63,9 +63,9 @@
+     | --- | --- |
+     | `agent.message` | Agent text output |
+     | `agent.thinking` | Progress signal that the agent is thinking - it does **not** carry the thinking content |
+    -| `agent.tool_use` | Agent used a built-in tool (`agent_toolset_20260401`) |
+    +| `agent.tool_use` | Agent used a built-in tool (`agent_toolset_20260401`). Carries `evaluated_permission` (`allow`/`ask`/`deny`) and usually `evaluation` - see `shared/managed-agents-tools.md` § `evaluated_permission` and `evaluation` |
+     | `agent.tool_result` | Result from a built-in tool |
+    -| `agent.mcp_tool_use` | Agent used an MCP tool |
+    +| `agent.mcp_tool_use` | Agent used an MCP tool. Carries `evaluated_permission` and usually `evaluation`, same as `agent.tool_use` |
+     | `agent.mcp_tool_result` | Result from an MCP tool |
+     | `agent.custom_tool_use` | Agent invoked a custom tool - session goes idle, you respond with `user.custom_tool_result` |
+     | `agent.thread_context_compacted` | Conversation context was compacted |
+    ~ claude-api/shared/managed-agents-multiagent.md
+    --- a/claude-api/shared/managed-agents-multiagent.md
+    +++ b/claude-api/shared/managed-agents-multiagent.md
+    @@ -25,7 +25,7 @@
+     session = client.beta.sessions.create(agent=agent.id, environment_id=env.id)  # unchanged
+     ```
+     
+    -**Step 2 - move the reading-heavy work to a cheaper model.** Delegated research work is mostly searching, reading, and extracting: many input tokens, little hard reasoning. Create a second agent on a smaller model with a narrow `system` prompt and only the tools it needs, and list it next to `self`. A roster entry is only a reference: the worker runs on its own `model`, `system`, and `tools`, and its tokens are billed at its own model's rates. The large model spends its tokens on planning, checking, and synthesis; the small model does the bulk reading.
+    +**Step 2 - move the reading-heavy work to a cheaper model.** Delegated research work is mostly searching, reading, and extracting: many input tokens, little hard reasoning. Create a second agent on a smaller current-generation model (Claude Haiku 4.5, or Claude Sonnet 5 when the worker needs more judgment) with a narrow `system` prompt and only the tools it needs, and list it next to `self`. A roster entry is only a reference: the worker runs on its own `model`, `system`, and `tools`, and its tokens are billed at its own model's rates. The large model spends its tokens on planning, checking, and synthesis; the small model does the bulk reading.
+     
+     ```python
+     worker = client.beta.agents.create(
+    @@ -222,7 +222,7 @@
+     
+     ## Tool permissions and custom tools from subagent threads
+     
+    -When a subagent needs your client (an `always_ask` confirmation, or a custom tool result), the request is **cross-posted to the primary thread** with `session_thread_id` identifying the originating thread - so you only need to watch the session stream. Reply with `user.tool_confirmation` (carrying `tool_use_id`) or `user.custom_tool_result` (carrying `custom_tool_use_id`), and **echo the `session_thread_id` from the originating event** (the SDK param type and docstring expect it). The server also routes by the tool-use ID, so the echo is belt-and-suspenders rather than load-bearing - but include it.
+    +When a subagent needs your client (a tool call that paused for approval - `always_ask`, or `auto` with no determination - or a custom tool result), the request is **cross-posted to the primary thread** with `session_thread_id` identifying the originating thread - so you only need to watch the session stream. Reply with `user.tool_confirmation` (carrying `tool_use_id`) or `user.custom_tool_result` (carrying `custom_tool_use_id`), and **echo the `session_thread_id` from the originating event** (the SDK param type and docstring expect it). The server also routes by the tool-use ID, so the echo is belt-and-suspenders rather than load-bearing - but include it.
+     
+     ```python
+     for event_id in stop.event_ids:
+    @@ -239,6 +239,8 @@
+     
+     The same pattern applies to `user.custom_tool_result`.
+     
+    +**`auto` in multiagent sessions.** Only your `user.message` events on the primary thread can lead the server to allow a call it would otherwise deny under `auto`; nothing in a subagent's thread carries that weight (your client posts no messages there, and the coordinator's messages to the subagent carry none). A call the server denies under `auto` is **not** cross-posted - its event and the error tool result appear only on the subagent's own thread stream, and the subagent keeps running.
+    +
+     ---
+     
+     ## Interrupting and archiving threads
+    ~ claude-api/shared/managed-agents-tools.md
+    --- a/claude-api/shared/managed-agents-tools.md
+    +++ b/claude-api/shared/managed-agents-tools.md
+    @@ -67,12 +67,13 @@
+     
+     ### Permission Policies
+     
+    -Control when server-executed tools (agent toolset + MCP) run automatically vs wait for approval. Does not apply to custom tools.
+    +Control whether server-executed tools (agent toolset + MCP) run automatically, wait for your approval, or have each call evaluated by the server. Does not apply to custom tools (your application executes those).
+     
+     | Policy | Behavior |
+     |---|---|
+    -| `always_allow` | Tool executes automatically (default) |
+    -| `always_ask` | Session emits `session.status_idle` and pauses until you send a `user.tool_confirmation` event |
+    +| `always_allow` | Tool executes automatically. Default for the agent toolset. |
+    +| `always_ask` | Session emits `session.status_idle` (`stop_reason.type: requires_action`) and pauses until you send a `user.tool_confirmation` event. Default for MCP toolsets. |
+    +| `auto` | The server evaluates each call (tool + input + session content so far) and **runs it, denies it, or pauses for your approval**. Neither toolset kind defaults to `auto`. See § `auto` below. |
+     
+     ```json
+     {
+    @@ -87,14 +88,83 @@
+     }
+     ```
+     
+    -**Responding to `always_ask`:** Send a `user.tool_confirmation` event with `tool_use_id` from the triggering `agent_tool_use`/`mcp_tool_use` event:
+    +**Responding to `always_ask`** (and to `auto` calls that pause): send a `user.tool_confirmation` event with `tool_use_id` set to the **event ID** (`sevt_...`, not a `toolu_` ID) of the triggering `agent.tool_use` / `agent.mcp_tool_use` event. Several confirmations can go in one `events` request:
+     
+     ```json
+     { "type": "user.tool_confirmation", "tool_use_id": "sevt_abc123", "result": "allow" }
+    -{ "type": "user.tool_confirmation", "tool_use_id": "sevt_def456", "result": "deny", "message": "Read .env.example instead" }
+    -```
+    -
+    -The optional `message` on a deny is delivered to the agent so it can adjust its approach.
+    +{ "type": "user.tool_confirmation", "tool_use_id": "sevt_def456", "result": "deny", "deny_message": "Read .env.example instead" }
+    +```
+    +
+    +The optional `deny_message` on a deny is delivered to the agent as the rejected tool result so it can adjust its approach. A `user.tool_confirmation` for an event whose `evaluated_permission` is not `"ask"` is rejected with a 400 - that includes calls the server denied under `auto`; your client cannot override them.
+    +
+    +#### `auto` - let the server evaluate each call
+    +
+    +Set `{"type": "auto"}` anywhere a `permission_policy` is accepted: a toolset's `default_config` or an individual `configs` entry, on the agent toolset or an `mcp_toolset`. Because the evaluation considers the call's input and the session's content up to that point, two calls to the same tool can be treated differently. Each call has exactly one of three outcomes:
+    +
+    +| Outcome | What happens |
+    +|---|---|
+    +| **Runs** | Server determined the call is safe - executes as under `always_allow`, without reaching your client. |
+    +| **Denied** | Server evaluated the call as high-risk - the tool does not run. The agent receives an error tool result (`Permission to use {tool_name} has been denied.`, `is_error: true`), the session **keeps running**, and your client cannot override the denial. |
+    +| **Pauses** | Server reached no determination - the session pauses exactly as under `always_ask`; respond with `user.tool_confirmation`. |
+    +
+    +```json
+    +{
+    +  "name": "Ops Agent",
+    +  "model": "claude-opus-5",
+    +  "mcp_servers": [{ "type": "url", "name": "github", "url": "https://mcp.example.com/github" }],
+    +  "tools": [
+    +    {
+    +      "type": "agent_toolset_20260401",
+    +      "default_config": { "permission_policy": { "type": "auto" } },
+    +      "configs": [{ "name": "bash", "permission_policy": { "type": "always_ask" } }]
+    +    },
+    +    {
+    +      "type": "mcp_toolset",
+    +      "mcp_server_name": "github",
+    +      "default_config": { "permission_policy": { "type": "auto" } }
+    +    }
+    +  ]
+    +}
+    +```
+    +
+    +Pass the same shape as an untyped dict / object literal / hash in Python, TypeScript, and Ruby. The typed SDKs (Go, Java, C#, PHP) need a generated type for the `auto` policy that ships with each SDK's release of the feature - until then, build the request in an untyped language or via cURL / `ant`. Python and TypeScript also only type-check `{"type": "auto"}` from the release that adds it (the wire API accepts it regardless).
+    +
+    +**What the evaluation trusts.** The server treats session content as material to assess, not instructions to follow. Text you post in `user.message` events (including end-user text you relay there) counts as *your intent* and can lead the server to allow a call it would otherwise deny - though some calls are evaluated as high-risk regardless. The same words in a tool result, a fetched webpage, an MCP server response, or a message between session threads carry no such weight. If you relay untrusted end-user input in `user.message`, the server reads it as your intent too and it can get a call allowed - put `always_ask` on the tools you would not let that end user run without review.
+    +
+    +> **`auto` is not a human checkpoint.** A call the server determines to be safe runs before any person sees it, and its effects may not be reversible. If a person must review a tool's calls before they run, use `always_ask` on that tool.
+    +
+    +#### `evaluated_permission` and `evaluation` - see how each call was evaluated
+    +
+    +Under **any** policy, each `agent.tool_use` and `agent.mcp_tool_use` event carries `evaluated_permission` (`"allow" | "ask" | "deny"`) - the outcome of the permission check. Most events also carry an `evaluation` object whose `type` names the policy that produced the outcome; under `auto` it adds the server's determination and, for `ask` / `deny`, a `reason_code`:
+    +
+    +```json
+    +{
+    +  "type": "agent.tool_use",
+    +  "id": "sevt_01pqr...",
+    +  "name": "bash",
+    +  "input": { "command": "rm -rf /workspace/reports" },
+    +  "evaluated_permission": "deny",
+    +  "evaluation": {
+    +    "type": "auto",
+    +    "evaluated_permission": { "type": "deny", "reason_code": "high_risk" }
+    +  },
+    +  "processed_at": "2026-03-25T14:05:12Z"
+    +}
+    +```
+    +
+    +| `evaluation` | Top-level `evaluated_permission` | Meaning |
+    +|---|---|---|
+    +| `{"type": "always_allow"}` | `"allow"` | Resolved policy is `always_allow`; the call ran. |
+    +| `{"type": "always_ask"}` | `"ask"` | Resolved policy is `always_ask`; paused for your approval. |
+    +| `{"type": "auto", "evaluated_permission": {"type": "allow"}}` | `"allow"` | Server determined the call safe; it ran. |
+    +| `{"type": "auto", "evaluated_permission": {"type": "ask", "reason_code": "indeterminate"}}` | `"ask"` | Server reached no determination; paused for your approval. |
+    +| `{"type": "auto", "evaluated_permission": {"type": "deny", "reason_code": "high_risk"}}` | `"deny"` | Server evaluated the call as high-risk and denied it. |
+    +
+    +- On the `auto` form the nested `evaluated_permission.type` always equals the event's top-level `evaluated_permission`.
+    +- `reason_code` is for your client to branch on and keep in audit records - not text to show end users.
+    +- `evaluation` is **absent** when the agent names a tool that isn't enabled in the session (server denies without evaluating any policy: `evaluated_permission: "deny"`, no `evaluation`) and on events recorded before the field existed (read those as `always_allow` for `"allow"`, `always_ask` for `"ask"`).
+    +- Write your client to tolerate an `evaluation.type` or `reason_code` it doesn't recognize.
+    +- `agent.custom_tool_use` events carry neither field (custom tools aren't governed by permission policies).
+     
+     To enable only specific tools, flip the default off and opt-in per tool:
+     
+  已替换本地内容: /home/runner/work/opencode-skills-hub/opencode-skills-hub/anthropics-skills
+
+============================================================
+[Jeffallan-claude-skills] 开始更新 (https://github.com/Jeffallan/claude-skills)
+  Diff 结果（本地 <-> 远程）:
+  无变化
+  已替换本地内容: /home/runner/work/opencode-skills-hub/opencode-skills-hub/Jeffallan-claude-skills
+
+============================================================
+[zhaoxuya520-reverse-skill] 开始更新 (https://github.com/zhaoxuya520/reverse-skill)
+  Diff 结果（本地 <-> 远程）:
+  无变化
+  已替换本地内容: /home/runner/work/opencode-skills-hub/opencode-skills-hub/zhaoxuya520-reverse-skill
+
+全部仓库更新完成。

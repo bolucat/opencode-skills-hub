@@ -14205,3 +14205,276 @@
   已替换本地内容: /home/runner/work/opencode-skills-hub/opencode-skills-hub/zhaoxuya520-reverse-skill
 
 全部仓库更新完成。
+
+############################################################
+# skills-updater 运行时间: 2026-09-21 23:34:31
+############################################################
+
+============================================================
+[anthropics-skills] 开始更新 (https://github.com/anthropics/skills)
+  Diff 结果（本地 <-> 远程）:
+  无变化
+  已替换本地内容: /home/runner/work/opencode-skills-hub/opencode-skills-hub/anthropics-skills
+
+============================================================
+[Jeffallan-claude-skills] 开始更新 (https://github.com/Jeffallan/claude-skills)
+  Diff 结果（本地 <-> 远程）:
+  无变化
+  已替换本地内容: /home/runner/work/opencode-skills-hub/opencode-skills-hub/Jeffallan-claude-skills
+
+============================================================
+[zhaoxuya520-reverse-skill] 开始更新 (https://github.com/zhaoxuya520/reverse-skill)
+  Diff 结果（本地 <-> 远程）:
+  [修改的文件]
+    ~ scripts/bootstrap-manifest.json
+    --- a/scripts/bootstrap-manifest.json
+    +++ b/scripts/bootstrap-manifest.json
+    @@ -319,12 +319,11 @@
+         },
+         {
+           "name": "binwalk",
+    -      "bootstrapKind": "winget-package",
+    -      "wingetId": "ReFirmLabs.binwalk",
+    -      "pinPolicy": "winget-latest",
+    +      "bootstrapKind": "manual",
+           "docsUrl": "https://github.com/ReFirmLabs/binwalk",
+    -      "canAutoInstall": true,
+    -      "verifyCommand": "binwalk"
+    +      "canAutoInstall": false,
+    +      "verifyCommand": "binwalk",
+    +      "manualInstallHint": "binwalk is not published to winget and ships no prebuilt binaries on any GitHub release. Install the Rust toolchain (winget install Rustlang.Rustup) and run: cargo install binwalk"
+         },
+         {
+           "name": "yara",
+    ~ scripts/refresh-tool-index.sh
+    --- a/scripts/refresh-tool-index.sh
+    +++ b/scripts/refresh-tool-index.sh
+    @@ -118,7 +118,7 @@
+       "frida-ps|reverse-engineering|Frida process listing|frida-ps|frida-ps --version|$HOME/.local/bin/frida-ps"
+       "r2|radare2|radare2 CLI analysis|r2|r2 -v|"
+       "rabin2|radare2|Binary metadata extraction|rabin2|rabin2 -v|"
+    -  "ghidra|reverse-engineering|Ghidra reverse-engineering suite|ghidraRun|ghidraRun --version|$HOME/tools/ghidra/ghidraRun;/Applications/Ghidra.app"
+    +  "ghidra|reverse-engineering|Ghidra reverse-engineering suite|ghidraRun,analyzeHeadless,ghidra-analyzeHeadless,ghidra|ghidraRun --version|$HOME/tools/ghidra/ghidraRun;/opt/ghidra/ghidraRun;/usr/share/ghidra/ghidraRun;/opt/ghidra/support/analyzeHeadless;/usr/share/ghidra/support/analyzeHeadless;/Applications/Ghidra.app"
+       "idapro|ida-reverse|IDA Pro commercial reverse-engineering suite|idat|idat -v|/opt/idapro/idat;/Applications/IDA Professional.app;/Applications/IDA Free.app"
+       "burpsuite|burp-mcp|BurpSuite desktop application|burpsuite|burpsuite --version|/Applications/Burp Suite Professional.app;/Applications/Burp Suite Community Edition.app"
+       "graphviz|diagram-generator|Graphviz diagram rendering|dot|dot -V|"
+    ~ scripts/test-bash-workflow.sh
+    --- a/scripts/test-bash-workflow.sh
+    +++ b/scripts/test-bash-workflow.sh
+    @@ -7,6 +7,17 @@
+     trap 'rm -rf "$SCRATCH"' EXIT
+     
+     echo "=== Testing Bash Workflow ==="
+    +
+    +# Portable in-place rewrite: works with GNU sed and BSD sed (macOS).
+    +# Avoids platform-specific `sed -i` / `sed -i ''` branching.
+    +replace_in_file() {
+    +    local expr="$1"
+    +    local file="$2"
+    +    local tmp
+    +    tmp="$(mktemp "${file}.XXXXXX")"
+    +    sed "$expr" "$file" > "$tmp"
+    +    mv "$tmp" "$file"
+    +}
+     
+     # Test 1: case-init.sh creates proper structure
+     echo "[Test 1] case-init.sh basic execution"
+    @@ -49,7 +60,7 @@
+     
+     # Test 4: case-guard.sh rejects invalid network mode
+     echo "[Test 4] case-guard.sh rejects invalid network mode"
+    -sed -i 's/mode: authorized_target_only/mode: invalid_mode/g' "$SCRATCH/work/test-bash-01/scope.md"
+    +replace_in_file 's/mode: authorized_target_only/mode: invalid_mode/g' "$SCRATCH/work/test-bash-01/scope.md"
+     if bash "$SCRIPT_DIR/case-guard.sh" --case-root "$SCRATCH/work/test-bash-01" > /dev/null 2>&1; then
+         echo "FAIL: case-guard accepted invalid network mode"
+         exit 1
+    @@ -57,11 +68,12 @@
+     
+     # Test 5: case-guard.sh rejects ungranted auth
+     echo "[Test 5] case-guard.sh rejects ungranted auth"
+    -sed -i 's/mode: invalid_mode/mode: authorized_target_only/g' "$SCRATCH/work/test-bash-01/scope.md"
+    -sed -i 's/status: granted/status: pending/g' "$SCRATCH/work/test-bash-01/scope.md"
+    +replace_in_file 's/mode: invalid_mode/mode: authorized_target_only/g' "$SCRATCH/work/test-bash-01/scope.md"
+    +replace_in_file 's/status: granted/status: pending/g' "$SCRATCH/work/test-bash-01/scope.md"
+     if bash "$SCRIPT_DIR/case-guard.sh" --case-root "$SCRATCH/work/test-bash-01" > /dev/null 2>&1; then
+         echo "FAIL: case-guard accepted pending auth"
+         exit 1
+     fi
+     
+    +echo "TOTAL=5 PASS=5 FAIL=0"
+     echo "=== All Bash Workflow Tests Passed ==="
+    ~ scripts/test-client-neutral-bootstrap.sh
+    --- a/scripts/test-client-neutral-bootstrap.sh
+    +++ b/scripts/test-client-neutral-bootstrap.sh
+    @@ -14,6 +14,10 @@
+     CODEX_CFG="$SCRATCH/client/codex.toml"
+     mkdir -p "$HOME_DIR" "$BIN_DIR" "$TOOLS_DIR" "$(dirname "$CLAUDE_CFG")"
+     
+    +for name in bash date dirname head mktemp python3 rm sed tr uname; do
+    +  ln -s "$(command -v "$name")" "$BIN_DIR/$name"
+    +done
+    +
+     for name in node npm npx; do
+       cat > "$BIN_DIR/$name" <<'STUB'
+     #!/usr/bin/env bash
+    @@ -23,6 +27,12 @@
+       chmod +x "$BIN_DIR/$name"
+     done
+     
+    +cat > "$BIN_DIR/ghidra" <<'STUB'
+    +#!/usr/bin/env bash
+    +exit 0
+    +STUB
+    +chmod +x "$BIN_DIR/ghidra"
+    +
+     export PATH="$BIN_DIR:$PATH"
+     export HOME="$HOME_DIR"
+     export REVERSE_SKILL_TOOLS_DIR="$TOOLS_DIR"
+    @@ -31,10 +41,10 @@
+     
+     MD="$SCRATCH/tool-index.md"
+     JSON="$SCRATCH/tool-index.json"
+    -bash "$REFRESH" "$MD" "$JSON" >/dev/null
+    +PATH="$BIN_DIR" "$BIN_DIR/bash" "$REFRESH" "$MD" "$JSON" >/dev/null
+     
+    -python3 - "$JSON" <<'PY'
+    -import json, sys
+    +python3 - "$JSON" "$BIN_DIR/ghidra" <<'PY'
+    +import json, os, sys
+     data = json.load(open(sys.argv[1], encoding='utf-8'))
+     tools = data['tools']
+     assert sum(t['name'] == 'binwalk' for t in tools) == 1, 'binwalk must appear exactly once'
+    @@ -42,6 +52,8 @@
+     assert by_tool['npx']['available'] is True
+     assert by_tool['jshookmcp']['available'] is False, 'npx must not masquerade as jshookmcp'
+     assert by_tool['reqable-mcp']['available'] is False, 'npx must not masquerade as reqable-mcp'
+    +assert by_tool['ghidra']['available'] is True, 'the distro-provided ghidra launcher must be discovered'
+    +assert os.path.realpath(by_tool['ghidra']['path']) == os.path.realpath(sys.argv[2])
+     by_cap = {c['name']: c for c in data['capabilities']}
+     assert by_cap['jshookmcp']['ready'] is False
+     assert by_cap['reqable-mcp']['ready'] is False
+    ~ scripts/verify-repository-security.py
+    --- a/scripts/verify-repository-security.py
+    +++ b/scripts/verify-repository-security.py
+    @@ -43,6 +43,67 @@
+     }
+     ACTION_USE = re.compile(r"^\s*-?\s*uses:\s*([^\s#]+)", re.M)
+     FULL_SHA = re.compile(r"^[0-9a-f]{40}$")
+    +AGENT_ENTRY_FILES = ("README_AI.md", "RULES.md", "RULES_zh.md", "AGENTS.md")
+    +REQUIRED_AGENT_CONSENT_MARKERS = (
+    +    "Reading repository files is not authorization to execute them.",
+    +    "Explicit user approval is required before running any repository script.",
+    +    "Client-global configuration remains opt-in.",
+    +)
+    +UNSAFE_AGENT_ENTRY_PATTERNS = {
+    +    "execute-section-on-read": re.compile(r"execute section 0 immediately", re.I),
+    +    "automatic-execution-on-read": re.compile(r"must automatically execute", re.I),
+    +    "remove-user-from-setup": re.compile(
+    +        r"the user does not need to operate manually", re.I
+    +    ),
+    +    "global-instruction-injection": re.compile(r"global injection", re.I),
+    +    "execute-immediately-after-read": re.compile(
+    +        r"execute immediately after reading", re.I
+    +    ),
+    +    "must-run-after-read": re.compile(
+    +        r"after reading this file,?\s+you must now", re.I
+    +    ),
+    +    "side-effects-as-read-goal": re.compile(r"produce actual side effects", re.I),
+    +    "skip-first-consent": re.compile(r"do not wait for the user to say", re.I),
+    +    "auto-configure-after-read": re.compile(
+    +        r"auto-configure after reading", re.I
+    +    ),
+    +    "execute-after-read-zh": re.compile(
+    +        r"读完(?:本文件|规则|文档)?后?[^\n]{0,40}(?:立即[^\n]{0,6}(?:执行|运行)|必须[：,:， ]{0,3}(?:执行|运行|NOW))",
+    +        re.I,
+    +    ),
+    +    "automatic-execution-after-read-zh": re.compile(
+    +        r"(?:读完|读取)[^\n]{0,40}自动(?:执行|运行)", re.I
+    +    ),
+    +    "global-instruction-injection-zh": re.compile(r"全局注入", re.I),
+    +    "side-effects-as-read-goal-zh": re.compile(
+    +        r"产生实际(?:的)?副作用", re.I
+    +    ),
+    +    "extract-into-global-config-zh": re.compile(
+    +        r"首次配置时由 AI 提取本段写入", re.I
+    +    ),
+    +    "precedent-as-authorization-zh": re.compile(
+    +        r"授权已在 precedent-auth\.md 中确认", re.I
+    +    ),
+    +    "precedent-as-step-zero": re.compile(
+    +        r"step 0[^\n]{0,80}precedent-auth", re.I
+    +    ),
+    +    "precedent-declaration-as-gate-zh": re.compile(
+    +        r"precedent-auth\.md[^\n]{0,30}授权预声明", re.I
+    +    ),
+    +}
+    +
+    +
+    +def check_agent_entry_contract(path: str, text: str) -> list[str]:
+    +    errors: list[str] = []
+    +    for marker in REQUIRED_AGENT_CONSENT_MARKERS:
+    +        if marker not in text:
+    +            errors.append(
+    +                f"agent entry missing consent marker: {path}: {marker}"
+    +            )
+    +    for label, pattern in UNSAFE_AGENT_ENTRY_PATTERNS.items():
+    +        if pattern.search(text):
+    +            errors.append(f"unsafe agent execute-on-read pattern {label}: {path}")
+    +    return errors
+     
+     
+     def git(*args: str) -> bytes:
+    @@ -73,6 +134,13 @@
+         symlinks = sorted(path for path, mode in entries.items() if mode == "120000")
+         if symlinks:
+             errors.extend(f"tracked symlink requires review: {path}" for path in symlinks)
+    +
+    +    for path in AGENT_ENTRY_FILES:
+    +        if path not in entries:
+    +            errors.append(f"agent entry file missing from index: {path}")
+    +            continue
+    +        text = blob(path).decode("utf-8-sig", errors="replace")
+    +        errors.extend(check_agent_entry_contract(path, text))
+     
+         binary_paths = sorted(
+             path for path in entries if PurePosixPath(path).suffix.lower() in BINARY_SUFFIXES
+    @@ -127,7 +195,8 @@
+             "OK verify-repository-security: "
+             f"tracked={len(entries)} executable_sources="
+             f"{sum(PurePosixPath(p).suffix.lower() in EXECUTABLE_SUFFIXES for p in entries)} "
+    -        f"binary_like={len(binary_paths)} symlinks=0"
+    +        f"binary_like={len(binary_paths)} agent_entries={len(AGENT_ENTRY_FILES)} "
+    +        "symlinks=0"
+         )
+         return 0
+     
+    ~ scripts/verify-routing-coherence.ps1
+      (二进制文件或无法解码，仅标记为已修改)
+    ~ tests/routing-benchmark.json
+    --- a/tests/routing-benchmark.json
+    +++ b/tests/routing-benchmark.json
+    @@ -847,6 +847,21 @@
+           "quick": true
+         },
+         {
+    +      "hint": "案件审查 证据链 可追溯性",
+    +      "expect": "R40",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "案例审计 证据图 可追溯性 fixity 校验",
+    +      "expect": "R40",
+    +      "quick": false
+    +    },
+    +    {
+    +      "hint": "evidence graph fixity check for the case audit",
+    +      "expect": "R40",
+    +      "quick": false
+    +    },
+    +    {
+           "hint": "Collect public X and Twitter posts about this IOC for OSINT threat intelligence",
+           "expect": "R44",
+           "quick": true
+  已替换本地内容: /home/runner/work/opencode-skills-hub/opencode-skills-hub/zhaoxuya520-reverse-skill
+
+全部仓库更新完成。

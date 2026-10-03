@@ -20214,3 +20214,1271 @@
   已替换本地内容: /home/runner/work/opencode-skills-hub/opencode-skills-hub/zhaoxuya520-reverse-skill
 
 全部仓库更新完成。
+
+############################################################
+# skills-updater 运行时间: 2026-10-03 22:28:04
+############################################################
+
+============================================================
+[anthropics-skills] 开始更新 (https://github.com/anthropics/skills)
+  Diff 结果（本地 <-> 远程）:
+  无变化
+  已替换本地内容: /home/runner/work/opencode-skills-hub/opencode-skills-hub/anthropics-skills
+
+============================================================
+[Jeffallan-claude-skills] 开始更新 (https://github.com/Jeffallan/claude-skills)
+  Diff 结果（本地 <-> 远程）:
+  [修改的文件]
+    ~ angular-architect/SKILL.md
+    --- a/angular-architect/SKILL.md
+    +++ b/angular-architect/SKILL.md
+    @@ -4,6 +4,7 @@
+     license: MIT
+     metadata:
+       author: https://github.com/Jeffallan
+    +  company: https://synergetic.solutions
+       version: "1.1.0"
+       domain: frontend
+       triggers: Angular, Angular 17, standalone components, signals, RxJS, NgRx, Angular performance, Angular routing, Angular testing
+    @@ -151,4 +152,6 @@
+     4. Test file with comprehensive test cases
+     5. Brief explanation of architectural decisions
+     
+    +Maintained by [@jeffallan](https://github.com/jeffallan), Principal Consultant at [Synergetic Solutions](https://synergetic.solutions)
+    +
+     [Documentation](https://jeffallan.github.io/claude-skills/skills/frontend/angular-architect/)
+    ~ api-designer/SKILL.md
+    --- a/api-designer/SKILL.md
+    +++ b/api-designer/SKILL.md
+    @@ -4,6 +4,7 @@
+     license: MIT
+     metadata:
+       author: https://github.com/Jeffallan
+    +  company: https://synergetic.solutions
+       version: "1.1.0"
+       domain: api-architecture
+       triggers: API design, REST API, OpenAPI, API specification, API architecture, resource modeling, API versioning, GraphQL schema, API documentation
+    @@ -216,4 +217,6 @@
+     
+     REST architecture, OpenAPI 3.1, GraphQL, HTTP semantics, JSON:API, HATEOAS, OAuth 2.0, JWT, RFC 7807 Problem Details, API versioning patterns, pagination strategies, rate limiting, webhook design, SDK generation
+     
+    +Maintained by [@jeffallan](https://github.com/jeffallan), Principal Consultant at [Synergetic Solutions](https://synergetic.solutions)
+    +
+     [Documentation](https://jeffallan.github.io/claude-skills/skills/api-architecture/api-designer/)
+    ~ architecture-designer/SKILL.md
+    --- a/architecture-designer/SKILL.md
+    +++ b/architecture-designer/SKILL.md
+    @@ -4,6 +4,7 @@
+     license: MIT
+     metadata:
+       author: https://github.com/Jeffallan
+    +  company: https://synergetic.solutions
+       version: "1.1.1"
+       domain: api-architecture
+       triggers: architecture, system design, design pattern, microservices, scalability, ADR, technical design, infrastructure
+    @@ -115,4 +116,6 @@
+     Consistency and query flexibility are prioritised over unlimited horizontal write scalability.
+     ```
+     
+    +Maintained by [@jeffallan](https://github.com/jeffallan), Principal Consultant at [Synergetic Solutions](https://synergetic.solutions)
+    +
+     [Documentation](https://jeffallan.github.io/claude-skills/skills/api-architecture/architecture-designer/)
+    ~ atlassian-mcp/SKILL.md
+    --- a/atlassian-mcp/SKILL.md
+    +++ b/atlassian-mcp/SKILL.md
+    @@ -4,6 +4,7 @@
+     license: MIT
+     metadata:
+       author: https://github.com/Jeffallan
+    +  company: https://synergetic.solutions
+       version: "1.1.0"
+       domain: platform
+       triggers: Jira, Confluence, Atlassian, MCP, tickets, issues, wiki, JQL, CQL, sprint, backlog, project management
+    @@ -123,4 +124,6 @@
+     4. Authentication setup instructions
+     5. Brief explanation of permission requirements
+     
+    +Maintained by [@jeffallan](https://github.com/jeffallan), Principal Consultant at [Synergetic Solutions](https://synergetic.solutions)
+    +
+     [Documentation](https://jeffallan.github.io/claude-skills/skills/platform/atlassian-mcp/)
+    ~ chaos-engineer/SKILL.md
+    --- a/chaos-engineer/SKILL.md
+    +++ b/chaos-engineer/SKILL.md
+    @@ -4,6 +4,7 @@
+     license: MIT
+     metadata:
+       author: https://github.com/Jeffallan
+    +  company: https://synergetic.solutions
+       version: "1.1.0"
+       domain: devops
+       triggers: chaos engineering, resilience testing, failure injection, game day, blast radius, chaos experiment, fault injection, Chaos Monkey, Litmus Chaos, antifragile
+    @@ -181,4 +182,6 @@
+     chaos-monkey --app my-service --account staging --dry-run false
+     ```
+     
+    +Maintained by [@jeffallan](https://github.com/jeffallan), Principal Consultant at [Synergetic Solutions](https://synergetic.solutions)
+    +
+     [Documentation](https://jeffallan.github.io/claude-skills/skills/devops/chaos-engineer/)
+    ~ cli-developer/SKILL.md
+    --- a/cli-developer/SKILL.md
+    +++ b/cli-developer/SKILL.md
+    @@ -4,6 +4,7 @@
+     license: MIT
+     metadata:
+       author: https://github.com/Jeffallan
+    +  company: https://synergetic.solutions
+       version: "1.1.0"
+       domain: devops
+       triggers: CLI, command-line, terminal app, argument parsing, shell completion, interactive prompt, progress bar, commander, click, typer, cobra
+    @@ -112,4 +113,6 @@
+     
+     CLI frameworks (commander, yargs, oclif, click, typer, argparse, cobra, viper), terminal UI (chalk, inquirer, rich, bubbletea), testing (snapshot testing, E2E), distribution (npm, pip, homebrew, releases), performance optimization
+     
+    +Maintained by [@jeffallan](https://github.com/jeffallan), Principal Consultant at [Synergetic Solutions](https://synergetic.solutions)
+    +
+     [Documentation](https://jeffallan.github.io/claude-skills/skills/devops/cli-developer/)
+    ~ cloud-architect/SKILL.md
+    --- a/cloud-architect/SKILL.md
+    +++ b/cloud-architect/SKILL.md
+    @@ -4,6 +4,7 @@
+     license: MIT
+     metadata:
+       author: https://github.com/Jeffallan
+    +  company: https://synergetic.solutions
+       version: "1.1.0"
+       domain: infrastructure
+       triggers: AWS, Azure, GCP, Google Cloud, cloud migration, cloud architecture, multi-cloud, cloud cost, Well-Architected, landing zone, cloud security, disaster recovery, cloud native, serverless architecture
+    @@ -215,4 +216,6 @@
+     4. Cost estimation and optimization strategy
+     5. Deployment approach and rollback plan
+     
+    +Maintained by [@jeffallan](https://github.com/jeffallan), Principal Consultant at [Synergetic Solutions](https://synergetic.solutions)
+    +
+     [Documentation](https://jeffallan.github.io/claude-skills/skills/infrastructure/cloud-architect/)
+    ~ code-documenter/SKILL.md
+    --- a/code-documenter/SKILL.md
+    +++ b/code-documenter/SKILL.md
+    @@ -4,6 +4,7 @@
+     license: MIT
+     metadata:
+       author: https://github.com/Jeffallan
+    +  company: https://synergetic.solutions
+       version: "1.1.0"
+       domain: quality
+       triggers: documentation, docstrings, OpenAPI, Swagger, JSDoc, comments, API docs, tutorials, user guides, doc site
+    @@ -19,7 +20,11 @@
+     
+     ## When to Use This Skill
+     
+    -Applies to any task involving code documentation, API specs, or developer-facing guides. See the reference table below for specific sub-topics.
+    +- Adding docstrings to functions, classes, and modules
+    +- Writing OpenAPI/Swagger specs or JSDoc annotations
+    +- Creating API documentation for REST or GraphQL endpoints
+    +- Building documentation sites or developer portals
+    +- Writing getting-started guides, tutorials, and user guides
+     
+     ## Core Workflow
+     
+    @@ -146,4 +151,6 @@
+     
+     Google/NumPy/Sphinx docstrings, JSDoc, OpenAPI 3.0/3.1, AsyncAPI, gRPC/protobuf, FastAPI, Django, NestJS, Express, GraphQL, Docusaurus, MkDocs, VitePress, Swagger UI, Redoc, Stoplight
+     
+    +Maintained by [@jeffallan](https://github.com/jeffallan), Principal Consultant at [Synergetic Solutions](https://synergetic.solutions)
+    +
+     [Documentation](https://jeffallan.github.io/claude-skills/skills/quality/code-documenter/)
+    ~ code-reviewer/SKILL.md
+    --- a/code-reviewer/SKILL.md
+    +++ b/code-reviewer/SKILL.md
+    @@ -5,6 +5,7 @@
+     allowed-tools: Read, Grep, Glob
+     metadata:
+       author: https://github.com/Jeffallan
+    +  company: https://synergetic.solutions
+       version: "1.1.0"
+       domain: quality
+       triggers: code review, PR review, pull request, review code, code quality
+    @@ -118,4 +119,6 @@
+     
+     SOLID, DRY, KISS, YAGNI, design patterns, OWASP Top 10, language idioms, testing patterns
+     
+    +Maintained by [@jeffallan](https://github.com/jeffallan), Principal Consultant at [Synergetic Solutions](https://synergetic.solutions)
+    +
+     [Documentation](https://jeffallan.github.io/claude-skills/skills/quality/code-reviewer/)
+    ~ cpp-pro/SKILL.md
+    --- a/cpp-pro/SKILL.md
+    +++ b/cpp-pro/SKILL.md
+    @@ -4,6 +4,7 @@
+     license: MIT
+     metadata:
+       author: https://github.com/Jeffallan
+    +  company: https://synergetic.solutions
+       version: "1.1.0"
+       domain: language
+       triggers: C++, C++20, C++23, modern C++, template metaprogramming, systems programming, performance optimization, SIMD, memory management, CMake
+    @@ -114,4 +115,6 @@
+     4. Test file demonstrating usage
+     5. Brief explanation of design decisions and performance characteristics
+     
+    +Maintained by [@jeffallan](https://github.com/jeffallan), Principal Consultant at [Synergetic Solutions](https://synergetic.solutions)
+    +
+     [Documentation](https://jeffallan.github.io/claude-skills/skills/language/cpp-pro/)
+    ~ csharp-developer/SKILL.md
+    --- a/csharp-developer/SKILL.md
+    +++ b/csharp-developer/SKILL.md
+    @@ -4,6 +4,7 @@
+     license: MIT
+     metadata:
+       author: https://github.com/Jeffallan
+    +  company: https://synergetic.solutions
+       version: "1.1.0"
+       domain: language
+       triggers: C#, .NET, ASP.NET Core, Blazor, Entity Framework, EF Core, Minimal API, MAUI, SignalR
+    @@ -124,4 +125,6 @@
+     
+     C# 12, .NET 8, ASP.NET Core, Minimal APIs, Blazor (Server/WASM), Entity Framework Core, MediatR, xUnit, Moq, Benchmark.NET, SignalR, gRPC, Azure SDK, Polly, FluentValidation, Serilog
+     
+    +Maintained by [@jeffallan](https://github.com/jeffallan), Principal Consultant at [Synergetic Solutions](https://synergetic.solutions)
+    +
+     [Documentation](https://jeffallan.github.io/claude-skills/skills/language/csharp-developer/)
+    ~ database-optimizer/SKILL.md
+    --- a/database-optimizer/SKILL.md
+    +++ b/database-optimizer/SKILL.md
+    @@ -4,6 +4,7 @@
+     license: MIT
+     metadata:
+       author: https://github.com/Jeffallan
+    +  company: https://synergetic.solutions
+       version: "1.1.1"
+       domain: infrastructure
+       triggers: database optimization, slow query, query performance, database tuning, index optimization, execution plan, EXPLAIN ANALYZE, database performance, PostgreSQL optimization, MySQL optimization
+    @@ -146,4 +147,6 @@
+     5. Validation queries to measure improvement
+     6. Monitoring recommendations
+     
+    +Maintained by [@jeffallan](https://github.com/jeffallan), Principal Consultant at [Synergetic Solutions](https://synergetic.solutions)
+    +
+     [Documentation](https://jeffallan.github.io/claude-skills/skills/infrastructure/database-optimizer/)
+    ~ debugging-wizard/SKILL.md
+    --- a/debugging-wizard/SKILL.md
+    +++ b/debugging-wizard/SKILL.md
+    @@ -4,6 +4,7 @@
+     license: MIT
+     metadata:
+       author: https://github.com/Jeffallan
+    +  company: https://synergetic.solutions
+       version: "1.1.0"
+       domain: quality
+       triggers: debug, error, bug, exception, traceback, stack trace, troubleshoot, not working, crash, fix issue
+    @@ -104,4 +105,6 @@
+     3. **Fix**: Code change that resolves it
+     4. **Prevention**: Test or safeguard to prevent recurrence
+     
+    +Maintained by [@jeffallan](https://github.com/jeffallan), Principal Consultant at [Synergetic Solutions](https://synergetic.solutions)
+    +
+     [Documentation](https://jeffallan.github.io/claude-skills/skills/quality/debugging-wizard/)
+    ~ devops-engineer/SKILL.md
+    --- a/devops-engineer/SKILL.md
+    +++ b/devops-engineer/SKILL.md
+    @@ -4,6 +4,7 @@
+     license: MIT
+     metadata:
+       author: https://github.com/Jeffallan
+    +  company: https://synergetic.solutions
+       version: "1.2.0"
+       domain: devops
+       triggers: DevOps, CI/CD, deployment, Docker, Kubernetes, Terraform, GitHub Actions, infrastructure, platform engineering, incident response, on-call, self-service
+    @@ -145,4 +146,6 @@
+     
+     GitHub Actions, GitLab CI, Jenkins, CircleCI, Docker, Kubernetes, Helm, ArgoCD, Flux, Terraform, Pulumi, Crossplane, AWS/GCP/Azure, Prometheus, Grafana, PagerDuty, Backstage, LaunchDarkly, Flagger
+     
+    +Maintained by [@jeffallan](https://github.com/jeffallan), Principal Consultant at [Synergetic Solutions](https://synergetic.solutions)
+    +
+     [Documentation](https://jeffallan.github.io/claude-skills/skills/devops/devops-engineer/)
+    ~ django-expert/SKILL.md
+    --- a/django-expert/SKILL.md
+    +++ b/django-expert/SKILL.md
+    @@ -4,6 +4,7 @@
+     license: MIT
+     metadata:
+       author: https://github.com/Jeffallan
+    +  company: https://synergetic.solutions
+       version: "1.1.0"
+       domain: backend
+       triggers: Django, DRF, Django REST Framework, Django ORM, Django model, serializer, viewset, Python web
+    @@ -159,4 +160,6 @@
+     
+     Django 5.0, DRF, async views, ORM, QuerySet, select_related, prefetch_related, SimpleJWT, django-filter, drf-spectacular, pytest-django
+     
+    +Maintained by [@jeffallan](https://github.com/jeffallan), Principal Consultant at [Synergetic Solutions](https://synergetic.solutions)
+    +
+     [Documentation](https://jeffallan.github.io/claude-skills/skills/backend/django-expert/)
+    ~ dotnet-core-expert/SKILL.md
+    --- a/dotnet-core-expert/SKILL.md
+    +++ b/dotnet-core-expert/SKILL.md
+    @@ -4,6 +4,7 @@
+     license: MIT
+     metadata:
+       author: https://github.com/Jeffallan
+    +  company: https://synergetic.solutions
+       version: "1.1.0"
+       domain: backend
+       triggers: .NET Core, .NET 8, ASP.NET Core, C# 12, minimal API, Entity Framework Core, microservices .NET, CQRS, MediatR
+    @@ -137,4 +138,6 @@
+     4. Database context and migrations if applicable
+     5. Brief explanation of architectural decisions
+     
+    +Maintained by [@jeffallan](https://github.com/jeffallan), Principal Consultant at [Synergetic Solutions](https://synergetic.solutions)
+    +
+     [Documentation](https://jeffallan.github.io/claude-skills/skills/backend/dotnet-core-expert/)
+    ~ embedded-systems/SKILL.md
+    --- a/embedded-systems/SKILL.md
+    +++ b/embedded-systems/SKILL.md
+    @@ -4,6 +4,7 @@
+     license: MIT
+     metadata:
+       author: https://github.com/Jeffallan
+    +  company: https://synergetic.solutions
+       version: "1.1.0"
+       domain: specialized
+       triggers: embedded systems, firmware, microcontroller, RTOS, FreeRTOS, STM32, ESP32, bare metal, interrupt, DMA, real-time
+    @@ -166,4 +167,6 @@
+     4. Resource usage summary (flash, RAM, power estimate)
+     5. Brief explanation of timing and optimization decisions
+     
+    +Maintained by [@jeffallan](https://github.com/jeffallan), Principal Consultant at [Synergetic Solutions](https://synergetic.solutions)
+    +
+     [Documentation](https://jeffallan.github.io/claude-skills/skills/specialized/embedded-systems/)
+    ~ fastapi-expert/SKILL.md
+    --- a/fastapi-expert/SKILL.md
+    +++ b/fastapi-expert/SKILL.md
+    @@ -4,6 +4,7 @@
+     license: MIT
+     metadata:
+       author: https://github.com/Jeffallan
+    +  company: https://synergetic.solutions
+       version: "1.1.0"
+       domain: backend
+       triggers: FastAPI, Pydantic, async Python, Python API, REST API Python, SQLAlchemy async, JWT authentication, OpenAPI, Swagger Python
+    @@ -184,4 +185,6 @@
+     
+     FastAPI, Pydantic V2, async SQLAlchemy, Alembic migrations, JWT/OAuth2, pytest-asyncio, httpx, BackgroundTasks, WebSockets, dependency injection, OpenAPI/Swagger
+     
+    +Maintained by [@jeffallan](https://github.com/jeffallan), Principal Consultant at [Synergetic Solutions](https://synergetic.solutions)
+    +
+     [Documentation](https://jeffallan.github.io/claude-skills/skills/backend/fastapi-expert/)
+    ~ feature-forge/SKILL.md
+    --- a/feature-forge/SKILL.md
+    +++ b/feature-forge/SKILL.md
+    @@ -4,6 +4,7 @@
+     license: MIT
+     metadata:
+       author: https://github.com/Jeffallan
+    +  company: https://synergetic.solutions
+       version: "1.1.0"
+       domain: workflow
+       triggers: requirements, specification, feature definition, user stories, EARS, planning
+    @@ -97,4 +98,6 @@
+     
+     Save as: `specs/{feature_name}.spec.md`
+     
+    +Maintained by [@jeffallan](https://github.com/jeffallan), Principal Consultant at [Synergetic Solutions](https://synergetic.solutions)
+    +
+     [Documentation](https://jeffallan.github.io/claude-skills/skills/workflow/feature-forge/)
+    ~ fine-tuning-expert/SKILL.md
+    --- a/fine-tuning-expert/SKILL.md
+    +++ b/fine-tuning-expert/SKILL.md
+    @@ -4,6 +4,7 @@
+     license: MIT
+     metadata:
+       author: https://github.com/Jeffallan
+    +  company: https://synergetic.solutions
+       version: "1.1.0"
+       domain: data-ml
+       triggers: fine-tuning, fine tuning, finetuning, LoRA, QLoRA, PEFT, adapter tuning, transfer learning, model training, custom model, LLM training, instruction tuning, RLHF, model optimization, quantization
+    @@ -161,4 +162,6 @@
+     3. **Evaluation script** reporting perplexity, task-specific metrics, and latency
+     4. **Brief design rationale** — why this PEFT method, rank, and learning rate were chosen for this task
+     
+    +Maintained by [@jeffallan](https://github.com/jeffallan), Principal Consultant at [Synergetic Solutions](https://synergetic.solutions)
+    +
+     [Documentation](https://jeffallan.github.io/claude-skills/skills/data-ml/fine-tuning-expert/)
+    ~ flutter-expert/SKILL.md
+    --- a/flutter-expert/SKILL.md
+    +++ b/flutter-expert/SKILL.md
+    @@ -4,6 +4,7 @@
+     license: MIT
+     metadata:
+       author: https://github.com/Jeffallan
+    +  company: https://synergetic.solutions
+       version: "1.1.0"
+       domain: frontend
+       triggers: Flutter, Dart, widget, Riverpod, Bloc, GoRouter, cross-platform
+    @@ -56,13 +57,12 @@
+     ### Riverpod Provider + ConsumerWidget (correct pattern)
+     
+     ```dart
+    -// provider definition
+    -final counterProvider = StateNotifierProvider<CounterNotifier, int>(
+    -  (ref) => CounterNotifier(),
+    -);
+    +// provider definition — Notifier, not the legacy StateNotifier
+    +final counterProvider = NotifierProvider<CounterNotifier, int>(CounterNotifier.new);
+     
+    -class CounterNotifier extends StateNotifier<int> {
+    -  CounterNotifier() : super(0);
+    +class CounterNotifier extends Notifier<int> {
+    +  @override
+    +  int build() => 0;
+       void increment() => state = state + 1; // new instance, never mutate
+     }
+     
+    @@ -127,7 +127,7 @@
+     | Widget test assertion failures | Widget tree mismatch or async state not settled | Use `tester.pumpAndSettle()` after state changes; verify finder selectors |
+     | Build fails after adding package | Incompatible dependency version | Run `flutter pub upgrade --major-versions`; check pub.dev compatibility |
+     | Jank / dropped frames | Expensive `build()` calls, uncached widgets, heavy main-thread work | Use `RepaintBoundary`, move heavy work to `compute()`, add `const` |
+    -| Hot reload not reflecting changes | State held in `StateNotifier` not reset | Use hot restart (`R` in terminal) to reset full app state |
+    +| Hot reload not reflecting changes | State held in `Notifier` not reset | Use hot restart (`R` in terminal) to reset full app state |
+     
+     ## Output Templates
+     
+    @@ -137,4 +137,6 @@
+     3. Route configuration if needed
+     4. Test file structure
+     
+    +Maintained by [@jeffallan](https://github.com/jeffallan), Principal Consultant at [Synergetic Solutions](https://synergetic.solutions)
+    +
+     [Documentation](https://jeffallan.github.io/claude-skills/skills/frontend/flutter-expert/)
+    ~ fullstack-guardian/SKILL.md
+    --- a/fullstack-guardian/SKILL.md
+    +++ b/fullstack-guardian/SKILL.md
+    @@ -4,6 +4,7 @@
+     license: MIT
+     metadata:
+       author: https://github.com/Jeffallan
+    +  company: https://synergetic.solutions
+       version: "1.1.1"
+       domain: security
+       triggers: fullstack, implement feature, build feature, create API, frontend and backend, full stack, new feature, implement, microservices, websocket, real-time, deployment pipeline, monorepo, architecture decision, technology selection, end-to-end
+    @@ -104,4 +105,6 @@
+     3. Frontend code (components, hooks, API calls)
+     4. Brief security notes
+     
+    +Maintained by [@jeffallan](https://github.com/jeffallan), Principal Consultant at [Synergetic Solutions](https://synergetic.solutions)
+    +
+     [Documentation](https://jeffallan.github.io/claude-skills/skills/security/fullstack-guardian/)
+    ~ game-developer/SKILL.md
+    --- a/game-developer/SKILL.md
+    +++ b/game-developer/SKILL.md
+    @@ -4,6 +4,7 @@
+     license: MIT
+     metadata:
+       author: https://github.com/Jeffallan
+    +  company: https://synergetic.solutions
+       version: "1.1.0"
+       domain: specialized
+       triggers: Unity, Unreal Engine, game development, ECS architecture, game physics, multiplayer networking, game optimization, shader programming, game AI
+    @@ -160,4 +161,6 @@
+     }
+     ```
+     
+    +Maintained by [@jeffallan](https://github.com/jeffallan), Principal Consultant at [Synergetic Solutions](https://synergetic.solutions)
+    +
+     [Documentation](https://jeffallan.github.io/claude-skills/skills/specialized/game-developer/)
+    ~ golang-pro/SKILL.md
+    --- a/golang-pro/SKILL.md
+    +++ b/golang-pro/SKILL.md
+    @@ -4,6 +4,7 @@
+     license: MIT
+     metadata:
+       author: https://github.com/Jeffallan
+    +  company: https://synergetic.solutions
+       version: "1.1.0"
+       domain: language
+       triggers: Go, Golang, goroutines, channels, gRPC, microservices Go, Go generics, concurrent programming, Go interfaces
+    @@ -121,4 +122,6 @@
+     
+     Go 1.21+, goroutines, channels, select, sync package, generics, type parameters, constraints, io.Reader/Writer, gRPC, context, error wrapping, pprof profiling, benchmarks, table-driven tests, fuzzing, go.mod, internal packages, functional options
+     
+    +Maintained by [@jeffallan](https://github.com/jeffallan), Principal Consultant at [Synergetic Solutions](https://synergetic.solutions)
+    +
+     [Documentation](https://jeffallan.github.io/claude-skills/skills/language/golang-pro/)
+    ~ graphql-architect/SKILL.md
+    --- a/graphql-architect/SKILL.md
+    +++ b/graphql-architect/SKILL.md
+    @@ -4,6 +4,7 @@
+     license: MIT
+     metadata:
+       author: https://github.com/Jeffallan
+    +  company: https://synergetic.solutions
+       version: "1.1.0"
+       domain: api-architecture
+       triggers: GraphQL, Apollo Federation, GraphQL schema, API graph, GraphQL subscriptions, Apollo Server, schema design, GraphQL resolvers, DataLoader
+    @@ -145,4 +146,6 @@
+     
+     Apollo Server, Apollo Federation 2.5+, GraphQL SDL, DataLoader, GraphQL Subscriptions, WebSocket, Redis pub/sub, schema composition, query complexity, persisted queries, schema stitching, type generation
+     
+    +Maintained by [@jeffallan](https://github.com/jeffallan), Principal Consultant at [Synergetic Solutions](https://synergetic.solutions)
+    +
+     [Documentation](https://jeffallan.github.io/claude-skills/skills/api-architecture/graphql-architect/)
+    ~ java-architect/SKILL.md
+    --- a/java-architect/SKILL.md
+    +++ b/java-architect/SKILL.md
+    @@ -4,6 +4,7 @@
+     license: MIT
+     metadata:
+       author: https://github.com/Jeffallan
+    +  company: https://synergetic.solutions
+       version: "1.1.0"
+       domain: language
+       triggers: Spring Boot, Java, microservices, Spring Cloud, JPA, Hibernate, WebFlux, reactive, Java Enterprise
+    @@ -131,4 +132,6 @@
+     
+     Spring Boot 3.x, Java 21, Spring WebFlux, Project Reactor, Spring Data JPA, Spring Security, OAuth2/JWT, Hibernate, R2DBC, Spring Cloud, Resilience4j, Micrometer, JUnit 5, TestContainers, Mockito, Maven/Gradle
+     
+    +Maintained by [@jeffallan](https://github.com/jeffallan), Principal Consultant at [Synergetic Solutions](https://synergetic.solutions)
+    +
+     [Documentation](https://jeffallan.github.io/claude-skills/skills/language/java-architect/)
+    ~ javascript-pro/SKILL.md
+    --- a/javascript-pro/SKILL.md
+    +++ b/javascript-pro/SKILL.md
+    @@ -4,6 +4,7 @@
+     license: MIT
+     metadata:
+       author: https://github.com/Jeffallan
+    +  company: https://synergetic.solutions
+       version: "1.1.0"
+       domain: language
+       triggers: JavaScript, ES2023, async await, Node.js, vanilla JavaScript, Web Workers, Fetch API, browser API, module system
+    @@ -131,4 +132,6 @@
+     3. JSDoc documentation for public APIs
+     4. Brief explanation of patterns used
+     
+    +Maintained by [@jeffallan](https://github.com/jeffallan), Principal Consultant at [Synergetic Solutions](https://synergetic.solutions)
+    +
+     [Documentation](https://jeffallan.github.io/claude-skills/skills/language/javascript-pro/)
+    ~ kotlin-specialist/SKILL.md
+    --- a/kotlin-specialist/SKILL.md
+    +++ b/kotlin-specialist/SKILL.md
+    @@ -4,6 +4,7 @@
+     license: MIT
+     metadata:
+       author: https://github.com/Jeffallan
+    +  company: https://synergetic.solutions
+       version: "1.1.0"
+       domain: language
+       triggers: Kotlin, coroutines, Kotlin Multiplatform, KMP, Jetpack Compose, Ktor, Flow, Android Kotlin, suspend function
+    @@ -146,4 +147,6 @@
+     
+     Kotlin 1.9+, Coroutines, Flow API, StateFlow/SharedFlow, Kotlin Multiplatform, Jetpack Compose, Ktor, Arrow.kt, kotlinx.serialization, Detekt, ktlint, Gradle Kotlin DSL, JUnit 5, MockK, Turbine
+     
+    +Maintained by [@jeffallan](https://github.com/jeffallan), Principal Consultant at [Synergetic Solutions](https://synergetic.solutions)
+    +
+     [Documentation](https://jeffallan.github.io/claude-skills/skills/language/kotlin-specialist/)
+    ~ kubernetes-specialist/SKILL.md
+    --- a/kubernetes-specialist/SKILL.md
+    +++ b/kubernetes-specialist/SKILL.md
+    @@ -4,6 +4,7 @@
+     license: MIT
+     metadata:
+       author: https://github.com/Jeffallan
+    +  company: https://synergetic.solutions
+       version: "1.1.1"
+       domain: infrastructure
+       triggers: Kubernetes, K8s, kubectl, Helm, container orchestration, pod deployment, RBAC, NetworkPolicy, Ingress, StatefulSet, Operator, CRD, CustomResourceDefinition, ArgoCD, Flux, GitOps, Istio, Linkerd, service mesh, multi-cluster, cost optimization, VPA, spot instances
+    @@ -240,4 +241,6 @@
+     3. NetworkPolicy for network isolation
+     4. Brief explanation of design decisions and security considerations
+     
+    +Maintained by [@jeffallan](https://github.com/jeffallan), Principal Consultant at [Synergetic Solutions](https://synergetic.solutions)
+    +
+     [Documentation](https://jeffallan.github.io/claude-skills/skills/infrastructure/kubernetes-specialist/)
+    ~ laravel-specialist/SKILL.md
+    --- a/laravel-specialist/SKILL.md
+    +++ b/laravel-specialist/SKILL.md
+    @@ -4,6 +4,7 @@
+     license: MIT
+     metadata:
+       author: https://github.com/Jeffallan
+    +  company: https://synergetic.solutions
+       version: "1.1.0"
+       domain: backend
+       triggers: Laravel, Eloquent, PHP framework, Laravel API, Artisan, Blade templates, Laravel queues, Livewire, Laravel testing, Sanctum, Horizon
+    @@ -261,4 +262,6 @@
+     
+     Laravel 10+, Eloquent ORM, PHP 8.2+, API resources, Sanctum/Passport, queues, Horizon, Livewire, Inertia, Octane, Pest/PHPUnit, Redis, broadcasting, events/listeners, notifications, task scheduling
+     
+    +Maintained by [@jeffallan](https://github.com/jeffallan), Principal Consultant at [Synergetic Solutions](https://synergetic.solutions)
+    +
+     [Documentation](https://jeffallan.github.io/claude-skills/skills/backend/laravel-specialist/)
+    ~ legacy-modernizer/SKILL.md
+    --- a/legacy-modernizer/SKILL.md
+    +++ b/legacy-modernizer/SKILL.md
+    @@ -4,12 +4,13 @@
+     license: MIT
+     metadata:
+       author: https://github.com/Jeffallan
+    +  company: https://synergetic.solutions
+       version: "1.1.0"
+       domain: specialized
+       triggers: legacy modernization, strangler fig, incremental migration, technical debt, legacy refactoring, system migration, legacy system, modernize codebase
+       role: specialist
+       scope: architecture
+    -  output-format: code+analysis
+    +  output-format: analysis-and-code
+       related-skills: test-master, devops-engineer
+     ---
+     
+    @@ -136,4 +137,6 @@
+     
+     Strangler fig pattern, branch by abstraction, characterization testing, incremental migration, feature flags, canary deployments, API versioning, database refactoring, microservices extraction, technical debt reduction, zero-downtime deployment
+     
+    +Maintained by [@jeffallan](https://github.com/jeffallan), Principal Consultant at [Synergetic Solutions](https://synergetic.solutions)
+    +
+     [Documentation](https://jeffallan.github.io/claude-skills/skills/specialized/legacy-modernizer/)
+    ~ mcp-developer/SKILL.md
+    --- a/mcp-developer/SKILL.md
+    +++ b/mcp-developer/SKILL.md
+    @@ -4,6 +4,7 @@
+     license: MIT
+     metadata:
+       author: https://github.com/Jeffallan
+    +  company: https://synergetic.solutions
+       version: "1.1.0"
+       domain: api-architecture
+       triggers: MCP, Model Context Protocol, MCP server, MCP client, Claude integration, AI tools, context protocol, JSON-RPC
+    @@ -142,4 +143,6 @@
+     3. Configuration file (transport, auth, etc.)
+     4. Brief explanation of design decisions
+     
+    +Maintained by [@jeffallan](https://github.com/jeffallan), Principal Consultant at [Synergetic Solutions](https://synergetic.solutions)
+    +
+     [Documentation](https://jeffallan.github.io/claude-skills/skills/api-architecture/mcp-developer/)
+    ~ microservices-architect/SKILL.md
+    --- a/microservices-architect/SKILL.md
+    +++ b/microservices-architect/SKILL.md
+    @@ -4,6 +4,7 @@
+     license: MIT
+     metadata:
+       author: https://github.com/Jeffallan
+    +  company: https://synergetic.solutions
+       version: "1.1.0"
+       domain: api-architecture
+       triggers: microservices, service mesh, distributed systems, service boundaries, domain-driven design, event sourcing, CQRS, saga pattern, Kubernetes microservices, Istio, distributed tracing
+    @@ -163,4 +164,6 @@
+     
+     Domain-driven design, bounded contexts, event storming, REST/gRPC, message queues (Kafka, RabbitMQ), service mesh (Istio, Linkerd), Kubernetes, circuit breakers, saga patterns, event sourcing, CQRS, distributed tracing (Jaeger, Zipkin), API gateways, eventual consistency, CAP theorem
+     
+    +Maintained by [@jeffallan](https://github.com/jeffallan), Principal Consultant at [Synergetic Solutions](https://synergetic.solutions)
+    +
+     [Documentation](https://jeffallan.github.io/claude-skills/skills/api-architecture/microservices-architect/)
+    ~ ml-pipeline/SKILL.md
+    --- a/ml-pipeline/SKILL.md
+    +++ b/ml-pipeline/SKILL.md
+    @@ -4,6 +4,7 @@
+     license: MIT
+     metadata:
+       author: https://github.com/Jeffallan
+    +  company: https://synergetic.solutions
+       version: "1.1.0"
+       domain: data-ml
+       triggers: ML pipeline, MLflow, Kubeflow, feature engineering, model training, experiment tracking, feature store, hyperparameter tuning, pipeline orchestration, model registry, training workflow, MLOps, model deployment, data pipeline, model versioning
+    @@ -157,4 +158,6 @@
+     
+     MLflow, Kubeflow Pipelines, Apache Airflow, Prefect, Feast, Weights & Biases, Neptune, DVC, Great Expectations, Ray, Horovod, Kubernetes, Docker, S3/GCS/Azure Blob, model registry patterns, feature store architecture, distributed training, hyperparameter optimization
+     
+    +Maintained by [@jeffallan](https://github.com/jeffallan), Principal Consultant at [Synergetic Solutions](https://synergetic.solutions)
+    +
+     [Documentation](https://jeffallan.github.io/claude-skills/skills/data-ml/ml-pipeline/)
+    ~ monitoring-expert/SKILL.md
+    --- a/monitoring-expert/SKILL.md
+    +++ b/monitoring-expert/SKILL.md
+    @@ -4,6 +4,7 @@
+     license: MIT
+     metadata:
+       author: https://github.com/Jeffallan
+    +  company: https://synergetic.solutions
+       version: "1.1.0"
+       domain: devops
+       triggers: monitoring, observability, logging, metrics, tracing, alerting, Prometheus, Grafana, DataDog, APM, performance testing, load testing, profiling, capacity planning, bottleneck
+    @@ -175,4 +176,6 @@
+     - Use string interpolation in logs (use structured fields)
+     - Skip correlation IDs in distributed systems
+     
+    +Maintained by [@jeffallan](https://github.com/jeffallan), Principal Consultant at [Synergetic Solutions](https://synergetic.solutions)
+    +
+     [Documentation](https://jeffallan.github.io/claude-skills/skills/devops/monitoring-expert/)
+    ~ nestjs-expert/SKILL.md
+    --- a/nestjs-expert/SKILL.md
+    +++ b/nestjs-expert/SKILL.md
+    @@ -4,6 +4,7 @@
+     license: MIT
+     metadata:
+       author: https://github.com/Jeffallan
+    +  company: https://synergetic.solutions
+       version: "1.1.0"
+       domain: backend
+       triggers: NestJS, Nest, Node.js backend, TypeScript backend, dependency injection, controller, service, module, guard, interceptor
+    @@ -205,4 +206,6 @@
+     
+     NestJS, TypeScript, TypeORM, Prisma, Passport, JWT, class-validator, class-transformer, Swagger/OpenAPI, Jest, Supertest, Guards, Interceptors, Pipes, Filters
+     
+    +Maintained by [@jeffallan](https://github.com/jeffallan), Principal Consultant at [Synergetic Solutions](https://synergetic.solutions)
+    +
+     [Documentation](https://jeffallan.github.io/claude-skills/skills/backend/nestjs-expert/)
+    ~ nextjs-developer/SKILL.md
+    --- a/nextjs-developer/SKILL.md
+    +++ b/nextjs-developer/SKILL.md
+    @@ -4,6 +4,7 @@
+     license: MIT
+     metadata:
+       author: https://github.com/Jeffallan
+    +  company: https://synergetic.solutions
+       version: "1.1.0"
+       domain: frontend
+       triggers: Next.js, Next.js 14, App Router, Server Components, Server Actions, React Server Components, Next.js deployment, Vercel, Next.js performance
+    @@ -142,4 +143,6 @@
+     
+     Next.js 14+, App Router, React Server Components, Server Actions, Streaming SSR, Partial Prerendering, next/image, next/font, Metadata API, Route Handlers, Middleware, Edge Runtime, Turbopack, Vercel deployment
+     
+    +Maintained by [@jeffallan](https://github.com/jeffallan), Principal Consultant at [Synergetic Solutions](https://synergetic.solutions)
+    +
+     [Documentation](https://jeffallan.github.io/claude-skills/skills/frontend/nextjs-developer/)
+    ~ pandas-pro/SKILL.md
+    --- a/pandas-pro/SKILL.md
+    +++ b/pandas-pro/SKILL.md
+    @@ -4,6 +4,7 @@
+     license: MIT
+     metadata:
+       author: https://github.com/Jeffallan
+    +  company: https://synergetic.solutions
+       version: "1.1.0"
+       domain: data-ml
+       triggers: pandas, DataFrame, data manipulation, data cleaning, aggregation, groupby, merge, join, time series, data wrangling, pivot table, data transformation
+    @@ -177,4 +178,6 @@
+     3. Memory/performance considerations if dataset is large
+     4. Data validation checks (dtypes, nulls, shapes)
+     
+    +Maintained by [@jeffallan](https://github.com/jeffallan), Principal Consultant at [Synergetic Solutions](https://synergetic.solutions)
+    +
+     [Documentation](https://jeffallan.github.io/claude-skills/skills/data-ml/pandas-pro/)
+    ~ php-pro/SKILL.md
+    --- a/php-pro/SKILL.md
+    +++ b/php-pro/SKILL.md
+    @@ -4,6 +4,7 @@
+     license: MIT
+     metadata:
+       author: https://github.com/Jeffallan
+    +  company: https://synergetic.solutions
+       version: "1.1.0"
+       domain: language
+       triggers: PHP, Laravel, Symfony, Composer, PHPStan, PSR, PHP API, Eloquent, Doctrine
+    @@ -205,4 +206,6 @@
+     
+     PHP 8.3+, Laravel 11, Symfony 7, Composer, PHPStan, Psalm, PHPUnit, Pest, Eloquent ORM, Doctrine, PSR standards, Swoole, ReactPHP, Redis, MySQL/PostgreSQL, REST/GraphQL APIs
+     
+    +Maintained by [@jeffallan](https://github.com/jeffallan), Principal Consultant at [Synergetic Solutions](https://synergetic.solutions)
+    +
+     [Documentation](https://jeffallan.github.io/claude-skills/skills/language/php-pro/)
+    ~ playwright-expert/SKILL.md
+    --- a/playwright-expert/SKILL.md
+    +++ b/playwright-expert/SKILL.md
+    @@ -4,6 +4,7 @@
+     license: MIT
+     metadata:
+       author: https://github.com/Jeffallan
+    +  company: https://synergetic.solutions
+       version: "1.1.0"
+       domain: quality
+       triggers: Playwright, E2E test, end-to-end, browser testing, automation, UI testing, visual testing
+    @@ -168,4 +169,6 @@
+     
+     Playwright, Page Object Model, auto-waiting, locators, fixtures, API mocking, trace viewer, visual comparisons, parallel execution, CI/CD integration
+     
+    +Maintained by [@jeffallan](https://github.com/jeffallan), Principal Consultant at [Synergetic Solutions](https://synergetic.solutions)
+    +
+     [Documentation](https://jeffallan.github.io/claude-skills/skills/quality/playwright-expert/)
+    ~ postgres-pro/SKILL.md
+    --- a/postgres-pro/SKILL.md
+    +++ b/postgres-pro/SKILL.md
+    @@ -4,6 +4,7 @@
+     license: MIT
+     metadata:
+       author: https://github.com/Jeffallan
+    +  company: https://synergetic.solutions
+       version: "1.1.0"
+       domain: infrastructure
+       triggers: PostgreSQL, Postgres, EXPLAIN ANALYZE, pg_stat, JSONB, streaming replication, logical replication, VACUUM, PostGIS, pgvector
+    @@ -151,4 +152,6 @@
+     
+     PostgreSQL 12-16, EXPLAIN ANALYZE, B-tree/GIN/GiST/BRIN indexes, JSONB operators, streaming replication, logical replication, VACUUM/ANALYZE, pg_stat views, PostGIS, pgvector, pg_trgm, WAL archiving, PITR
+     
+    +Maintained by [@jeffallan](https://github.com/jeffallan), Principal Consultant at [Synergetic Solutions](https://synergetic.solutions)
+    +
+     [Documentation](https://jeffallan.github.io/claude-skills/skills/infrastructure/postgres-pro/)
+    ~ prompt-engineer/SKILL.md
+    --- a/prompt-engineer/SKILL.md
+    +++ b/prompt-engineer/SKILL.md
+    @@ -4,6 +4,7 @@
+     license: MIT
+     metadata:
+       author: https://github.com/Jeffallan
+    +  company: https://synergetic.solutions
+       version: "1.2.0"
+       domain: data-ml
+       triggers: prompt engineering, prompt optimization, chain-of-thought, few-shot learning, prompt testing, LLM prompts, prompt evaluation, system prompts, structured outputs, prompt design, context management, lost-in-the-middle, context degradation, token optimization, attention budget
+    @@ -133,4 +134,6 @@
+     
+     Reference files cover major prompting techniques (zero-shot, few-shot, CoT, ReAct, tree-of-thoughts), structured output patterns (JSON mode, function calling), context management (attention budgets, degradation mitigation, optimization), and model-specific guidance for GPT-4, Claude, and Gemini families. Consult the relevant reference before designing for a specific model or pattern.
+     
+    +Maintained by [@jeffallan](https://github.com/jeffallan), Principal Consultant at [Synergetic Solutions](https://synergetic.solutions)
+    +
+     [Documentation](https://jeffallan.github.io/claude-skills/skills/data-ml/prompt-engineer/)
+    ~ python-pro/SKILL.md
+    --- a/python-pro/SKILL.md
+    +++ b/python-pro/SKILL.md
+    @@ -4,6 +4,7 @@
+     license: MIT
+     metadata:
+       author: https://github.com/Jeffallan
+    +  company: https://synergetic.solutions
+       version: "1.1.0"
+       domain: language
+       triggers: Python development, type hints, async Python, pytest, mypy, dataclasses, Python best practices, Pythonic code
+    @@ -176,4 +177,6 @@
+     
+     Python 3.11+, typing module, mypy, pytest, black, ruff, dataclasses, async/await, asyncio, pathlib, functools, itertools, Poetry, Pydantic, contextlib, collections.abc, Protocol
+     
+    +Maintained by [@jeffallan](https://github.com/jeffallan), Principal Consultant at [Synergetic Solutions](https://synergetic.solutions)
+    +
+     [Documentation](https://jeffallan.github.io/claude-skills/skills/language/python-pro/)
+    ~ rag-architect/SKILL.md
+    --- a/rag-architect/SKILL.md
+    +++ b/rag-architect/SKILL.md
+    @@ -4,6 +4,7 @@
+     license: MIT
+     metadata:
+       author: https://github.com/Jeffallan
+    +  company: https://synergetic.solutions
+       version: "1.1.0"
+       domain: data-ml
+       triggers: RAG, retrieval-augmented generation, vector search, embeddings, semantic search, vector database, document retrieval, knowledge base, context retrieval, similarity search
+    @@ -197,4 +198,6 @@
+     4. Retrieval pipeline design (query → results flow)
+     5. Evaluation plan with metrics, benchmarks, and pass/fail thresholds
+     
+    +Maintained by [@jeffallan](https://github.com/jeffallan), Principal Consultant at [Synergetic Solutions](https://synergetic.solutions)
+    +
+     [Documentation](https://jeffallan.github.io/claude-skills/skills/data-ml/rag-architect/)
+    ~ rails-expert/SKILL.md
+    --- a/rails-expert/SKILL.md
+    +++ b/rails-expert/SKILL.md
+    @@ -4,6 +4,7 @@
+     license: MIT
+     metadata:
+       author: https://github.com/Jeffallan
+    +  company: https://synergetic.solutions
+       version: "1.1.0"
+       domain: backend
+       triggers: Rails, Ruby on Rails, Hotwire, Turbo Frames, Turbo Streams, Action Cable, Active Record, Sidekiq, RSpec Rails
+    @@ -153,4 +154,6 @@
+     5. Spec files for models and requests
+     6. Brief explanation of architectural decisions
+     
+    +Maintained by [@jeffallan](https://github.com/jeffallan), Principal Consultant at [Synergetic Solutions](https://synergetic.solutions)
+    +
+     [Documentation](https://jeffallan.github.io/claude-skills/skills/backend/rails-expert/)
+    ~ react-expert/SKILL.md
+    --- a/react-expert/SKILL.md
+    +++ b/react-expert/SKILL.md
+    @@ -4,6 +4,7 @@
+     license: MIT
+     metadata:
+       author: https://github.com/Jeffallan
+    +  company: https://synergetic.solutions
+       version: "1.1.0"
+       domain: frontend
+       triggers: React, JSX, hooks, useState, useEffect, useContext, Server Components, React 19, Suspense, TanStack Query, Redux, Zustand, component, frontend
+    @@ -148,4 +149,6 @@
+     
+     React 19, Server Components, use() hook, Suspense, TypeScript, TanStack Query, Zustand, Redux Toolkit, React Router, React Testing Library, Vitest/Jest, Next.js App Router, accessibility (WCAG)
+     
+    +Maintained by [@jeffallan](https://github.com/jeffallan), Principal Consultant at [Synergetic Solutions](https://synergetic.solutions)
+    +
+     [Documentation](https://jeffallan.github.io/claude-skills/skills/frontend/react-expert/)
+    ~ react-native-expert/SKILL.md
+    --- a/react-native-expert/SKILL.md
+    +++ b/react-native-expert/SKILL.md
+    @@ -4,6 +4,7 @@
+     license: MIT
+     metadata:
+       author: https://github.com/Jeffallan
+    +  company: https://synergetic.solutions
+       version: "1.1.0"
+       domain: frontend
+       triggers: React Native, Expo, mobile app, iOS, Android, cross-platform, native module
+    @@ -184,4 +185,6 @@
+     
+     React Native 0.73+, Expo SDK 50+, Expo Router, React Navigation 7, Reanimated 3, Gesture Handler, AsyncStorage, MMKV, React Query, Zustand
+     
+    +Maintained by [@jeffallan](https://github.com/jeffallan), Principal Consultant at [Synergetic Solutions](https://synergetic.solutions)
+    +
+     [Documentation](https://jeffallan.github.io/claude-skills/skills/frontend/react-native-expert/)
+    ~ rust-engineer/SKILL.md
+    --- a/rust-engineer/SKILL.md
+    +++ b/rust-engineer/SKILL.md
+    @@ -4,6 +4,7 @@
+     license: MIT
+     metadata:
+       author: https://github.com/Jeffallan
+    +  company: https://synergetic.solutions
+       version: "1.1.0"
+       domain: language
+       triggers: Rust, Cargo, ownership, borrowing, lifetimes, async Rust, tokio, zero-cost abstractions, memory safety, systems programming
+    @@ -166,4 +167,6 @@
+     
+     Rust 2021, Cargo, ownership/borrowing, lifetimes, traits, generics, async/await, tokio, Result/Option, thiserror/anyhow, serde, clippy, rustfmt, cargo-test, criterion benchmarks, MIRI, unsafe Rust
+     
+    +Maintained by [@jeffallan](https://github.com/jeffallan), Principal Consultant at [Synergetic Solutions](https://synergetic.solutions)
+    +
+     [Documentation](https://jeffallan.github.io/claude-skills/skills/language/rust-engineer/)
+    ~ salesforce-developer/SKILL.md
+    --- a/salesforce-developer/SKILL.md
+    +++ b/salesforce-developer/SKILL.md
+    @@ -4,6 +4,7 @@
+     license: MIT
+     metadata:
+       author: https://github.com/Jeffallan
+    +  company: https://synergetic.solutions
+       version: "1.1.0"
+       domain: platform
+       triggers: Salesforce, Apex, Lightning Web Components, LWC, SOQL, SOSL, Visualforce, Salesforce DX, governor limits, triggers, platform events, CRM integration, Sales Cloud, Service Cloud
+    @@ -202,4 +203,6 @@
+     </LightningComponentBundle>
+     ```
+     
+    +Maintained by [@jeffallan](https://github.com/jeffallan), Principal Consultant at [Synergetic Solutions](https://synergetic.solutions)
+    +
+     [Documentation](https://jeffallan.github.io/claude-skills/skills/platform/salesforce-developer/)
+    ~ secure-code-guardian/SKILL.md
+    --- a/secure-code-guardian/SKILL.md
+    +++ b/secure-code-guardian/SKILL.md
+    @@ -4,6 +4,7 @@
+     license: MIT
+     metadata:
+       author: https://github.com/Jeffallan
+    +  company: https://synergetic.solutions
+       version: "1.1.0"
+       domain: security
+       triggers: security, authentication, authorization, encryption, OWASP, vulnerability, secure coding, password, JWT, OAuth
+    @@ -190,4 +191,6 @@
+     
+     OWASP Top 10, bcrypt/argon2, JWT, OAuth 2.0, OIDC, CSP, CORS, rate limiting, input validation, output encoding, encryption (AES, RSA), TLS, security headers
+     
+    +Maintained by [@jeffallan](https://github.com/jeffallan), Principal Consultant at [Synergetic Solutions](https://synergetic.solutions)
+    +
+     [Documentation](https://jeffallan.github.io/claude-skills/skills/security/secure-code-guardian/)
+    ~ security-reviewer/SKILL.md
+    --- a/security-reviewer/SKILL.md
+    +++ b/security-reviewer/SKILL.md
+    @@ -2,9 +2,10 @@
+     name: security-reviewer
+     description: Identifies security vulnerabilities, generates structured audit reports with severity ratings, and provides actionable remediation guidance. Use when conducting security audits, reviewing code for vulnerabilities, or analyzing infrastructure security. Invoke for SAST scans, penetration testing, DevSecOps practices, cloud security reviews, dependency audits, secrets scanning, or compliance checks. Produces vulnerability reports, prioritized recommendations, and compliance checklists.
+     license: MIT
+    -allowed-tools: Read, Grep, Glob, Bash
+    +allowed-tools: Read, Grep, Glob
+     metadata:
+       author: https://github.com/Jeffallan
+    +  company: https://synergetic.solutions
+       version: "1.1.1"
+       domain: security
+       triggers: security review, vulnerability scan, SAST, security audit, penetration test, code audit, security analysis, infrastructure security, DevSecOps, cloud security, compliance audit
+    @@ -102,4 +103,6 @@
+     
+     OWASP Top 10, CWE, Semgrep, Bandit, ESLint Security, gosec, npm audit, gitleaks, trufflehog, CVSS scoring, nmap, Burp Suite, sqlmap, Trivy, Checkov, HashiCorp Vault, AWS Security Hub, CIS benchmarks, SOC2, ISO27001
+     
+    +Maintained by [@jeffallan](https://github.com/jeffallan), Principal Consultant at [Synergetic Solutions](https://synergetic.solutions)
+    +
+     [Documentation](https://jeffallan.github.io/claude-skills/skills/security/security-reviewer/)
+    ~ shopify-expert/SKILL.md
+    --- a/shopify-expert/SKILL.md
+    +++ b/shopify-expert/SKILL.md
+    @@ -4,6 +4,7 @@
+     license: MIT
+     metadata:
+       author: https://github.com/Jeffallan
+    +  company: https://synergetic.solutions
+       version: "1.1.0"
+       domain: platform
+       triggers: Shopify, Liquid, Storefront API, Shopify Plus, Hydrogen, Shopify app, checkout extensions, Shopify Functions, App Bridge, theme development, e-commerce, Polaris
+    @@ -183,4 +184,6 @@
+     
+     Shopify CLI 3.x, Liquid 2.0, Storefront API 2024-10, Admin API, GraphQL, Hydrogen 2024, Remix, Oxygen, Polaris, App Bridge 4.0, Checkout UI Extensions, Shopify Functions, metafields, metaobjects, theme architecture, Shopify Plus features
+     
+    +Maintained by [@jeffallan](https://github.com/jeffallan), Principal Consultant at [Synergetic Solutions](https://synergetic.solutions)
+    +
+     [Documentation](https://jeffallan.github.io/claude-skills/skills/platform/shopify-expert/)
+    ~ spark-engineer/SKILL.md
+    --- a/spark-engineer/SKILL.md
+    +++ b/spark-engineer/SKILL.md
+    @@ -4,6 +4,7 @@
+     license: MIT
+     metadata:
+       author: https://github.com/Jeffallan
+    +  company: https://synergetic.solutions
+       version: "1.1.0"
+       domain: data-ml
+       triggers: Apache Spark, PySpark, Spark SQL, distributed computing, big data, DataFrame API, RDD, Spark Streaming, structured streaming, data partitioning, Spark performance, cluster computing, data processing pipeline
+    @@ -147,4 +148,6 @@
+     
+     Spark DataFrame API, Spark SQL, RDD transformations/actions, catalyst optimizer, tungsten execution engine, partitioning strategies, broadcast variables, accumulators, structured streaming, watermarks, checkpointing, Spark UI analysis, memory management, shuffle optimization
+     
+    +Maintained by [@jeffallan](https://github.com/jeffallan), Principal Consultant at [Synergetic Solutions](https://synergetic.solutions)
+    +
+     [Documentation](https://jeffallan.github.io/claude-skills/skills/data-ml/spark-engineer/)
+    ~ spec-miner/SKILL.md
+    --- a/spec-miner/SKILL.md
+    +++ b/spec-miner/SKILL.md
+    @@ -2,9 +2,10 @@
+     name: spec-miner
+     description: "Reverse-engineering specialist that extracts specifications from existing codebases. Use when working with legacy or undocumented systems, inherited projects, or old codebases with no documentation. Invoke to map code dependencies, generate API documentation from source, identify undocumented business logic, figure out what code does, or create architecture documentation from implementation. Trigger phrases: reverse engineer, old codebase, no docs, no documentation, figure out how this works, inherited project, legacy analysis, code archaeology, undocumented features."
+     license: MIT
+    -allowed-tools: Read, Grep, Glob, Bash
+    +allowed-tools: Read, Grep, Glob
+     metadata:
+       author: https://github.com/Jeffallan
+    +  company: https://synergetic.solutions
+       version: "1.1.0"
+       domain: workflow
+       triggers: reverse engineer, legacy code, code analysis, undocumented, understand codebase, existing system
+    @@ -107,4 +108,6 @@
+     6. Uncertainties and questions
+     7. Recommendations
+     
+    +Maintained by [@jeffallan](https://github.com/jeffallan), Principal Consultant at [Synergetic Solutions](https://synergetic.solutions)
+    +
+     [Documentation](https://jeffallan.github.io/claude-skills/skills/workflow/spec-miner/)
+    ~ spring-boot-engineer/SKILL.md
+    --- a/spring-boot-engineer/SKILL.md
+    +++ b/spring-boot-engineer/SKILL.md
+    @@ -4,6 +4,7 @@
+     license: MIT
+     metadata:
+       author: https://github.com/Jeffallan
+    +  company: https://synergetic.solutions
+       version: "1.1.0"
+       domain: backend
+       triggers: Spring Boot, Spring Framework, Spring Cloud, Spring Security, Spring Data JPA, Spring WebFlux, Microservices Java, Java REST API, Reactive Java
+    @@ -194,4 +195,6 @@
+     - Hardcode URLs, credentials, or environment-specific values
+     - Use deprecated Spring Boot 2.x patterns (e.g., `WebSecurityConfigurerAdapter`)
+     
+    +Maintained by [@jeffallan](https://github.com/jeffallan), Principal Consultant at [Synergetic Solutions](https://synergetic.solutions)
+    +
+     [Documentation](https://jeffallan.github.io/claude-skills/skills/backend/spring-boot-engineer/)
+    ~ sql-pro/SKILL.md
+    --- a/sql-pro/SKILL.md
+    +++ b/sql-pro/SKILL.md
+    @@ -4,6 +4,7 @@
+     license: MIT
+     metadata:
+       author: https://github.com/Jeffallan
+    +  company: https://synergetic.solutions
+       version: "1.1.0"
+       domain: language
+       triggers: SQL optimization, query performance, database design, PostgreSQL, MySQL, SQL Server, window functions, CTEs, query tuning, EXPLAIN plan, database indexing
+    @@ -128,4 +129,6 @@
+     4. Performance metrics (before/after)
+     5. Platform-specific notes if applicable
+     
+    +Maintained by [@jeffallan](https://github.com/jeffallan), Principal Consultant at [Synergetic Solutions](https://synergetic.solutions)
+    +
+     [Documentation](https://jeffallan.github.io/claude-skills/skills/language/sql-pro/)
+    ~ sre-engineer/SKILL.md
+    --- a/sre-engineer/SKILL.md
+    +++ b/sre-engineer/SKILL.md
+    @@ -4,6 +4,7 @@
+     license: MIT
+     metadata:
+       author: https://github.com/Jeffallan
+    +  company: https://synergetic.solutions
+       version: "1.1.0"
+       domain: devops
+       triggers: SRE, site reliability, SLO, SLI, error budget, incident management, chaos engineering, toil reduction, on-call, MTTR
+    @@ -180,4 +181,6 @@
+             print("Within SLO threshold — no action required")
+     ```
+     
+    +Maintained by [@jeffallan](https://github.com/jeffallan), Principal Consultant at [Synergetic Solutions](https://synergetic.solutions)
+    +
+     [Documentation](https://jeffallan.github.io/claude-skills/skills/devops/sre-engineer/)
+    ~ swift-expert/SKILL.md
+    --- a/swift-expert/SKILL.md
+    +++ b/swift-expert/SKILL.md
+    @@ -4,6 +4,7 @@
+     license: MIT
+     metadata:
+       author: https://github.com/Jeffallan
+    +  company: https://synergetic.solutions
+       version: "1.1.0"
+       domain: language
+       triggers: Swift, SwiftUI, iOS development, macOS development, async/await Swift, Combine, UIKit, Vapor
+    @@ -162,4 +163,6 @@
+     4. Tests demonstrating usage
+     5. Brief explanation of architectural decisions
+     
+    +Maintained by [@jeffallan](https://github.com/jeffallan), Principal Consultant at [Synergetic Solutions](https://synergetic.solutions)
+    +
+     [Documentation](https://jeffallan.github.io/claude-skills/skills/language/swift-expert/)
+    ~ terraform-engineer/SKILL.md
+    --- a/terraform-engineer/SKILL.md
+    +++ b/terraform-engineer/SKILL.md
+    @@ -4,6 +4,7 @@
+     license: MIT
+     metadata:
+       author: https://github.com/Jeffallan
+    +  company: https://synergetic.solutions
+       version: "1.1.0"
+       domain: infrastructure
+       triggers: Terraform, infrastructure as code, IaC, terraform module, terraform state, AWS provider, Azure provider, GCP provider, terraform plan, terraform apply
+    @@ -143,4 +144,6 @@
+     
+     When implementing Terraform solutions, provide: module structure (`main.tf`, `variables.tf`, `outputs.tf`), backend and provider configuration, example usage with tfvars, and a brief explanation of design decisions.
+     
+    +Maintained by [@jeffallan](https://github.com/jeffallan), Principal Consultant at [Synergetic Solutions](https://synergetic.solutions)
+    +
+     [Documentation](https://jeffallan.github.io/claude-skills/skills/infrastructure/terraform-engineer/)
+    ~ test-master/SKILL.md
+    --- a/test-master/SKILL.md
+    +++ b/test-master/SKILL.md
+    @@ -4,6 +4,7 @@
+     license: MIT
+     metadata:
+       author: https://github.com/Jeffallan
+    +  company: https://synergetic.solutions
+       version: "1.1.1"
+       domain: quality
+       triggers: test, testing, QA, unit test, integration test, E2E, coverage, performance test, security test, regression, test strategy, test automation, test framework, quality metrics, defect, exploratory, usability, accessibility, localization, manual testing, shift-left, quality gate, flaky test, test maintenance
+    @@ -93,4 +94,6 @@
+     4. Findings with severity (Critical/High/Medium/Low)
+     5. Specific fix recommendations
+     
+    +Maintained by [@jeffallan](https://github.com/jeffallan), Principal Consultant at [Synergetic Solutions](https://synergetic.solutions)
+    +
+     [Documentation](https://jeffallan.github.io/claude-skills/skills/quality/test-master/)
+    ~ the-fool/SKILL.md
+    --- a/the-fool/SKILL.md
+    +++ b/the-fool/SKILL.md
+    @@ -4,6 +4,7 @@
+     license: MIT
+     metadata:
+       author: https://github.com/Jeffallan
+    +  company: https://synergetic.solutions
+       version: "1.0.0"
+       domain: workflow
+       triggers: play the fool, devil's advocate, challenge this, stress test, poke holes, what could go wrong, red team, pre-mortem, test my assumptions
+    @@ -119,4 +120,6 @@
+     
+     Socratic method, Hegelian dialectic, steel manning, pre-mortem analysis, red teaming, falsificationism, abductive reasoning, second-order thinking, cognitive biases, inversion technique
+     
+    +Maintained by [@jeffallan](https://github.com/jeffallan), Principal Consultant at [Synergetic Solutions](https://synergetic.solutions)
+    +
+     [Documentation](https://jeffallan.github.io/claude-skills/skills/workflow/the-fool/)
+    ~ typescript-pro/SKILL.md
+    --- a/typescript-pro/SKILL.md
+    +++ b/typescript-pro/SKILL.md
+    @@ -4,6 +4,7 @@
+     license: MIT
+     metadata:
+       author: https://github.com/Jeffallan
+    +  company: https://synergetic.solutions
+       version: "1.1.0"
+       domain: language
+       triggers: TypeScript, generics, type safety, conditional types, mapped types, tRPC, tsconfig, type guards, discriminated unions
+    @@ -144,4 +145,6 @@
+     
+     TypeScript 5.0+, generics, conditional types, mapped types, template literal types, discriminated unions, type guards, branded types, tRPC, project references, incremental compilation, declaration files, const assertions, satisfies operator
+     
+    +Maintained by [@jeffallan](https://github.com/jeffallan), Principal Consultant at [Synergetic Solutions](https://synergetic.solutions)
+    +
+     [Documentation](https://jeffallan.github.io/claude-skills/skills/language/typescript-pro/)
+    ~ vue-expert-js/SKILL.md
+    --- a/vue-expert-js/SKILL.md
+    +++ b/vue-expert-js/SKILL.md
+    @@ -4,6 +4,7 @@
+     license: MIT
+     metadata:
+       author: https://github.com/Jeffallan
+    +  company: https://synergetic.solutions
+       version: "1.1.0"
+       domain: frontend
+       triggers: Vue JavaScript, Vue without TypeScript, Vue JSDoc, Vue JS only, Vue vanilla JavaScript, .mjs Vue, Vue no TS
+    @@ -166,4 +167,6 @@
+     
+     Vue 3 Composition API, JSDoc, ESM modules, Pinia, Vue Router 4, Vite, VueUse, Vitest, Vue Test Utils, JavaScript ES2022+
+     
+    +Maintained by [@jeffallan](https://github.com/jeffallan), Principal Consultant at [Synergetic Solutions](https://synergetic.solutions)
+    +
+     [Documentation](https://jeffallan.github.io/claude-skills/skills/frontend/vue-expert-js/)
+    ~ vue-expert/SKILL.md
+    --- a/vue-expert/SKILL.md
+    +++ b/vue-expert/SKILL.md
+    @@ -4,6 +4,7 @@
+     license: MIT
+     metadata:
+       author: https://github.com/Jeffallan
+    +  company: https://synergetic.solutions
+       version: "1.1.0"
+       domain: frontend
+       triggers: Vue 3, Composition API, Nuxt, Pinia, Vue composables, reactive, ref, Vue Router, Vite Vue, Quasar, Capacitor, PWA, service worker, Fastify SSR, sourcemap, Vite config, build optimization
+    @@ -97,4 +98,6 @@
+     
+     Vue 3 Composition API, Pinia, Nuxt 3, Vue Router 4, Vite, VueUse, TypeScript, Vitest, Vue Test Utils, SSR/SSG, reactive programming, performance optimization
+     
+    +Maintained by [@jeffallan](https://github.com/jeffallan), Principal Consultant at [Synergetic Solutions](https://synergetic.solutions)
+    +
+     [Documentation](https://jeffallan.github.io/claude-skills/skills/frontend/vue-expert/)
+    ~ websocket-engineer/SKILL.md
+    --- a/websocket-engineer/SKILL.md
+    +++ b/websocket-engineer/SKILL.md
+    @@ -4,6 +4,7 @@
+     license: MIT
+     metadata:
+       author: https://github.com/Jeffallan
+    +  company: https://synergetic.solutions
+       version: "1.1.0"
+       domain: api-architecture
+       triggers: WebSocket, Socket.IO, real-time communication, bidirectional messaging, pub/sub, server push, live updates, chat systems, presence tracking
+    @@ -167,4 +168,6 @@
+     
+     Socket.IO, ws, uWebSockets.js, Redis adapter, sticky sessions, nginx WebSocket proxy, JWT over WebSocket, rooms/namespaces, acknowledgments, binary data, compression, heartbeat, backpressure, horizontal pod autoscaling
+     
+    +Maintained by [@jeffallan](https://github.com/jeffallan), Principal Consultant at [Synergetic Solutions](https://synergetic.solutions)
+    +
+     [Documentation](https://jeffallan.github.io/claude-skills/skills/api-architecture/websocket-engineer/)
+    ~ wordpress-pro/SKILL.md
+    --- a/wordpress-pro/SKILL.md
+    +++ b/wordpress-pro/SKILL.md
+    @@ -4,6 +4,7 @@
+     license: MIT
+     metadata:
+       author: https://github.com/Jeffallan
+    +  company: https://synergetic.solutions
+       version: "1.1.0"
+       domain: platform
+       triggers: WordPress, WooCommerce, Gutenberg, WordPress theme, WordPress plugin, custom blocks, ACF, WordPress REST API, hooks, filters, WordPress performance, WordPress security
+    @@ -148,4 +149,6 @@
+     
+     WordPress 6.4+, PHP 8.1+, Gutenberg, WooCommerce, ACF, REST API, WP-CLI, block development, theme customizer, widget API, shortcode API, transients, object caching, query optimization, security hardening, WPCS
+     
+    +Maintained by [@jeffallan](https://github.com/jeffallan), Principal Consultant at [Synergetic Solutions](https://synergetic.solutions)
+    +
+     [Documentation](https://jeffallan.github.io/claude-skills/skills/platform/wordpress-pro/)
+  已替换本地内容: /home/runner/work/opencode-skills-hub/opencode-skills-hub/Jeffallan-claude-skills
+
+============================================================
+[zhaoxuya520-reverse-skill] 开始更新 (https://github.com/zhaoxuya520/reverse-skill)
+  Diff 结果（本地 <-> 远程）:
+  无变化
+  已替换本地内容: /home/runner/work/opencode-skills-hub/opencode-skills-hub/zhaoxuya520-reverse-skill
+
+全部仓库更新完成。

@@ -28590,3 +28590,99 @@
   已替换本地内容: /home/runner/work/opencode-skills-hub/opencode-skills-hub/zhaoxuya520-reverse-skill
 
 全部仓库更新完成。
+
+############################################################
+# skills-updater 运行时间: 2026-10-29 23:19:33
+############################################################
+
+============================================================
+[anthropics-skills] 开始更新 (https://github.com/anthropics/skills)
+  Diff 结果（本地 <-> 远程）:
+  无变化
+  已替换本地内容: /home/runner/work/opencode-skills-hub/opencode-skills-hub/anthropics-skills
+
+============================================================
+[Jeffallan-claude-skills] 开始更新 (https://github.com/Jeffallan/claude-skills)
+  Diff 结果（本地 <-> 远程）:
+  [修改的文件]
+    ~ code-reviewer/SKILL.md
+    --- a/code-reviewer/SKILL.md
+    +++ b/code-reviewer/SKILL.md
+    @@ -2,7 +2,7 @@
+     name: code-reviewer
+     description: Analyzes code diffs and files to identify bugs, security vulnerabilities (SQL injection, XSS, insecure deserialization), code smells, N+1 queries, naming issues, and architectural concerns, then produces a structured review report with prioritized, actionable feedback. Use when reviewing pull requests, conducting code quality audits, identifying refactoring opportunities, or checking for security issues. Invoke for PR reviews, code quality checks, refactoring suggestions, review code, code quality. Complements specialized skills (security-reviewer, test-master) by providing broad-scope review across correctness, performance, maintainability, and test coverage in a single pass.
+     license: MIT
+    -allowed-tools: Read, Grep, Glob
+    +allowed-tools: Read Grep Glob
+     metadata:
+       author: https://github.com/Jeffallan
+       company: https://synergetic.solutions
+    ~ embedded-systems/SKILL.md
+    --- a/embedded-systems/SKILL.md
+    +++ b/embedded-systems/SKILL.md
+    @@ -11,7 +11,7 @@
+       role: specialist
+       scope: implementation
+       output-format: code
+    -  related-skills: 
+    +  related-skills: ""
+     ---
+     
+     # Embedded Systems Engineer
+    ~ game-developer/SKILL.md
+    --- a/game-developer/SKILL.md
+    +++ b/game-developer/SKILL.md
+    @@ -11,7 +11,7 @@
+       role: specialist
+       scope: implementation
+       output-format: code
+    -  related-skills: 
+    +  related-skills: ""
+     ---
+     
+     # Game Developer
+    ~ security-reviewer/SKILL.md
+    --- a/security-reviewer/SKILL.md
+    +++ b/security-reviewer/SKILL.md
+    @@ -2,7 +2,7 @@
+     name: security-reviewer
+     description: Identifies security vulnerabilities, generates structured audit reports with severity ratings, and provides actionable remediation guidance. Use when conducting security audits, reviewing code for vulnerabilities, or analyzing infrastructure security. Invoke for SAST scans, penetration testing, DevSecOps practices, cloud security reviews, dependency audits, secrets scanning, or compliance checks. Produces vulnerability reports, prioritized recommendations, and compliance checklists.
+     license: MIT
+    -allowed-tools: Read, Grep, Glob
+    +allowed-tools: Read Grep Glob
+     metadata:
+       author: https://github.com/Jeffallan
+       company: https://synergetic.solutions
+    ~ spec-miner/SKILL.md
+    --- a/spec-miner/SKILL.md
+    +++ b/spec-miner/SKILL.md
+    @@ -2,7 +2,7 @@
+     name: spec-miner
+     description: "Reverse-engineering specialist that extracts specifications from existing codebases. Use when working with legacy or undocumented systems, inherited projects, or old codebases with no documentation. Invoke to map code dependencies, generate API documentation from source, identify undocumented business logic, figure out what code does, or create architecture documentation from implementation. Trigger phrases: reverse engineer, old codebase, no docs, no documentation, figure out how this works, inherited project, legacy analysis, code archaeology, undocumented features."
+     license: MIT
+    -allowed-tools: Read, Grep, Glob
+    +allowed-tools: Read Grep Glob
+     metadata:
+       author: https://github.com/Jeffallan
+       company: https://synergetic.solutions
+    ~ swift-expert/SKILL.md
+    --- a/swift-expert/SKILL.md
+    +++ b/swift-expert/SKILL.md
+    @@ -11,7 +11,7 @@
+       role: specialist
+       scope: implementation
+       output-format: code
+    -  related-skills: 
+    +  related-skills: ""
+     ---
+     
+     # Swift Expert
+  已替换本地内容: /home/runner/work/opencode-skills-hub/opencode-skills-hub/Jeffallan-claude-skills
+
+============================================================
+[zhaoxuya520-reverse-skill] 开始更新 (https://github.com/zhaoxuya520/reverse-skill)
+  Diff 结果（本地 <-> 远程）:
+  无变化
+  已替换本地内容: /home/runner/work/opencode-skills-hub/opencode-skills-hub/zhaoxuya520-reverse-skill
+
+全部仓库更新完成。

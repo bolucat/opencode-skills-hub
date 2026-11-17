@@ -36912,3 +36912,527 @@
   已替换本地内容: /home/runner/work/opencode-skills-hub/opencode-skills-hub/zhaoxuya520-reverse-skill
 
 全部仓库更新完成。
+
+############################################################
+# skills-updater 运行时间: 2026-11-17 02:26:07
+############################################################
+
+============================================================
+[anthropics-skills] 开始更新 (https://github.com/anthropics/skills)
+  Diff 结果（本地 <-> 远程）:
+  [修改的文件]
+    ~ docx/SKILL.md
+    --- a/docx/SKILL.md
+    +++ b/docx/SKILL.md
+    @@ -11,7 +11,7 @@
+     | Task | Approach |
+     |---|---|
+     | **Create** a new document | Write a `docx` (npm) script — see gotchas below |
+    -| **Edit** an existing document | `unzip` → edit `word/document.xml` → `zip` (docx-js cannot open existing files) |
+    +| **Edit** an existing document | unpack → edit `word/document.xml` → `zip` (docx-js cannot open existing files) |
+     | **Read** content | `pandoc -t markdown file.docx` |
+     
+     > Script paths below are relative to this skill's directory.
+    @@ -51,11 +51,10 @@
+     Legacy `.doc` files must be converted first: `python scripts/office/soffice.py --headless --convert-to docx file.doc`.
+     
+     ```bash
+    -unzip -q doc.docx -d unpacked/
+    -find unpacked -type l -delete   # strip symlink entries — docx from external parties is untrusted
+    +python3 -c "import sys,zipfile; zipfile.ZipFile(sys.argv[1]).extractall('unpacked')" doc.docx   # not unzip, which restores symlinks — docx from external parties is untrusted
+     python scripts/merge_runs.py unpacked/   # coalesce fragmented runs so text is findable
+     # edit unpacked/word/document.xml in place — do NOT reformat or pretty-print
+    -(cd unpacked && rm -f ../out.docx && zip -XrD ../out.docx .)
+    +(cd unpacked && rm -f ../out.docx && zip -XrDy ../out.docx .)
+     python scripts/office/validate.py out.docx --original doc.docx   # XSD checks; --auto-repair fixes common issues
+     # redlining? add --author "<the name you redlined under>" to check every edit is tracked
+     ```
+    ~ docx/scripts/office/soffice.py
+    --- a/docx/scripts/office/soffice.py
+    +++ b/docx/scripts/office/soffice.py
+    @@ -15,11 +15,16 @@
+     callers that build their own argv (they must pass -env:UserInstallation too).
+     """
+     
+    +from __future__ import annotations
+    +
+     import contextlib
+     import os
+    +import re
+    +import shutil
+     import socket
+     import subprocess
+     import tempfile
+    +import zipfile
+     from collections.abc import Iterable
+     from pathlib import Path
+     
+    @@ -43,11 +48,90 @@
+                     tempfile.TemporaryDirectory(prefix="lo_profile_", ignore_cleanup_errors=True)
+                 )
+                 args = [f"-env:UserInstallation={Path(profile).as_uri()}"] + args
+    +        if _draws_the_document(args):
+    +            copies = Path(stack.enter_context(
+    +                tempfile.TemporaryDirectory(prefix="lo_input_", ignore_cleanup_errors=True)
+    +            ))
+    +            args = [_without_outside_links(str(a), copies / str(i)) for i, a in enumerate(args)]
+             return subprocess.run(["soffice"] + args, env=get_soffice_env(), **kwargs)
+     
+     
+     
+     _SHIM_SO = Path(tempfile.gettempdir()) / "lo_socket_shim.so"
+    +
+    +_DRAWN_FORMATS = frozenset(
+    +    {"pdf", "png", "jpg", "jpeg", "gif", "bmp", "tif", "tiff", "webp", "svg", "eps", "emf", "wmf"}
+    +)
+    +_WEB_OR_MAIL = re.compile(r"^(?:https?|mailto):", re.I)
+    +_RELS_NS = "http://schemas.openxmlformats.org/package/2006/relationships"
+    +_NO_RELS = f'<Relationships xmlns="{_RELS_NS}"/>'.encode()
+    +_MAX_RELS_BYTES = 32 * 1024 * 1024
+    +
+    +
+    +def _draws_the_document(args: list) -> bool:
+    +    for flag, value in zip(args, args[1:]):
+    +        if str(flag) in ("--convert-to", "-convert-to"):
+    +            return str(value).split(":")[0].lower() in _DRAWN_FORMATS
+    +    return False
+    +
+    +
+    +def _cut_outside_links(rels: bytes) -> bytes | None:
+    +    from defusedxml import ElementTree
+    +
+    +    try:
+    +        root = ElementTree.fromstring(rels)
+    +    except (ElementTree.ParseError, ValueError, LookupError):
+    +        return _NO_RELS
+    +    cut = False
+    +    for entry in root.iter():
+    +        if entry.get("TargetMode", "Internal") == "Internal":
+    +            continue
+    +        if _WEB_OR_MAIL.match(entry.get("Target", "")):
+    +            continue
+    +        entry.set("TargetMode", "External")
+    +        entry.set("Target", "about:blank")
+    +        cut = True
+    +    if not cut:
+    +        return None
+    +    for element in root.iter():
+    +        element.tag = element.tag.rsplit("}", 1)[-1]
+    +    root.set("xmlns", _RELS_NS)
+    +    return ElementTree.tostring(root)
+    +
+    +
+    +def _without_outside_links(arg: str, folder: Path) -> str:
+    +
+    +    if not os.path.isfile(arg) or not zipfile.is_zipfile(arg):
+    +        return arg
+    +    with open(arg, "rb") as file:
+    +        if file.read(4) != b"PK\x03\x04":  
+    +            return arg
+    +    with zipfile.ZipFile(arg) as package:
+    +        cut = {}
+    +        for member in package.infolist():
+    +            if member.filename.lower().endswith(".rels"):
+    +                try:
+    +                    data = package.read(member) if member.file_size <= _MAX_RELS_BYTES else None
+    +                except Exception:  
+    +                    data = None
+    +                rels = _NO_RELS if data is None else _cut_outside_links(data)
+    +                if rels is not None:
+    +                    cut[member.filename] = rels
+    +        if not cut:
+    +            return arg
+    +        folder.mkdir()
+    +        copy = folder / Path(arg).name
+    +        with zipfile.ZipFile(copy, "w") as out:
+    +            for member in package.infolist():
+    +                entry = zipfile.ZipInfo(member.filename, member.date_time)
+    +                entry.compress_type = member.compress_type
+    +                if member.filename in cut:
+    +                    entry.compress_type = zipfile.ZIP_DEFLATED  
+    +                    out.writestr(entry, cut[member.filename])
+    +                else:
+    +                    with package.open(member) as source, out.open(entry, "w", force_zip64=True) as target:
+    +                        shutil.copyfileobj(source, target)
+    +    return str(copy)
+     
+     
+     def _needs_shim() -> bool:
+    ~ docx/scripts/office/validate.py
+    --- a/docx/scripts/office/validate.py
+    +++ b/docx/scripts/office/validate.py
+    @@ -41,6 +41,14 @@
+     def _fail(message: str):
+         print(f"Error: {message}", file=sys.stderr)
+         sys.exit(2)
+    +
+    +
+    +def _unpack(package: Path, dest: Path):
+    +    try:
+    +        with zipfile.ZipFile(package, "r") as zf:
+    +            safe_extract(zf, dest)
+    +    except Exception as e:  
+    +        _fail(f"cannot unpack {package}: {e}")
+     
+     
+     def _has_tracked_changes(unpacked_dir: Path) -> bool:
+    @@ -105,6 +113,8 @@
+                 _fail(f"{original_file} is not a file")
+             if original_file.suffix.lower() not in OOXML_FAMILY:
+                 _fail(f"{original_file} must be one of: {', '.join(sorted(OOXML_FAMILY))}")
+    +        with tempfile.TemporaryDirectory() as scratch:
+    +            _unpack(original_file, Path(scratch))
+     
+         family = OOXML_FAMILY.get((original_file or path).suffix.lower())
+         if family is None:
+    @@ -121,11 +131,7 @@
+             packed_file = path
+             temp_dir_ctx = tempfile.TemporaryDirectory()
+             unpacked_dir = Path(temp_dir_ctx.name)
+    -        try:
+    -            with zipfile.ZipFile(path, "r") as zf:
+    -                safe_extract(zf, unpacked_dir)
+    -        except (zipfile.BadZipFile, ValueError, OSError) as e:
+    -            _fail(f"cannot unpack {path}: {e}")
+    +        _unpack(path, unpacked_dir)
+         else:
+             if not path.is_dir():
+                 _fail(f"{path} is not a directory or Office file")
+    ~ pptx/SKILL.md
+    --- a/pptx/SKILL.md
+    +++ b/pptx/SKILL.md
+    @@ -11,7 +11,7 @@
+     | Task | Approach |
+     |---|---|
+     | **Create** a new deck | Write a `pptxgenjs` script — see gotchas below — and build it as a [structured deck](#structured-decks) unless the user asks for a quick throwaway |
+    -| **Edit** an existing deck, or build from a template | unzip → edit `ppt/slides/slideN.xml` → zip |
+    +| **Edit** an existing deck, or build from a template | unpack → edit `ppt/slides/slideN.xml` → zip |
+     | **Read** content | `python scripts/slide_text.py deck.pptx` (one block per slide under `<!-- Slide number: N -->` markers); visual grid: `python scripts/thumbnail.py deck.pptx` |
+     
+     ## Scripts
+    @@ -76,7 +76,7 @@
+     # reorder / delete slides = edit <p:sldIdLst> in ppt/presentation.xml
+     python scripts/clean.py unpacked/                                     # after deletions: removes orphaned slides, media, rels
+     # edit slide content in ppt/slides/slideN.xml
+    -(cd unpacked && rm -f ../out.pptx && zip -XrD ../out.pptx .)          # zip from INSIDE the dir; rm first or deleted parts survive
+    +(cd unpacked && rm -f ../out.pptx && zip -XrDy ../out.pptx .)         # zip from INSIDE the dir; rm first or deleted parts survive
+     python scripts/office/validate.py out.pptx --original deck.pptx
+     ```
+     
+    ~ pptx/scripts/office/soffice.py
+    --- a/pptx/scripts/office/soffice.py
+    +++ b/pptx/scripts/office/soffice.py
+    @@ -15,11 +15,16 @@
+     callers that build their own argv (they must pass -env:UserInstallation too).
+     """
+     
+    +from __future__ import annotations
+    +
+     import contextlib
+     import os
+    +import re
+    +import shutil
+     import socket
+     import subprocess
+     import tempfile
+    +import zipfile
+     from collections.abc import Iterable
+     from pathlib import Path
+     
+    @@ -43,11 +48,90 @@
+                     tempfile.TemporaryDirectory(prefix="lo_profile_", ignore_cleanup_errors=True)
+                 )
+                 args = [f"-env:UserInstallation={Path(profile).as_uri()}"] + args
+    +        if _draws_the_document(args):
+    +            copies = Path(stack.enter_context(
+    +                tempfile.TemporaryDirectory(prefix="lo_input_", ignore_cleanup_errors=True)
+    +            ))
+    +            args = [_without_outside_links(str(a), copies / str(i)) for i, a in enumerate(args)]
+             return subprocess.run(["soffice"] + args, env=get_soffice_env(), **kwargs)
+     
+     
+     
+     _SHIM_SO = Path(tempfile.gettempdir()) / "lo_socket_shim.so"
+    +
+    +_DRAWN_FORMATS = frozenset(
+    +    {"pdf", "png", "jpg", "jpeg", "gif", "bmp", "tif", "tiff", "webp", "svg", "eps", "emf", "wmf"}
+    +)
+    +_WEB_OR_MAIL = re.compile(r"^(?:https?|mailto):", re.I)
+    +_RELS_NS = "http://schemas.openxmlformats.org/package/2006/relationships"
+    +_NO_RELS = f'<Relationships xmlns="{_RELS_NS}"/>'.encode()
+    +_MAX_RELS_BYTES = 32 * 1024 * 1024
+    +
+    +
+    +def _draws_the_document(args: list) -> bool:
+    +    for flag, value in zip(args, args[1:]):
+    +        if str(flag) in ("--convert-to", "-convert-to"):
+    +            return str(value).split(":")[0].lower() in _DRAWN_FORMATS
+    +    return False
+    +
+    +
+    +def _cut_outside_links(rels: bytes) -> bytes | None:
+    +    from defusedxml import ElementTree
+    +
+    +    try:
+    +        root = ElementTree.fromstring(rels)
+    +    except (ElementTree.ParseError, ValueError, LookupError):
+    +        return _NO_RELS
+    +    cut = False
+    +    for entry in root.iter():
+    +        if entry.get("TargetMode", "Internal") == "Internal":
+    +            continue
+    +        if _WEB_OR_MAIL.match(entry.get("Target", "")):
+    +            continue
+    +        entry.set("TargetMode", "External")
+    +        entry.set("Target", "about:blank")
+    +        cut = True
+    +    if not cut:
+    +        return None
+    +    for element in root.iter():
+    +        element.tag = element.tag.rsplit("}", 1)[-1]
+    +    root.set("xmlns", _RELS_NS)
+    +    return ElementTree.tostring(root)
+    +
+    +
+    +def _without_outside_links(arg: str, folder: Path) -> str:
+    +
+    +    if not os.path.isfile(arg) or not zipfile.is_zipfile(arg):
+    +        return arg
+    +    with open(arg, "rb") as file:
+    +        if file.read(4) != b"PK\x03\x04":  
+    +            return arg
+    +    with zipfile.ZipFile(arg) as package:
+    +        cut = {}
+    +        for member in package.infolist():
+    +            if member.filename.lower().endswith(".rels"):
+    +                try:
+    +                    data = package.read(member) if member.file_size <= _MAX_RELS_BYTES else None
+    +                except Exception:  
+    +                    data = None
+    +                rels = _NO_RELS if data is None else _cut_outside_links(data)
+    +                if rels is not None:
+    +                    cut[member.filename] = rels
+    +        if not cut:
+    +            return arg
+    +        folder.mkdir()
+    +        copy = folder / Path(arg).name
+    +        with zipfile.ZipFile(copy, "w") as out:
+    +            for member in package.infolist():
+    +                entry = zipfile.ZipInfo(member.filename, member.date_time)
+    +                entry.compress_type = member.compress_type
+    +                if member.filename in cut:
+    +                    entry.compress_type = zipfile.ZIP_DEFLATED  
+    +                    out.writestr(entry, cut[member.filename])
+    +                else:
+    +                    with package.open(member) as source, out.open(entry, "w", force_zip64=True) as target:
+    +                        shutil.copyfileobj(source, target)
+    +    return str(copy)
+     
+     
+     def _needs_shim() -> bool:
+    ~ pptx/scripts/office/validate.py
+    --- a/pptx/scripts/office/validate.py
+    +++ b/pptx/scripts/office/validate.py
+    @@ -41,6 +41,14 @@
+     def _fail(message: str):
+         print(f"Error: {message}", file=sys.stderr)
+         sys.exit(2)
+    +
+    +
+    +def _unpack(package: Path, dest: Path):
+    +    try:
+    +        with zipfile.ZipFile(package, "r") as zf:
+    +            safe_extract(zf, dest)
+    +    except Exception as e:  
+    +        _fail(f"cannot unpack {package}: {e}")
+     
+     
+     def _has_tracked_changes(unpacked_dir: Path) -> bool:
+    @@ -105,6 +113,8 @@
+                 _fail(f"{original_file} is not a file")
+             if original_file.suffix.lower() not in OOXML_FAMILY:
+                 _fail(f"{original_file} must be one of: {', '.join(sorted(OOXML_FAMILY))}")
+    +        with tempfile.TemporaryDirectory() as scratch:
+    +            _unpack(original_file, Path(scratch))
+     
+         family = OOXML_FAMILY.get((original_file or path).suffix.lower())
+         if family is None:
+    @@ -121,11 +131,7 @@
+             packed_file = path
+             temp_dir_ctx = tempfile.TemporaryDirectory()
+             unpacked_dir = Path(temp_dir_ctx.name)
+    -        try:
+    -            with zipfile.ZipFile(path, "r") as zf:
+    -                safe_extract(zf, unpacked_dir)
+    -        except (zipfile.BadZipFile, ValueError, OSError) as e:
+    -            _fail(f"cannot unpack {path}: {e}")
+    +        _unpack(path, unpacked_dir)
+         else:
+             if not path.is_dir():
+                 _fail(f"{path} is not a directory or Office file")
+    ~ xlsx/scripts/office/soffice.py
+    --- a/xlsx/scripts/office/soffice.py
+    +++ b/xlsx/scripts/office/soffice.py
+    @@ -15,11 +15,16 @@
+     callers that build their own argv (they must pass -env:UserInstallation too).
+     """
+     
+    +from __future__ import annotations
+    +
+     import contextlib
+     import os
+    +import re
+    +import shutil
+     import socket
+     import subprocess
+     import tempfile
+    +import zipfile
+     from collections.abc import Iterable
+     from pathlib import Path
+     
+    @@ -43,11 +48,90 @@
+                     tempfile.TemporaryDirectory(prefix="lo_profile_", ignore_cleanup_errors=True)
+                 )
+                 args = [f"-env:UserInstallation={Path(profile).as_uri()}"] + args
+    +        if _draws_the_document(args):
+    +            copies = Path(stack.enter_context(
+    +                tempfile.TemporaryDirectory(prefix="lo_input_", ignore_cleanup_errors=True)
+    +            ))
+    +            args = [_without_outside_links(str(a), copies / str(i)) for i, a in enumerate(args)]
+             return subprocess.run(["soffice"] + args, env=get_soffice_env(), **kwargs)
+     
+     
+     
+     _SHIM_SO = Path(tempfile.gettempdir()) / "lo_socket_shim.so"
+    +
+    +_DRAWN_FORMATS = frozenset(
+    +    {"pdf", "png", "jpg", "jpeg", "gif", "bmp", "tif", "tiff", "webp", "svg", "eps", "emf", "wmf"}
+    +)
+    +_WEB_OR_MAIL = re.compile(r"^(?:https?|mailto):", re.I)
+    +_RELS_NS = "http://schemas.openxmlformats.org/package/2006/relationships"
+    +_NO_RELS = f'<Relationships xmlns="{_RELS_NS}"/>'.encode()
+    +_MAX_RELS_BYTES = 32 * 1024 * 1024
+    +
+    +
+    +def _draws_the_document(args: list) -> bool:
+    +    for flag, value in zip(args, args[1:]):
+    +        if str(flag) in ("--convert-to", "-convert-to"):
+    +            return str(value).split(":")[0].lower() in _DRAWN_FORMATS
+    +    return False
+    +
+    +
+    +def _cut_outside_links(rels: bytes) -> bytes | None:
+    +    from defusedxml import ElementTree
+    +
+    +    try:
+    +        root = ElementTree.fromstring(rels)
+    +    except (ElementTree.ParseError, ValueError, LookupError):
+    +        return _NO_RELS
+    +    cut = False
+    +    for entry in root.iter():
+    +        if entry.get("TargetMode", "Internal") == "Internal":
+    +            continue
+    +        if _WEB_OR_MAIL.match(entry.get("Target", "")):
+    +            continue
+    +        entry.set("TargetMode", "External")
+    +        entry.set("Target", "about:blank")
+    +        cut = True
+    +    if not cut:
+    +        return None
+    +    for element in root.iter():
+    +        element.tag = element.tag.rsplit("}", 1)[-1]
+    +    root.set("xmlns", _RELS_NS)
+    +    return ElementTree.tostring(root)
+    +
+    +
+    +def _without_outside_links(arg: str, folder: Path) -> str:
+    +
+    +    if not os.path.isfile(arg) or not zipfile.is_zipfile(arg):
+    +        return arg
+    +    with open(arg, "rb") as file:
+    +        if file.read(4) != b"PK\x03\x04":  
+    +            return arg
+    +    with zipfile.ZipFile(arg) as package:
+    +        cut = {}
+    +        for member in package.infolist():
+    +            if member.filename.lower().endswith(".rels"):
+    +                try:
+    +                    data = package.read(member) if member.file_size <= _MAX_RELS_BYTES else None
+    +                except Exception:  
+    +                    data = None
+    +                rels = _NO_RELS if data is None else _cut_outside_links(data)
+    +                if rels is not None:
+    +                    cut[member.filename] = rels
+    +        if not cut:
+    +            return arg
+    +        folder.mkdir()
+    +        copy = folder / Path(arg).name
+    +        with zipfile.ZipFile(copy, "w") as out:
+    +            for member in package.infolist():
+    +                entry = zipfile.ZipInfo(member.filename, member.date_time)
+    +                entry.compress_type = member.compress_type
+    +                if member.filename in cut:
+    +                    entry.compress_type = zipfile.ZIP_DEFLATED  
+    +                    out.writestr(entry, cut[member.filename])
+    +                else:
+    +                    with package.open(member) as source, out.open(entry, "w", force_zip64=True) as target:
+    +                        shutil.copyfileobj(source, target)
+    +    return str(copy)
+     
+     
+     def _needs_shim() -> bool:
+    ~ xlsx/scripts/office/validate.py
+    --- a/xlsx/scripts/office/validate.py
+    +++ b/xlsx/scripts/office/validate.py
+    @@ -41,6 +41,14 @@
+     def _fail(message: str):
+         print(f"Error: {message}", file=sys.stderr)
+         sys.exit(2)
+    +
+    +
+    +def _unpack(package: Path, dest: Path):
+    +    try:
+    +        with zipfile.ZipFile(package, "r") as zf:
+    +            safe_extract(zf, dest)
+    +    except Exception as e:  
+    +        _fail(f"cannot unpack {package}: {e}")
+     
+     
+     def _has_tracked_changes(unpacked_dir: Path) -> bool:
+    @@ -105,6 +113,8 @@
+                 _fail(f"{original_file} is not a file")
+             if original_file.suffix.lower() not in OOXML_FAMILY:
+                 _fail(f"{original_file} must be one of: {', '.join(sorted(OOXML_FAMILY))}")
+    +        with tempfile.TemporaryDirectory() as scratch:
+    +            _unpack(original_file, Path(scratch))
+     
+         family = OOXML_FAMILY.get((original_file or path).suffix.lower())
+         if family is None:
+    @@ -121,11 +131,7 @@
+             packed_file = path
+             temp_dir_ctx = tempfile.TemporaryDirectory()
+             unpacked_dir = Path(temp_dir_ctx.name)
+    -        try:
+    -            with zipfile.ZipFile(path, "r") as zf:
+    -                safe_extract(zf, unpacked_dir)
+    -        except (zipfile.BadZipFile, ValueError, OSError) as e:
+    -            _fail(f"cannot unpack {path}: {e}")
+    +        _unpack(path, unpacked_dir)
+         else:
+             if not path.is_dir():
+                 _fail(f"{path} is not a directory or Office file")
+  已替换本地内容: /home/runner/work/opencode-skills-hub/opencode-skills-hub/anthropics-skills
+
+============================================================
+[Jeffallan-claude-skills] 开始更新 (https://github.com/Jeffallan/claude-skills)
+  Diff 结果（本地 <-> 远程）:
+  无变化
+  已替换本地内容: /home/runner/work/opencode-skills-hub/opencode-skills-hub/Jeffallan-claude-skills
+
+============================================================
+[zhaoxuya520-reverse-skill] 开始更新 (https://github.com/zhaoxuya520/reverse-skill)
+  Diff 结果（本地 <-> 远程）:
+  无变化
+  已替换本地内容: /home/runner/work/opencode-skills-hub/opencode-skills-hub/zhaoxuya520-reverse-skill
+
+全部仓库更新完成。

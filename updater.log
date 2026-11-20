@@ -37508,3 +37508,1947 @@
   已替换本地内容: /home/runner/work/opencode-skills-hub/opencode-skills-hub/zhaoxuya520-reverse-skill
 
 全部仓库更新完成。
+
+############################################################
+# skills-updater 运行时间: 2026-11-21 00:34:41
+############################################################
+
+============================================================
+[anthropics-skills] 开始更新 (https://github.com/anthropics/skills)
+  Diff 结果（本地 <-> 远程）:
+  无变化
+  已替换本地内容: /home/runner/work/opencode-skills-hub/opencode-skills-hub/anthropics-skills
+
+============================================================
+[Jeffallan-claude-skills] 开始更新 (https://github.com/Jeffallan/claude-skills)
+  Diff 结果（本地 <-> 远程）:
+  [删除的文件]
+    - vue-expert/references/nuxt.md
+  [新增的文件]
+    + firebase-expert/SKILL.md
+    + firebase-expert/references/authentication.md
+    + firebase-expert/references/cloud-functions.md
+    + firebase-expert/references/emulators-testing.md
+    + firebase-expert/references/firestore.md
+    + firebase-expert/references/hosting-deployment.md
+    + firebase-expert/references/security-rules.md
+    + firebase-expert/references/storage-app-check.md
+    + flask-expert/SKILL.md
+    + flask-expert/references/app-structure.md
+    + flask-expert/references/authentication.md
+    + flask-expert/references/database.md
+    + flask-expert/references/deployment.md
+    + flask-expert/references/rest-apis.md
+    + flask-expert/references/templates-forms.md
+    + flask-expert/references/testing.md
+    + nuxt-expert/SKILL.md
+    + nuxt-expert/references/data-fetching.md
+    + nuxt-expert/references/deployment.md
+    + nuxt-expert/references/project-structure.md
+    + nuxt-expert/references/rendering.md
+    + nuxt-expert/references/security.md
+    + nuxt-expert/references/server-routes.md
+    + nuxt-expert/references/testing.md
+    + vue-expert/references/ssr.md
+  [修改的文件]
+    ~ cloud-architect/SKILL.md
+    --- a/cloud-architect/SKILL.md
+    +++ b/cloud-architect/SKILL.md
+    @@ -11,7 +11,7 @@
+       role: architect
+       scope: infrastructure
+       output-format: architecture
+    -  related-skills: devops-engineer, kubernetes-specialist, terraform-engineer, security-reviewer, microservices-architect, monitoring-expert
+    +  related-skills: devops-engineer, kubernetes-specialist, terraform-engineer, security-reviewer, microservices-architect, monitoring-expert, firebase-expert
+     ---
+     
+     # Cloud Architect
+    ~ code-reviewer/SKILL.md
+    --- a/code-reviewer/SKILL.md
+    +++ b/code-reviewer/SKILL.md
+    @@ -6,13 +6,15 @@
+     metadata:
+       author: https://github.com/Jeffallan
+       company: https://synergetic.solutions
+    -  version: "1.1.0"
+    +  version: "1.1.1"
+       domain: quality
+       triggers: code review, PR review, pull request, review code, code quality
+       role: specialist
+       scope: review
+       output-format: report
+       related-skills: security-reviewer, test-master, architecture-designer
+    +  seo-title: Code Review
+    +  seo-description: Install the Code Reviewer skill in Claude Code, see what it checks in a pull request, from SQL injection to N+1 queries, and read an example review report.
+     ---
+     
+     # Code Reviewer
+    ~ django-expert/SKILL.md
+    --- a/django-expert/SKILL.md
+    +++ b/django-expert/SKILL.md
+    @@ -11,7 +11,7 @@
+       role: specialist
+       scope: implementation
+       output-format: code
+    -  related-skills: fullstack-guardian, fastapi-expert, test-master, django-storages-s3
+    +  related-skills: fullstack-guardian, fastapi-expert, test-master, django-storages-s3, flask-expert
+     ---
+     
+     # Django Expert
+    ~ fastapi-expert/SKILL.md
+    --- a/fastapi-expert/SKILL.md
+    +++ b/fastapi-expert/SKILL.md
+    @@ -11,7 +11,7 @@
+       role: specialist
+       scope: implementation
+       output-format: code
+    -  related-skills: fullstack-guardian, django-expert, test-master
+    +  related-skills: fullstack-guardian, django-expert, test-master, flask-expert
+     ---
+     
+     # FastAPI Expert
+    ~ flutter-expert/SKILL.md
+    --- a/flutter-expert/SKILL.md
+    +++ b/flutter-expert/SKILL.md
+    @@ -11,7 +11,7 @@
+       role: specialist
+       scope: implementation
+       output-format: code
+    -  related-skills: react-native-expert, test-master, fullstack-guardian
+    +  related-skills: react-native-expert, test-master, fullstack-guardian, firebase-expert
+     ---
+     
+     # Flutter Expert
+    ~ nextjs-developer/SKILL.md
+    --- a/nextjs-developer/SKILL.md
+    +++ b/nextjs-developer/SKILL.md
+    @@ -11,7 +11,7 @@
+       role: specialist
+       scope: implementation
+       output-format: code
+    -  related-skills: typescript-pro
+    +  related-skills: typescript-pro, nuxt-expert, firebase-expert
+     ---
+     
+     # Next.js Developer
+    ~ react-expert/SKILL.md
+    --- a/react-expert/SKILL.md
+    +++ b/react-expert/SKILL.md
+    @@ -11,7 +11,7 @@
+       role: specialist
+       scope: implementation
+       output-format: code
+    -  related-skills: fullstack-guardian, playwright-expert, test-master
+    +  related-skills: fullstack-guardian, playwright-expert, test-master, firebase-expert
+     ---
+     
+     # React Expert
+    ~ react-native-expert/SKILL.md
+    --- a/react-native-expert/SKILL.md
+    +++ b/react-native-expert/SKILL.md
+    @@ -11,7 +11,7 @@
+       role: specialist
+       scope: implementation
+       output-format: code
+    -  related-skills: react-expert, flutter-expert, test-master
+    +  related-skills: react-expert, flutter-expert, test-master, firebase-expert
+     ---
+     
+     # React Native Expert
+    ~ secure-code-guardian/SKILL.md
+    --- a/secure-code-guardian/SKILL.md
+    +++ b/secure-code-guardian/SKILL.md
+    @@ -11,7 +11,7 @@
+       role: specialist
+       scope: implementation
+       output-format: code
+    -  related-skills: fullstack-guardian, security-reviewer, architecture-designer
+    +  related-skills: fullstack-guardian, security-reviewer, architecture-designer, firebase-expert
+     ---
+     
+     # Secure Code Guardian
+    ~ terraform-engineer/SKILL.md
+    --- a/terraform-engineer/SKILL.md
+    +++ b/terraform-engineer/SKILL.md
+    @@ -5,9 +5,9 @@
+     metadata:
+       author: https://github.com/Jeffallan
+       company: https://synergetic.solutions
+    -  version: "1.1.0"
+    +  version: "1.2.0"
+       domain: infrastructure
+    -  triggers: Terraform, infrastructure as code, IaC, terraform module, terraform state, AWS provider, Azure provider, GCP provider, terraform plan, terraform apply
+    +  triggers: Terraform, infrastructure as code, IaC, terraform module, terraform state, AWS provider, Azure provider, GCP provider, terraform plan, terraform apply, terraform test
+       role: specialist
+       scope: implementation
+       output-format: code
+    @@ -24,7 +24,7 @@
+     2. **Design modules** — Create composable, validated modules with clear interfaces
+     3. **Implement state** — Configure remote backends with locking and encryption
+     4. **Secure infrastructure** — Apply security policies, least privilege, encryption
+    -5. **Validate** — Run `terraform fmt` and `terraform validate`, then `tflint`; if any errors are reported, fix them and re-run until all checks pass cleanly before proceeding
+    +5. **Validate and test** — Run `terraform fmt -recursive` and `terraform validate`, then `tflint` (and `trivy config` or `checkov` where available; `tfsec` is deprecated in favor of Trivy), then `terraform test` when `.tftest.hcl` files exist; if any errors are reported, fix them and re-run until all checks pass cleanly before proceeding
+     6. **Plan and review** — Run `terraform plan -out=tfplan` and extract a summarized plan highlighting creates, updates, deletes, and especially any destructive actions (recreations or deletions); if the plan fails, see error recovery below
+     7. **Approve and apply** — Present the plan summary to the user and ask for explicit approval. Only execute `terraform apply tfplan` after receiving confirmation. Refuse to apply the plan if approval is withheld, or if destructive changes are present and the user has not explicitly accepted them
+     
+    @@ -33,9 +33,11 @@
+     **Validation failures (step 5):** Fix reported errors → re-run `terraform validate` → repeat until clean. For `tflint` warnings, address rule violations before proceeding.
+     
+     **Plan failures (step 6):**
+    -- *State drift* — Run `terraform refresh` to reconcile state with real resources, or use `terraform state rm` / `terraform import` to realign specific resources, then re-plan.
+    +- *State drift* — Run `terraform apply -refresh-only` to review and reconcile state with real resources (`terraform refresh` is deprecated). Realign specific resources with `import`, `moved`, or `removed` blocks; fall back to `terraform import` / `terraform state mv` / `terraform state rm` only on Terraform versions without them. Then re-plan.
+     - *Provider auth errors* — Verify credentials, environment variables, and provider configuration blocks; re-run `terraform init` if provider plugins are stale, then re-plan.
+     - *Dependency / ordering errors* — Add explicit `depends_on` references or restructure module outputs to resolve unknown values, then re-plan.
+    +
+    +Any command that writes state (`apply -refresh-only`, `import`, `state mv`, `state rm`) needs explicit user approval first. State holds sensitive values in plaintext, so never print it to logs or chat.
+     
+     After any fix, return to step 5 to re-validate before re-running the plan.
+     
+    @@ -48,25 +50,29 @@
+     | Modules | `references/module-patterns.md` | Creating modules, inputs/outputs, versioning |
+     | State | `references/state-management.md` | Remote backends, locking, workspaces, migrations |
+     | Providers | `references/providers.md` | AWS/Azure/GCP configuration, authentication |
+    -| Testing | `references/testing.md` | terraform plan, terratest, policy as code |
+    +| Testing | `references/testing.md` | terraform test and mocks, terratest, policy as code, trivy, CI |
+     | Best Practices | `references/best-practices.md` | DRY patterns, naming, security, cost tracking |
+     
+     ## Constraints
+     
+     ### MUST DO
+    -- Use semantic versioning and pin provider versions
+    +- Use semantic versioning, pin provider versions to the latest major, and commit `.terraform.lock.hcl`
+     - Enable remote state with locking and encryption
+    -- Validate inputs with validation blocks
+    -- Use consistent naming conventions and tag all resources
+    +- Validate inputs with validation blocks; give every variable a `type` and `description` and every output a `description`
+    +- Mark sensitive variables and outputs `sensitive = true`; keep secrets out of state with native secrets-manager integration first, then `ephemeral` resources with write-only (`*_wo`) attributes (Terraform 1.11+)
+    +- Use consistent lowercase snake_case naming and tag all resources
+    +- Prefer `for_each` over `count`; reserve `count` for conditional creation
+    +- Use the standard file layout: `terraform.tf`, `providers.tf`, `main.tf`, `variables.tf`, `locals.tf`, `outputs.tf`
+     - Document module interfaces
+    -- Run `terraform fmt` and `terraform validate`
+    +- Run `terraform fmt -recursive` and `terraform validate`
+     
+     ### MUST NOT DO
+     - Store secrets in plain text or hardcode environment-specific values
+     - Use local state for production or skip state locking
+     - Mix provider versions without constraints
+     - Create circular module dependencies or skip input validation
+    -- Commit `.terraform` directories
+    +- Commit `.terraform` directories, state files, plan files, or `.tfvars` files containing secrets
+    +- Use deprecated constructs (`terraform refresh`, `dynamodb_table` state locking, `tfsec`, inline security-group rules, Helm 2.x `set {}` blocks) in new code
+     
+     ## Code Examples
+     
+    @@ -107,16 +113,18 @@
+     }
+     ```
+     
+    -### Remote Backend Configuration (S3 + DynamoDB)
+    +### Remote Backend Configuration (S3 native locking)
+    +
+    +Requires Terraform 1.11+. `dynamodb_table` locking is deprecated. The lock file (`<key>.tflock`) needs `s3:GetObject`, `s3:PutObject`, and `s3:DeleteObject`.
+     
+     ```hcl
+     terraform {
+       backend "s3" {
+    -    bucket         = "my-tf-state"
+    -    key            = "env/prod/terraform.tfstate"
+    -    region         = "us-east-1"
+    -    encrypt        = true
+    -    dynamodb_table = "terraform-lock"
+    +    bucket       = "my-tf-state"
+    +    key          = "env/prod/terraform.tfstate"
+    +    region       = "us-east-1"
+    +    encrypt      = true
+    +    use_lockfile = true
+       }
+     }
+     ```
+    @@ -125,24 +133,52 @@
+     
+     ```hcl
+     terraform {
+    -  required_version = ">= 1.5.0"
+    +  required_version = ">= 1.14"
+     
+       required_providers {
+         aws = {
+           source  = "hashicorp/aws"
+    -      version = "~> 5.0"
+    +      version = "~> 6.0"
+         }
+         azurerm = {
+           source  = "hashicorp/azurerm"
+    -      version = "~> 3.0"
+    +      version = "~> 5.0"
+         }
+       }
+     }
+     ```
+     
+    +### Declarative State Refactoring
+    +
+    +```hcl
+    +moved {
+    +  from = aws_s3_bucket.logs
+    +  to   = module.logging.aws_s3_bucket.this
+    +}
+    +
+    +import {
+    +  to = aws_s3_bucket.existing
+    +  id = "my-existing-bucket"
+    +}
+    +```
+    +
+    +### Native Test (`bucket_unit_test.tftest.hcl`)
+    +
+    +```hcl
+    +run "rejects_short_bucket_name" {
+    +  command = plan
+    +
+    +  variables {
+    +    bucket_name = "abc"
+    +  }
+    +
+    +  expect_failures = [var.bucket_name]
+    +}
+    +```
+    +
+     ## Output Format
+     
+    -When implementing Terraform solutions, provide: module structure (`main.tf`, `variables.tf`, `outputs.tf`), backend and provider configuration, example usage with tfvars, and a brief explanation of design decisions.
+    +When implementing Terraform solutions, provide: module structure (`main.tf`, `variables.tf`, `outputs.tf`), backend and provider configuration, example usage with tfvars, `terraform test` files, and a brief explanation of design decisions.
+     
+     Maintained by [@jeffallan](https://github.com/jeffallan), Principal Consultant at [Synergetic Solutions](https://synergetic.solutions)
+     
+    ~ terraform-engineer/references/best-practices.md
+    --- a/terraform-engineer/references/best-practices.md
+    +++ b/terraform-engineer/references/best-practices.md
+    @@ -6,31 +6,31 @@
+     ```hcl
+     # Bad - Repeated code
+     resource "aws_vpc" "app1" {
+    -  cidr_block = "10.0.0.0/16"
+    +  cidr_block           = "10.0.0.0/16"
+       enable_dns_hostnames = true
+    -  tags = { Name = "app1-vpc", Environment = "prod" }
+    +  tags                 = { Name = "app1-vpc", Environment = "prod" }
+     }
+     
+     resource "aws_vpc" "app2" {
+    -  cidr_block = "10.1.0.0/16"
+    +  cidr_block           = "10.1.0.0/16"
+       enable_dns_hostnames = true
+    -  tags = { Name = "app2-vpc", Environment = "prod" }
+    +  tags                 = { Name = "app2-vpc", Environment = "prod" }
+     }
+     
+     # Good - Use module
+     module "vpc_app1" {
+       source = "./modules/vpc"
+     
+    -  name       = "app1"
+    -  cidr_block = "10.0.0.0/16"
+    +  name        = "app1"
+    +  cidr_block  = "10.0.0.0/16"
+       environment = "prod"
+     }
+     
+     module "vpc_app2" {
+       source = "./modules/vpc"
+     
+    -  name       = "app2"
+    -  cidr_block = "10.1.0.0/16"
+    +  name        = "app2"
+    +  cidr_block  = "10.1.0.0/16"
+       environment = "prod"
+     }
+     ```
+    @@ -69,13 +69,13 @@
+     }
+     
+     # Good - Dynamic AMI lookup
+    -data "aws_ami" "amazon_linux_2" {
+    +data "aws_ami" "amazon_linux" {
+       most_recent = true
+       owners      = ["amazon"]
+     
+       filter {
+         name   = "name"
+    -    values = ["amzn2-ami-hvm-*-x86_64-gp2"]
+    +    values = ["al2023-ami-2023.*-x86_64"]
+       }
+     
+       filter {
+    @@ -85,7 +85,7 @@
+     }
+     
+     resource "aws_instance" "web" {
+    -  ami           = data.aws_ami.amazon_linux_2.id
+    +  ami           = data.aws_ami.amazon_linux.id
+       instance_type = "t3.micro"
+     }
+     ```
+    @@ -143,9 +143,11 @@
+     resource "aws_instance" "app" {}
+     
+     # Avoid generic names
+    -resource "aws_vpc" "vpc" {}          # Bad
+    -resource "aws_subnet" "subnet" {}    # Bad
+    -resource "aws_vpc" "this" {}         # Use in modules only
+    +resource "aws_vpc" "vpc" {}       # Bad
+    +resource "aws_subnet" "subnet" {} # Bad
+    +resource "aws_vpc" "this" {}      # Use in modules only
+    +# Resource names are singular nouns without the resource type; use "main" when
+    +# only one instance exists
+     ```
+     
+     **AWS Resource Name Tags**
+    @@ -188,13 +190,13 @@
+     **Variable Naming**
+     ```hcl
+     # Use snake_case for all names
+    -variable "instance_type" {}      # Good
+    -variable "instanceType" {}       # Bad
+    -variable "InstanceType" {}       # Bad
+    +variable "instance_type" {} # Good
+    +variable "instanceType" {}  # Bad
+    +variable "InstanceType" {}  # Bad
+     
+     # Be descriptive
+    -variable "vpc_cidr_block" {}     # Good
+    -variable "cidr" {}               # Too vague
+    +variable "vpc_cidr_block" {} # Good
+    +variable "cidr" {}           # Too vague
+     
+     # Boolean variables should be questions
+     variable "enable_nat_gateway" {} # Good
+    @@ -208,13 +210,13 @@
+     **File Naming**
+     ```
+     # Standard structure
+    -main.tf           # Primary resource definitions
+    -variables.tf      # Input variables
+    -outputs.tf        # Output values
+    -versions.tf       # Terraform and provider versions
+    +terraform.tf      # Terraform and provider version requirements
+    +providers.tf      # Provider configurations
+    +main.tf           # Primary resources and data sources
+    +variables.tf      # Input variables (alphabetical)
+    +outputs.tf        # Output values (alphabetical)
+    +locals.tf         # Local values
+     backend.tf        # Backend configuration (optional)
+    -locals.tf         # Local values (optional)
+    -data.tf           # Data sources (optional)
+     
+     # Resource-specific files for complex modules
+     vpc.tf
+    @@ -229,7 +231,7 @@
+     ```hcl
+     # Bad - Secrets in plain text
+     variable "db_password" {
+    -  default = "<db-password>"  # NEVER DO THIS
+    +  default = "<db-password>" # NEVER DO THIS
+     }
+     
+     # Good - Use sensitive variables
+    @@ -240,13 +242,35 @@
+       # No default - must be provided
+     }
+     
+    -# Better - Use secrets manager
+    -data "aws_secretsmanager_secret_version" "db_password" {
+    -  secret_id = "prod/db/password"
+    -}
+    -
+    +# Best - let the service manage the secret so it never enters your state
+     resource "aws_db_instance" "main" {
+    -  password = data.aws_secretsmanager_secret_version.db_password.secret_string
+    +  identifier                  = "main"
+    +  engine                      = "postgres"
+    +  instance_class              = "db.t4g.micro"
+    +  allocated_storage           = 20
+    +  username                    = "app"
+    +  manage_master_user_password = true # stored in AWS Secrets Manager
+    +}
+    +```
+    +
+    +Reading a secret through a regular data source
+    +(`data.aws_secretsmanager_secret_version`) writes the value to state in plaintext.
+    +Follow this priority order for sensitive attributes (Terraform 1.11+):
+    +
+    +1. Native secrets-manager integration such as `manage_master_user_password`.
+    +2. An `ephemeral` resource passed to a write-only attribute (`*_wo`, with its
+    +   `*_wo_version`); neither value is stored in state or plan files.
+    +3. A regular resource or data source only when neither option exists.
+    +
+    +```hcl
+    +ephemeral "random_password" "db" {
+    +  length = 24
+    +}
+    +
+    +resource "aws_secretsmanager_secret_version" "db" {
+    +  secret_id                = aws_secretsmanager_secret.db.id
+    +  secret_string_wo         = ephemeral.random_password.db.result
+    +  secret_string_wo_version = 1 # bump to rotate
+     }
+     ```
+     
+    @@ -279,8 +303,8 @@
+     
+     # RDS encryption
+     resource "aws_db_instance" "main" {
+    -  storage_encrypted   = true
+    -  kms_key_id          = aws_kms_key.rds.arn
+    +  storage_encrypted = true
+    +  kms_key_id        = aws_kms_key.rds.arn
+     }
+     ```
+     
+    @@ -322,44 +346,39 @@
+     
+     **Network Security**
+     ```hcl
+    -# Security group with restricted access
+    +# Manage rules as standalone resources: inline ingress/egress blocks conflict with
+    +# them and make rule-level changes recreate or clobber each other
+     resource "aws_security_group" "web" {
+       name        = "${var.name}-web-sg"
+       description = "Security group for web servers"
+       vpc_id      = aws_vpc.main.id
+    -
+    -  # Bad - Too permissive
+    -  # ingress {
+    -  #   from_port   = 0
+    -  #   to_port     = 65535
+    -  #   protocol    = "tcp"
+    -  #   cidr_blocks = ["0.0.0.0/0"]
+    -  # }
+    -
+    -  # Good - Specific rules
+    -  ingress {
+    -    description = "HTTPS from internet"
+    -    from_port   = 443
+    -    to_port     = 443
+    -    protocol    = "tcp"
+    -    cidr_blocks = ["0.0.0.0/0"]
+    -  }
+    -
+    -  ingress {
+    -    description     = "HTTP from ALB"
+    -    from_port       = 80
+    -    to_port         = 80
+    -    protocol        = "tcp"
+    -    security_groups = [aws_security_group.alb.id]
+    -  }
+    -
+    -  egress {
+    -    description = "All outbound"
+    -    from_port   = 0
+    -    to_port     = 0
+    -    protocol    = "-1"
+    -    cidr_blocks = ["0.0.0.0/0"]
+    -  }
+    +}
+    +
+    +resource "aws_vpc_security_group_ingress_rule" "web_https" {
+    +  security_group_id = aws_security_group.web.id
+    +  description       = "HTTPS from internet"
+    +  from_port         = 443
+    +  to_port           = 443
+    +  ip_protocol       = "tcp"
+    +  cidr_ipv4         = "0.0.0.0/0"
+    +}
+    +
+    +resource "aws_vpc_security_group_ingress_rule" "web_http_from_alb" {
+    +  security_group_id            = aws_security_group.web.id
+    +  description                  = "HTTP from ALB"
+    +  from_port                    = 80
+    +  to_port                      = 80
+    +  ip_protocol                  = "tcp"
+    +  referenced_security_group_id = aws_security_group.alb.id
+    +}
+    +
+    +# Avoid opening every port to the internet (from_port 0 - 65535, 0.0.0.0/0)
+    +
+    +resource "aws_vpc_security_group_egress_rule" "web_all" {
+    +  security_group_id = aws_security_group.web.id
+    +  description       = "All outbound"
+    +  ip_protocol       = "-1"
+    +  cidr_ipv4         = "0.0.0.0/0"
+     }
+     ```
+     
+    @@ -398,12 +417,12 @@
+     
+     # Resource-specific tags
+     resource "aws_instance" "app" {
+    -  ami           = data.aws_ami.amazon_linux_2.id
+    +  ami           = data.aws_ami.amazon_linux.id
+       instance_type = var.instance_type
+     
+       tags = merge(local.common_tags, {
+    -    Name = "${var.name}-app"
+    -    Role = "application"
+    +    Name   = "${var.name}-app"
+    +    Role   = "application"
+         Backup = "daily"
+       })
+     }
+    @@ -447,12 +466,12 @@
+     **Lifecycle Management**
+     ```hcl
+     resource "aws_instance" "app" {
+    -  ami           = data.aws_ami.amazon_linux_2.id
+    +  ami           = data.aws_ami.amazon_linux.id
+       instance_type = var.instance_type
+     
+       lifecycle {
+         create_before_destroy = true
+    -    prevent_destroy       = var.environment == "production"
+    +    prevent_destroy       = true # must be a literal; lifecycle arguments cannot use variables
+         ignore_changes        = [ami, user_data]
+       }
+     }
+    @@ -479,28 +498,6 @@
+           days = 365
+         }
+       }
+    -}
+    -```
+    -
+    -**Resource Scheduling**
+    -```hcl
+    -# Auto-scaling schedule for cost savings
+    -resource "aws_autoscaling_schedule" "scale_down_evening" {
+    -  scheduled_action_name  = "scale-down-evening"
+    -  min_size               = 1
+    -  max_size               = 1
+    -  desired_capacity       = 1
+    -  recurrence             = "0 20 * * MON-FRI"
+    -  autoscaling_group_name = aws_autoscaling_group.app.name
+    -}
+    -
+    -resource "aws_autoscaling_schedule" "scale_up_morning" {
+    -  scheduled_action_name  = "scale-up-morning"
+    -  min_size               = 3
+    -  max_size               = 10
+    -  desired_capacity       = 3
+    -  recurrence             = "0 7 * * MON-FRI"
+    -  autoscaling_group_name = aws_autoscaling_group.app.name
+     }
+     ```
+     
+    @@ -537,7 +534,11 @@
+     variable "cidr_block" {
+       description = "CIDR block for VPC"
+       type        = string
+    -  validation { ... }
+    +
+    +  validation {
+    +    condition     = can(cidrhost(var.cidr_block, 0))
+    +    error_message = "Must be a valid IPv4 CIDR block."
+    +  }
+     }
+     
+     # modules/vpc/outputs.tf
+    @@ -547,13 +548,13 @@
+     }
+     
+     # Version all modules
+    -# modules/vpc/versions.tf
+    +# modules/vpc/terraform.tf
+     terraform {
+    -  required_version = ">= 1.5.0"
+    +  required_version = ">= 1.14"
+       required_providers {
+         aws = {
+           source  = "hashicorp/aws"
+    -      version = "~> 5.0"
+    +      version = "~> 6.0"
+         }
+       }
+     }
+    @@ -575,7 +576,9 @@
+     - [ ] Review plan output before apply
+     - [ ] Use data sources instead of hardcoding
+     - [ ] Implement automated testing
+    -- [ ] Use for_each instead of count
+    +- [ ] Use for_each instead of count (count only for conditional creation)
+    +- [ ] Commit .terraform.lock.hcl
+    +- [ ] Keep secrets out of state (managed secrets, ephemeral resources, write-only attributes)
+     - [ ] Avoid hardcoded secrets
+     - [ ] Enable logging and monitoring
+     - [ ] Implement cost optimization strategies
+    ~ terraform-engineer/references/module-patterns.md
+    --- a/terraform-engineer/references/module-patterns.md
+    +++ b/terraform-engineer/references/module-patterns.md
+    @@ -7,14 +7,15 @@
+     ├── main.tf           # Primary resource definitions
+     ├── variables.tf      # Input variable declarations
+     ├── outputs.tf        # Output value definitions
+    -├── versions.tf       # Provider version constraints
+    +├── terraform.tf      # Terraform and provider version constraints
+     ├── README.md         # Module documentation
+     ├── examples/
+     │   └── complete/
+     │       ├── main.tf
+     │       └── variables.tf
+     └── tests/
+    -    └── vpc_test.go
+    +    ├── defaults_unit_test.tftest.hcl
+    +    └── complete_integration_test.tftest.hcl
+     ```
+     
+     ## Basic Module Pattern
+    @@ -124,19 +125,22 @@
+     }
+     ```
+     
+    -**versions.tf**
+    +**terraform.tf**
+     ```hcl
+     terraform {
+    -  required_version = ">= 1.5.0"
+    +  required_version = ">= 1.14"
+     
+       required_providers {
+         aws = {
+           source  = "hashicorp/aws"
+    -      version = "~> 5.0"
+    -    }
+    -  }
+    -}
+    -```
+    +      version = "~> 6.0"
+    +    }
+    +  }
+    +}
+    +```
+    +
+    +A reusable module should declare minimum versions (`>= 6.0`) rather than a tight
+    +`~>` pin when many consumers share it; the root configuration pins and locks.
+     
+     ## Module Composition
+     
+    @@ -237,7 +241,7 @@
+     # Pin to specific version
+     module "vpc" {
+       source  = "terraform-aws-modules/vpc/aws"
+    -  version = "5.1.2"
+    +  version = "6.7.3"
+     
+       # ... configuration
+     }
+    @@ -245,7 +249,7 @@
+     # Use version constraints
+     module "eks" {
+       source  = "terraform-aws-modules/eks/aws"
+    -  version = "~> 19.0"  # >= 19.0, < 20.0
+    +  version = "~> 21.0" # >= 21.0, < 22.0
+     
+       # ... configuration
+     }
+    ~ terraform-engineer/references/providers.md
+    --- a/terraform-engineer/references/providers.md
+    +++ b/terraform-engineer/references/providers.md
+    @@ -8,7 +8,7 @@
+       required_providers {
+         aws = {
+           source  = "hashicorp/aws"
+    -      version = "~> 5.0"
+    +      version = "~> 6.0"
+         }
+       }
+     }
+    @@ -61,8 +61,10 @@
+     
+     **AWS Authentication Methods**
+     ```hcl
+    -# Method 1: Environment variables (recommended for CI/CD)
+    -# AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_SESSION_TOKEN
+    +# Method 1: Short-lived credentials from the environment (recommended for CI/CD)
+    +# Prefer OIDC federation (for example GitHub Actions -> IAM role) so that no
+    +# long-lived keys exist; the workflow exports temporary AWS_ACCESS_KEY_ID,
+    +# AWS_SECRET_ACCESS_KEY and AWS_SESSION_TOKEN
+     
+     # Method 2: Shared credentials file
+     provider "aws" {
+    @@ -130,7 +132,7 @@
+       required_providers {
+         azurerm = {
+           source  = "hashicorp/azurerm"
+    -      version = "~> 3.0"
+    +      version = "~> 5.0"
+         }
+       }
+     }
+    @@ -153,6 +155,7 @@
+         }
+       }
+     
+    +  # Always set the subscription explicitly (or via ARM_SUBSCRIPTION_ID)
+       subscription_id = var.subscription_id
+       tenant_id       = var.tenant_id
+     }
+    @@ -185,17 +188,29 @@
+     
+     **Azure Authentication Methods**
+     ```hcl
+    -# Method 1: Service Principal with Client Secret
+    -provider "azurerm" {
+    -  features {}
+    -
+    +# Method 1: OIDC / workload identity federation (recommended for CI/CD)
+    +# No stored secret; the pipeline supplies the token.
+    +provider "azurerm" {
+    +  features {}
+    +
+    +  use_oidc        = true
+       subscription_id = var.subscription_id
+       tenant_id       = var.tenant_id
+       client_id       = var.client_id
+    -  client_secret   = var.client_secret
+    -}
+    -
+    -# Method 2: Service Principal with Certificate
+    +}
+    +
+    +# Method 2: Service Principal with Client Secret (avoid; prefer OIDC)
+    +# Pass the secret via the ARM_CLIENT_SECRET environment variable rather than a
+    +# Terraform variable, so it never lands in state or plan files.
+    +provider "azurerm" {
+    +  features {}
+    +
+    +  subscription_id = var.subscription_id
+    +  tenant_id       = var.tenant_id
+    +  client_id       = var.client_id
+    +}
+    +
+    +# Method 2b: Service Principal with Certificate
+     provider "azurerm" {
+       features {}
+     
+    @@ -211,6 +226,7 @@
+       features {}
+     
+       use_msi         = true
+    +  client_id       = var.client_id # only for a user-assigned identity
+       subscription_id = var.subscription_id
+       tenant_id       = var.tenant_id
+     }
+    @@ -219,7 +235,8 @@
+     provider "azurerm" {
+       features {}
+     
+    -  use_cli = true
+    +  use_cli         = true
+    +  subscription_id = var.subscription_id
+     }
+     ```
+     
+    @@ -231,7 +248,7 @@
+       required_providers {
+         google = {
+           source  = "hashicorp/google"
+    -      version = "~> 5.0"
+    +      version = "~> 8.0"
+         }
+       }
+     }
+    @@ -270,16 +287,14 @@
+     
+     **GCP Authentication Methods**
+     ```hcl
+    -# Method 1: Service Account Key (not recommended for production)
+    -provider "google" {
+    -  credentials = file("service-account-key.json")
+    -  project     = var.project_id
+    -  region      = var.region
+    -}
+    +# Method 1: Service Account Key (avoid; long-lived key material)
+    +# Keep the key file outside the repository and pass its path via the
+    +# GOOGLE_APPLICATION_CREDENTIALS environment variable instead of file().
+     
+     # Method 2: Application Default Credentials (recommended)
+    -provider "google" {
+    -  # Uses GOOGLE_APPLICATION_CREDENTIALS env var
+    +# Locally: gcloud auth application-default login
+    +# CI/CD: Workload Identity Federation, no key file required
+    +provider "google" {
+       project = var.project_id
+       region  = var.region
+     }
+    @@ -310,11 +325,11 @@
+       required_providers {
+         google = {
+           source  = "hashicorp/google"
+    -      version = "~> 5.0"
+    +      version = "~> 8.0"
+         }
+         google-beta = {
+           source  = "hashicorp/google-beta"
+    -      version = "~> 5.0"
+    +      version = "~> 8.0"
+         }
+       }
+     }
+    @@ -335,20 +350,25 @@
+     
+     ## Kubernetes Provider
+     
+    +Use an `exec` credential plugin so that a fresh short-lived token is fetched on
+    +every run. Reading a token from a data source (for example
+    +`aws_eks_cluster_auth`) stores it in state.
+    +
+     **With AWS EKS**
+     ```hcl
+     data "aws_eks_cluster" "cluster" {
+    -  name = module.eks.cluster_name
+    -}
+    -
+    -data "aws_eks_cluster_auth" "cluster" {
+       name = module.eks.cluster_name
+     }
+     
+     provider "kubernetes" {
+       host                   = data.aws_eks_cluster.cluster.endpoint
+       cluster_ca_certificate = base64decode(data.aws_eks_cluster.cluster.certificate_authority[0].data)
+    -  token                  = data.aws_eks_cluster_auth.cluster.token
+    +
+    +  exec = {
+    +    api_version = "client.authentication.k8s.io/v1beta1"
+    +    command     = "aws"
+    +    args        = ["eks", "get-token", "--cluster-name", module.eks.cluster_name]
+    +  }
+     }
+     ```
+     
+    @@ -372,12 +392,21 @@
+     
+     ## Helm Provider
+     
+    +Helm provider 3.x changed block syntax to attribute syntax: `kubernetes = { ... }`
+    +on the provider and `set = [ ... ]` on `helm_release`. The 2.x nested blocks
+    +(`kubernetes { }`, `set { }`) no longer validate.
+    +
+     ```hcl
+     provider "helm" {
+    -  kubernetes {
+    +  kubernetes = {
+         host                   = data.aws_eks_cluster.cluster.endpoint
+         cluster_ca_certificate = base64decode(data.aws_eks_cluster.cluster.certificate_authority[0].data)
+    -    token                  = data.aws_eks_cluster_auth.cluster.token
+    +
+    +    exec = {
+    +      api_version = "client.authentication.k8s.io/v1beta1"
+    +      command     = "aws"
+    +      args        = ["eks", "get-token", "--cluster-name", module.eks.cluster_name]
+    +    }
+       }
+     }
+     
+    @@ -391,10 +420,12 @@
+         file("${path.module}/values.yaml")
+       ]
+     
+    -  set {
+    -    name  = "controller.service.type"
+    -    value = "LoadBalancer"
+    -  }
+    +  set = [
+    +    {
+    +      name  = "controller.service.type"
+    +      value = "LoadBalancer"
+    +    }
+    +  ]
+     }
+     ```
+     
+    @@ -402,41 +433,46 @@
+     
+     ```hcl
+     terraform {
+    -  required_version = ">= 1.5.0"
+    +  required_version = ">= 1.14"
+     
+       required_providers {
+         aws = {
+           source  = "hashicorp/aws"
+    -      version = "~> 5.0"  # >= 5.0.0, < 6.0.0
+    +      version = "~> 6.0" # >= 6.0.0, < 7.0.0
+         }
+     
+         azurerm = {
+           source  = "hashicorp/azurerm"
+    -      version = ">= 3.0.0, < 4.0.0"
+    +      version = "~> 5.0"
+         }
+     
+         google = {
+           source  = "hashicorp/google"
+    -      version = "~> 5.0"
+    +      version = "~> 8.0"
+         }
+     
+         kubernetes = {
+           source  = "hashicorp/kubernetes"
+    -      version = "~> 2.23"
+    +      version = "~> 3.0"
+         }
+     
+         helm = {
+           source  = "hashicorp/helm"
+    -      version = "~> 2.11"
+    +      version = "~> 3.0"
+         }
+     
+         random = {
+           source  = "hashicorp/random"
+    -      version = "~> 3.5"
+    -    }
+    -  }
+    -}
+    -```
+    +      version = "~> 3.7"
+    +    }
+    +  }
+    +}
+    +```
+    +
+    +Use the latest major of each provider unless the lock file or another module
+    +constrains it. Provider majors move quickly, so check the registry before pinning,
+    +and read the upgrade guide before crossing a major version (for example, azurerm 4
+    +to 5). Commit `.terraform.lock.hcl`; refresh it with `terraform init -upgrade`.
+     
+     ## Best Practices
+     
+    ~ terraform-engineer/references/state-management.md
+    --- a/terraform-engineer/references/state-management.md
+    +++ b/terraform-engineer/references/state-management.md
+    @@ -7,17 +7,21 @@
+     # backend.tf
+     terraform {
+       backend "s3" {
+    -    bucket         = "my-terraform-state"
+    -    key            = "production/vpc/terraform.tfstate"
+    -    region         = "us-east-1"
+    -    encrypt        = true
+    -    dynamodb_table = "terraform-state-lock"
+    -
+    -    # Optional: Enable versioning for state file history
+    -    versioning = true
+    -  }
+    -}
+    -```
+    +    bucket       = "my-terraform-state"
+    +    key          = "production/vpc/terraform.tfstate"
+    +    region       = "us-east-1"
+    +    encrypt      = true
+    +    use_lockfile = true # native S3 locking, Terraform 1.11+
+    +  }
+    +}
+    +```
+    +
+    +`use_lockfile` writes a `<key>.tflock` object next to the state, so the identity
+    +running Terraform needs `s3:GetObject`, `s3:PutObject` and `s3:DeleteObject` on it.
+    +The `dynamodb_table` argument is deprecated. When migrating an existing backend,
+    +set `use_lockfile = true`, run `terraform init -reconfigure`, then remove
+    +`dynamodb_table` and the DynamoDB table. Enable bucket versioning (below) for state
+    +history; it is configured on the bucket, not in the backend block.
+     
+     **S3 Bucket Setup**
+     ```hcl
+    @@ -60,23 +64,6 @@
+       block_public_policy     = true
+       ignore_public_acls      = true
+       restrict_public_buckets = true
+    -}
+    -
+    -# DynamoDB table for state locking
+    -resource "aws_dynamodb_table" "terraform_lock" {
+    -  name           = "terraform-state-lock"
+    -  billing_mode   = "PAY_PER_REQUEST"
+    -  hash_key       = "LockID"
+    -
+    -  attribute {
+    -    name = "LockID"
+    -    type = "S"
+    -  }
+    -
+    -  tags = {
+    -    Name        = "Terraform State Lock"
+    -    Environment = "global"
+    -  }
+     }
+     ```
+     
+    @@ -90,7 +77,7 @@
+         container_name       = "tfstate"
+         key                  = "production.terraform.tfstate"
+     
+    -    # State locking is automatic with Azure Blob
+    +    # State locking is automatic (blob lease); authenticate with Entra ID
+         use_azuread_auth = true
+       }
+     }
+    @@ -110,8 +97,8 @@
+       account_tier             = "Standard"
+       account_replication_type = "GRS"
+     
+    -  enable_https_traffic_only = true
+    -  min_tls_version          = "TLS1_2"
+    +  https_traffic_only_enabled = true
+    +  min_tls_version            = "TLS1_2"
+     
+       blob_properties {
+         versioning_enabled = true
+    @@ -125,7 +112,7 @@
+     
+     resource "azurerm_storage_container" "terraform_state" {
+       name                  = "tfstate"
+    -  storage_account_name  = azurerm_storage_account.terraform_state.name
+    +  storage_account_id    = azurerm_storage_account.terraform_state.id
+       container_access_type = "private"
+     }
+     ```
+    @@ -219,11 +206,11 @@
+     **Environment-specific backend configs**
+     ```hcl
+     # config/backend-prod.hcl
+    -bucket         = "terraform-state-prod"
+    -key            = "vpc/terraform.tfstate"
+    -region         = "us-east-1"
+    -encrypt        = true
+    -dynamodb_table = "terraform-lock-prod"
+    +bucket       = "terraform-state-prod"
+    +key          = "vpc/terraform.tfstate"
+    +region       = "us-east-1"
+    +encrypt      = true
+    +use_lockfile = true
+     ```
+     
+     ```bash
+    @@ -233,66 +220,97 @@
+     
+     ## State Operations
+     
+    -**Import Existing Resources**
+    -```bash
+    -# Import AWS VPC
+    -terraform import aws_vpc.main vpc-12345678
+    -
+    -# Import with module
+    -terraform import module.network.aws_vpc.main vpc-12345678
+    -```
+    -
+    -**State Manipulation**
+    -```bash
+    -# List resources in state
+    +Prefer declarative blocks over state-mutating CLI commands: they are reviewed in
+    +`terraform plan`, live in version control, and work the same in every workspace and
+    +in HCP Terraform runs.
+    +
+    +**Import Existing Resources (`import` block, Terraform 1.5+)**
+    +```hcl
+    +import {
+    +  to = aws_vpc.main
+    +  id = "vpc-12345678"
+    +}
+    +
+    +# Inside a module, address the resource within the module
+    +import {
+    +  to = module.network.aws_vpc.main
+    +  id = "vpc-12345678"
+    +}
+    +```
+    +
+    +```bash
+    +# Draft the matching resource configuration (writes a new file, not state)
+    +terraform plan -generate-config-out=generated.tf   # experimental; review the output
+    +```
+    +
+    +Review the generated code and move it into your own files. Remove the `import`
+    +block after the apply that imports the resource. To discover many existing
+    +resources at once, use `terraform query` with `list` blocks (Terraform 1.14+).
+    +
+    +**Rename or Move Resources (`moved` block, Terraform 1.1+)**
+    +```hcl
+    +moved {
+    +  from = aws_instance.old
+    +  to   = aws_instance.new
+    +}
+    +```
+    +
+    +**Stop Managing a Resource Without Destroying It (`removed` block, Terraform 1.7+)**
+    +```hcl
+    +removed {
+    +  from = aws_instance.example
+    +
+    +  lifecycle {
+    +    destroy = false
+    +  }
+    +}
+    +```
+    +
+    +**Inspect State (read-only)**
+    +```bash
+     terraform state list
+    -
+    -# Show resource details
+     terraform state show aws_vpc.main
+    -
+    -# Move resource in state
+    +```
+    +
+    +**State Surgery (last resort, requires explicit user approval)**
+    +
+    +Only when no declarative block can express the change, for example repairing
+    +corrupt state. Back up first and never print the output; state contains secrets
+    +in plaintext.
+    +```bash
+    +terraform state pull > terraform.tfstate.backup   # keep out of version control
+     terraform state mv aws_instance.old aws_instance.new
+    -
+    -# Remove resource from state (doesn't destroy)
+     terraform state rm aws_instance.example
+    -
+    -# Pull remote state to local file
+    -terraform state pull > terraform.tfstate.backup
+    -
+    -# Push local state to remote
+    -terraform state push terraform.tfstate
+    +terraform state push terraform.tfstate            # overwrites remote state
+     ```
+     
+     **State Migration**
+     ```bash
+    -# Migrate from local to remote backend
+    +# Migrate from local to remote backend, or between backends
+     terraform init -migrate-state
+     
+    -# Change backend configuration
+    +# Accept a changed backend configuration without migrating state
+     terraform init -reconfigure
+     
+    -# Copy state to new backend
+    +# Move state to a new backend described by a config file
+     terraform init -backend-config=new-backend.hcl -migrate-state
+     ```
+     
+     ## State Locking
+     
+    -**Manual Lock Management**
+    -```bash
+    -# Force unlock if lock is stuck (use carefully!)
+    +**Manual Lock Management (requires explicit user approval)**
+    +```bash
+    +# Only after confirming that no other run holds the lock
+     terraform force-unlock LOCK_ID
+     
+     # Example: terraform force-unlock a1b2c3d4-e5f6-7890-abcd-ef1234567890
+     ```
+     
+     **Prevent Concurrent Modifications**
+    -```hcl
+    -# State locking happens automatically with supported backends
+    -# DynamoDB for S3, automatic for Azure Blob and GCS
+    -
+    -# Disable locking for specific operations (not recommended)
+    -terraform apply -lock=false  # DON'T DO THIS IN PRODUCTION
+    -```
+    +
+    +State locking happens automatically on supported backends: native lock file for S3
+    +(`use_lockfile`), blob leases for Azure and lock objects for GCS. Never bypass it
+    +with `-lock=false` in production; a stuck lock should be investigated, not skipped.
+     
+     ## State File Security
+     
+    @@ -322,10 +340,10 @@
+         Version = "2012-10-17"
+         Statement = [
+           {
+    -        Sid    = "RequireEncryptedTransport"
+    -        Effect = "Deny"
+    +        Sid       = "RequireEncryptedTransport"
+    +        Effect    = "Deny"
+             Principal = "*"
+    -        Action = "s3:*"
+    +        Action    = "s3:*"
+             Resource = [
+               aws_s3_bucket.terraform_state.arn,
+               "${aws_s3_bucket.terraform_state.arn}/*"
+    ~ terraform-engineer/references/testing.md
+    --- a/terraform-engineer/references/testing.md
+    +++ b/terraform-engineer/references/testing.md
+    @@ -35,7 +35,8 @@
+     
+     **Plan Analysis**
+     ```bash
+    -# Resource targeting for specific resources
+    +# Resource targeting is for exceptional recovery only; it skips dependency
+    +# checks and leaves the rest of the configuration unreviewed
+     terraform plan -target=aws_vpc.main
+     
+     # Refresh only (check drift)
+    @@ -48,67 +49,100 @@
+     terraform plan -out=tfplan 2>&1 | tee plan-output.txt
+     ```
+     
+    -## Terraform Test (1.6+)
+    +## Terraform Test (native)
+    +
+    +`terraform test` is the default choice for module tests. Reach for Terratest only
+    +when you must call cloud APIs to verify real infrastructure.
+     
+     **Test File Structure**
+    +
+    +Terraform discovers `.tftest.hcl` files only directly inside `tests/` (or the
+    +directory passed to `-test-directory`); it does **not** recurse into subdirectories.
+    +Encode the test type in the file name instead:
+    +
+     ```
+     tests/
+    -├── unit/
+    -│   ├── vpc_test.tftest.hcl
+    -│   └── security_group_test.tftest.hcl
+    -└── integration/
+    -    └── complete_test.tftest.hcl
+    -```
+    -
+    -**Basic Test**
+    +├── defaults_unit_test.tftest.hcl          # command = plan, fast, no resources
+    +├── validation_unit_test.tftest.hcl        # command = plan
+    +└── complete_integration_test.tftest.hcl   # command = apply, creates real resources
+    +```
+    +
+    +**Unit Test (plan mode)**
+     ```hcl
+    -# tests/vpc_test.tftest.hcl
+    -run "validate_vpc_cidr" {
+    +# tests/defaults_unit_test.tftest.hcl
+    +mock_provider "aws" {} # unit tests need no credentials
+    +
+    +variables {
+    +  name       = "test-vpc"
+    +  cidr_block = "10.0.0.0/16"
+    +}
+    +
+    +run "creates_vpc_with_expected_cidr" {
+       command = plan
+     
+    +  assert {
+    +    condition     = aws_vpc.this.cidr_block == "10.0.0.0/16"
+    +    error_message = "VPC CIDR block did not match expected value"
+    +  }
+    +
+    +  assert {
+    +    condition     = aws_vpc.this.enable_dns_hostnames
+    +    error_message = "DNS hostnames should be enabled by default"
+    +  }
+    +}
+    +
+    +run "rejects_invalid_cidr" {
+    +  command = plan
+    +
+       variables {
+    +    cidr_block = "not-a-cidr"
+    +  }
+    +
+    +  expect_failures = [var.cidr_block]
+    +}
+    +```
+    +
+    +**Mock Provider (no credentials, no resources)**
+    +
+    +`mock_provider` (Terraform 1.7+) lets plan- and apply-mode tests run without cloud
+    +access; without it, even a `plan` run needs valid provider credentials. Override
+    +computed values the module depends on, such as ARNs and IDs:
+    +
+    +```hcl
+    +# tests/mocked_unit_test.tftest.hcl
+    +mock_provider "aws" {
+    +  mock_resource "aws_vpc" {
+    +    defaults = {
+    +      id  = "vpc-12345678"
+    +      arn = "arn:aws:ec2:us-east-1:123456789012:vpc/vpc-12345678"
+    +    }
+    +  }
+    +}
+    +
+    +run "exposes_vpc_id" {
+    +  command = apply
+    +
+    +  variables {
+    +    name       = "mocked-vpc"
+         cidr_block = "10.0.0.0/16"
+    -    name       = "test-vpc"
+       }
+     
+       assert {
+    -    condition     = aws_vpc.main.cidr_block == "10.0.0.0/16"
+    -    error_message = "VPC CIDR block did not match expected value"
+    -  }
+    -
+    -  assert {
+    -    condition     = aws_vpc.main.enable_dns_hostnames == true
+    -    error_message = "DNS hostnames should be enabled"
+    -  }
+    -}
+    -
+    -run "validate_tags" {
+    -  command = plan
+    -
+    -  variables {
+    -    cidr_block = "10.0.0.0/16"
+    -    name       = "test-vpc"
+    -    tags = {
+    -      Environment = "test"
+    -    }
+    -  }
+    -
+    -  assert {
+    -    condition     = aws_vpc.main.tags["Environment"] == "test"
+    -    error_message = "Environment tag not set correctly"
+    -  }
+    -}
+    -```
+    -
+    -**Integration Test**
+    +    condition     = output.vpc_id == "vpc-12345678"
+    +    error_message = "vpc_id output should come from the VPC resource"
+    +  }
+    +}
+    +```
+    +
+    +**Integration Test (apply mode)**
+     ```hcl
+    -# tests/integration/complete_test.tftest.hcl
+    +# tests/complete_integration_test.tftest.hcl
+     run "create_full_stack" {
+       command = apply
+     
+       variables {
+    +    name       = "integration-test"
+         cidr_block = "10.0.0.0/16"
+    -    name       = "integration-test"
+     
+         private_subnets = {
+           app = { cidr_block = "10.0.1.0/24", az = "us-east-1a" }
+    @@ -127,19 +161,17 @@
+     }
+     ```
+     
+    +Resources created by `apply` runs are destroyed automatically in reverse run order
+    +when the file finishes. Integration tests create real, billable resources, so run
+    +them only with the user's approval and in a sandbox account.
+    +
+     **Run Tests**
+     ```bash
+    -# Run all tests
+    -terraform test
+    -
+    -# Run specific test file
+    -terraform test tests/vpc_test.tftest.hcl
+    -
+    -# Verbose output
+    -terraform test -verbose
+    -
+    -# Keep test resources (for debugging)
+    -terraform test -no-cleanup
+    +terraform test                                       # every file in tests/
+    +terraform test -filter=tests/defaults_unit_test.tftest.hcl  # one file (repeatable)
+    +terraform test -test-directory=integration-tests     # custom test directory
+    +terraform test -verbose                              # print plan/state per run block
+    +terraform test -junit-xml=results.xml                # CI report
+     ```
+     
+     ## Terratest (Go-based Testing)
+    @@ -156,11 +188,11 @@
+     ```go
+     module github.com/example/terraform-modules/tests
+     
+    -go 1.21
+    +go 1.26.0
+     
+     require (
+    -    github.com/gruntwork-io/terratest v0.45.0
+    -    github.com/stretchr/testify v1.8.4
+    +    github.com/gruntwork-io/terratest v1.0.1
+    +    github.com/stretchr/testify v1.11.1
+     )
+     ```
+     
+    @@ -204,140 +236,95 @@
+     }
+     ```
+     
+    -**Advanced Terratest with AWS SDK**
+    -```go
+    -package test
+    -
+    -import (
+    -    "testing"
+    -
+    -    "github.com/aws/aws-sdk-go/aws"
+    -    "github.com/aws/aws-sdk-go/service/ec2"
+    -    "github.com/gruntwork-io/terratest/modules/terraform"
+    -    aws_helper "github.com/gruntwork-io/terratest/modules/aws"
+    -    "github.com/stretchr/testify/assert"
+    -)
+    -
+    -func TestVPCConfiguration(t *testing.T) {
+    -    t.Parallel()
+    -
+    -    awsRegion := "us-east-1"
+    -
+    -    terraformOptions := &terraform.Options{
+    -        TerraformDir: "../examples/complete",
+    -        Vars: map[string]interface{}{
+    -            "name":       "test-vpc",
+    -            "cidr_block": "10.0.0.0/16",
+    -        },
+    -    }
+    -
+    -    defer terraform.Destroy(t, terraformOptions)
+    -    terraform.InitAndApply(t, terraformOptions)
+    -
+    -    vpcID := terraform.Output(t, terraformOptions, "vpc_id")
+    -
+    -    // Verify VPC configuration using AWS SDK
+    -    vpc := aws_helper.GetVpcById(t, vpcID, awsRegion)
+    -    assert.Equal(t, "10.0.0.0/16", *vpc.CidrBlock)
+    -    assert.True(t, *vpc.EnableDnsSupport)
+    -    assert.True(t, *vpc.EnableDnsHostnames)
+    -
+    -    // Verify tags
+    -    tags := convertEC2TagsToMap(vpc.Tags)
+    -    assert.Equal(t, "test-vpc", tags["Name"])
+    -}
+    -
+    -func convertEC2TagsToMap(tags []*ec2.Tag) map[string]string {
+    -    result := make(map[string]string)
+    -    for _, tag := range tags {
+    -        result[*tag.Key] = *tag.Value
+    -    }
+    -    return result
+    -}
+    -```
+    +**Verifying Real Cloud State**
+    +
+    +To assert against the live resource (for example, that a VPC really has flow logs),
+    +call the cloud API from the test with AWS SDK for Go **v2**
+    +(`github.com/aws/aws-sdk-go-v2`); v1 is end-of-support. Prefer a `terraform test`
+    +`apply` run first and add Terratest only for checks that Terraform assertions
+    +cannot express.
+     
+     **Run Terratest**
+     ```bash
+     cd tests
+     go mod download
+    -go test -v -timeout 30m
+    -```
+    -
+    -## Policy as Code - OPA/Sentinel
+    -
+    -**Open Policy Agent (OPA)**
+    +go test -v -timeout 30m ./...
+    +```
+    +
+    +## Policy as Code - OPA/Conftest
+    +
+    +Evaluate policies against the JSON plan so that they see the final configuration.
+    +Rego v1 syntax (`contains`/`if`) is the default in OPA 1.0+.
+     
+     **policy.rego**
+     ```rego
+     package terraform.analysis
+     
+    -import input as tfplan
+    -
+    -# Deny if resources are not tagged
+    -deny[msg] {
+    -    r := tfplan.resource_changes[_]
+    -    r.change.actions[_] == "create"
+    -    not r.change.after.tags.Environment
+    -    msg := sprintf("Resource %s is missing Environment tag", [r.address])
+    -}
+    -
+    -# Require encryption for S3 buckets
+    -deny[msg] {
+    -    r := tfplan.resource_changes[_]
+    -    r.type == "aws_s3_bucket"
+    -    r.change.actions[_] == "create"
+    -    not r.change.after.server_side_encryption_configuration
+    -    msg := sprintf("S3 bucket %s must have encryption enabled", [r.address])
+    -}
+    -
+    -# Ensure VPC flow logs are enabled
+    -deny[msg] {
+    -    r := tfplan.resource_changes[_]
+    -    r.type == "aws_vpc"
+    -    r.change.actions[_] == "create"
+    -    vpc_id := r.change.after.id
+    -    not has_flow_log(vpc_id)
+    -    msg := sprintf("VPC %s must have flow logs enabled", [r.address])
+    -}
+    -
+    -has_flow_log(vpc_id) {
+    -    r := tfplan.resource_changes[_]
+    -    r.type == "aws_flow_log"
+    -    r.change.after.vpc_id == vpc_id
+    -}
+    -```
+    +import rego.v1
+    +
+    +# Deny created resources that support tags but have no Environment tag
+    +deny contains msg if {
+    +    some r in input.resource_changes
+    +    "create" in r.change.actions
+    +    is_object(r.change.after.tags_all)
+    +    not r.change.after.tags_all.Environment
+    +    msg := sprintf("Resource %s is missing the Environment tag", [r.address])
+    +}
+    +
+    +# Require a public access block for every created S3 bucket
+    +deny contains msg if {
+    +    some bucket in input.resource_changes
+    +    bucket.type == "aws_s3_bucket"
+    +    "create" in bucket.change.actions
+    +    not has_public_access_block(bucket.change.after.bucket)
+    +    msg := sprintf("S3 bucket %s needs an aws_s3_bucket_public_access_block", [bucket.address])
+    +}
+    +
+    +has_public_access_block(bucket_name) if {
+    +    some r in input.resource_changes
+    +    r.type == "aws_s3_bucket_public_access_block"
+    +    r.change.after.bucket == bucket_name
+    +}
+    +```
+    +
+    +Plan JSON does not contain values that are unknown until apply (generated IDs),
+    +so match resources by configured attributes such as names. Matching on `id` or
+    +other computed fields silently never fires.
+     
+     **Run OPA Policy**
+     ```bash
+    -# Generate plan in JSON
+     terraform plan -out=tfplan
+    -terraform show -json tfplan > tfplan.json
+    -
+    -# Run OPA policy check
+    +terraform show -json tfplan > tfplan.json   # contains sensitive values; delete after use
+    +
+    +opa check policy.rego                        # syntax check
+     opa eval -i tfplan.json -d policy.rego "data.terraform.analysis.deny"
+     ```
+     
+    -**Conftest (OPA wrapper for testing)**
+    -```bash
+    -# Install conftest
+    -brew install conftest
+    -
+    -# Test plan against policies
+    -conftest test tfplan.json
+    -
+    -# With specific namespace
+    -conftest test tfplan.json --namespace terraform.analysis
+    +**Conftest (OPA wrapper for CI)**
+    +```bash
+    +# Install: https://www.conftest.dev/install/
+    +conftest test tfplan.json --policy policy.rego --namespace terraform.analysis
+    +```
+    +
+    +Use Sentinel instead when policies must run inside HCP Terraform / Terraform
+    +Enterprise policy sets.
+    +
+    +## Security Scanning
+    +
+    +`tfsec` is deprecated and now maintained as part of Trivy. Use Trivy or Checkov:
+    +
+    +```bash
+    +trivy config .                  # misconfiguration scan of Terraform files
+    +trivy config --severity HIGH,CRITICAL --exit-code 1 .
+    +checkov -d . --framework terraform --quiet
+     ```
+     
+     ## TFLint
+     
+     **Installation and Configuration**
+     ```bash
+    -# Install tflint
+    -brew install tflint
+    -
+    -# Initialize tflint plugins
+    -tflint --init
+    +# Install: https://github.com/terraform-linters/tflint#installation
+    +tflint --init     # downloads the plugins declared in .tflint.hcl
+     ```
+     
+     **.tflint.hcl**
+    @@ -349,14 +336,13 @@
+     
+     plugin "aws" {
+       enabled = true
+    -  version = "0.27.0"
+    +  version = "0.50.0"
+       source  = "github.com/terraform-linters/tflint-ruleset-aws"
+     }
+     
+     rule "terraform_naming_convention" {
+       enabled = true
+    -
+    -  format = "snake_case"
+    +  format  = "snake_case"
+     }
+     
+     rule "terraform_required_version" {
+    @@ -366,15 +352,13 @@
+     rule "terraform_required_providers" {
+       enabled = true
+     }
+    -
+    -rule "aws_instance_invalid_type" {
+    -  enabled = true
+    -}
+    -
+    -rule "aws_s3_bucket_encryption" {
+    -  enabled = true
+    -}
+    -```
+    +```
+    +
+    +The `terraform` preset already enables the common rules; keep explicit `rule` blocks
+    +only for the ones you configure. Provider rulesets (such as `aws`) detect invalid
+    +instance types, deprecated instance generations and similar errors; see
+    +`tflint --init` output and the ruleset docs for rule names, which change between
+    +releases.
+     
+     **Run TFLint**
+     ```bash
+    @@ -397,7 +381,7 @@
+     ```yaml
+     repos:
+       - repo: https://github.com/antonbabenko/pre-commit-terraform
+    -    rev: v1.83.6
+    +    rev: v1.109.4
+         hooks:
+           - id: terraform_fmt
+           - id: terraform_validate
+    @@ -408,78 +392,87 @@
+             args:
+               - --hook-config=--path-to-file=README.md
+               - --hook-config=--add-to-existing-file=true
+    -      - id: terraform_checkov
+    +      - id: terraform_trivy
+             args:
+    -          - --args=--quiet
+    -          - --args=--skip-check CKV_AWS_*
+    +          - --args=--severity=HIGH,CRITICAL
+     ```
+     
+     **Setup**
+     ```bash
+    -# Install pre-commit
+     pip install pre-commit
+    -
+    -# Install hooks
+     pre-commit install
+    -
+    -# Run manually
+     pre-commit run -a
+     ```
+     
+     ## CI/CD Pipeline Testing
+     
+     **GitHub Actions Example**
+    +
+    +Pin third-party actions to a full commit SHA in production workflows; version tags
+    +are shown here for readability.
+    +
+     ```yaml
+     name: Terraform Test
+     
+     on: [pull_request]
+    +
+    +permissions:
+    +  contents: read
+     
+     jobs:
+       terraform-test:
+         runs-on: ubuntu-latest
+         steps:
+    -      - uses: actions/checkout@v3
+    -
+    -      - name: Setup Terraform
+    -        uses: hashicorp/setup-terraform@v2
+    +      - uses: actions/checkout@v7
+    +
+    +      - uses: hashicorp/setup-terraform@v4
+             with:
+    -          terraform_version: 1.6.0
+    +          terraform_version: "~> 1.14"
+     
+           - name: Terraform Format
+             run: terraform fmt -check -recursive
+     
+           - name: Terraform Init
+    -        run: terraform init
+    +        run: terraform init -backend=false
+     
+           - name: Terraform Validate
+             run: terraform validate
+     
+    +      - uses: terraform-linters/setup-tflint@v6
+    +
+           - name: TFLint
+    -        uses: terraform-linters/setup-tflint@v3
+    +        run: |
+    +          tflint --init
+    +          tflint --recursive
+    +        env:
+    +          GITHUB_TOKEN: ${{ github.token }}   # avoids plugin download rate limits
+    +
+    +      - name: Terraform Test (plan-mode unit tests)
+    +        run: |
+    +          terraform test \
+    +            -filter=tests/defaults_unit_test.tftest.hcl \
+    +            -filter=tests/validation_unit_test.tftest.hcl
+    +
+    +      - name: Trivy
+    +        uses: aquasecurity/trivy-action@v0.36.0
+             with:
+    -          tflint_version: latest
+    -
+    -      - name: Run TFLint
+    -        run: tflint --recursive
+    -
+    -      - name: Terraform Test
+    -        run: terraform test
+    -
+    -      - name: Checkov
+    -        uses: bridgecrewio/checkov-action@master
+    -        with:
+    -          directory: .
+    -          framework: terraform
+    -```
+    +          scan-type: config
+    +          scan-ref: .
+    +          severity: HIGH,CRITICAL
+    +          exit-code: "1"
+    +```
+    +
+    +Run `*_unit_test` files on every pull request and `*_integration_test` files on
+    +merge, since the latter create real resources.
+     
+     ## Best Practices
+     
+     - Run `terraform validate` before every commit
+    -- Use `terraform test` for unit and integration tests
+    +- Use `terraform test` for unit (plan, mocked) and integration (apply) tests
+     - Implement policy as code for security compliance
+     - Run TFLint in CI/CD pipelines
+     - Use pre-commit hooks for automated checks
+    -- Test modules with Terratest for critical infrastructure
+    +- Add Terratest only for checks `terraform test` cannot express
+     - Always review plan output before apply
+     - Test provider upgrades in isolated environments
+     - Document test scenarios and expected outcomes
+    ~ test-master/references/e2e-testing.md
+    --- a/test-master/references/e2e-testing.md
+    +++ b/test-master/references/e2e-testing.md
+    @@ -110,6 +110,41 @@
+     });
+     ```
+     
+    +## Agentic and mobile E2E
+    +
+    +For native mobile apps, Appium and Detox are the established selector-based tools; agent-driven frameworks such as e2e describe goals in plain language instead.
+    +
+    +[e2e](https://github.com/e2e-inc/e2e) is an open-source (Apache-2.0) E2E framework for web, iOS, and Android. A test describes a goal in plain language, an agent drives the app to reach it, and locators and assertions check the result in the same test. An agent step that a later assertion verifies records its actions, and the next run replays them with no model calls until the app changes.
+    +
+    +Use it when:
+    +
+    +- The app is native or cross-platform mobile (iOS simulator, Android emulator), not only web
+    +- The flow is easier to describe in plain language than in selectors, such as a long form or a multi-step journey
+    +- UI changes keep breaking selector-based tests
+    +
+    +Keep Playwright for flows that need exact, deterministic control. Tests without agent steps need no model.
+    +
+    +```typescript
+    +// tests/checkout.e2e.ts
+    +import { test, expect } from 'e2e';
+    +
+    +test('a member upgrades to Pro', async ({ app, agent, screen }) => {
+    +  await app.open('/settings/billing');
+    +
+    +  await agent.act('upgrade the workspace to the Pro plan');
+    +  await agent.assert('the invoice preview shows a prorated amount');
+    +
+    +  await expect(screen.getByRole('status')).toContainText('Pro');
+    +});
+    +```
+    +
+    +```bash
+    +npx e2e init   # choose web or mobile and a model provider; writes a config and an example test
+    +npx e2e run    # run every test
+    +```
+    +
+    +See the [quickstart](https://e2e.com/docs/quickstart) for setup details.
+    +
+     ## Quick Reference
+     
+     | Pattern | When to Use |
+    ~ vue-expert/SKILL.md
+    --- a/vue-expert/SKILL.md
+    +++ b/vue-expert/SKILL.md
+    @@ -1,17 +1,17 @@
+     ---
+     name: vue-expert
+    -description: Builds Vue 3 components with Composition API patterns, configures Nuxt 3 SSR/SSG projects, sets up Pinia stores, scaffolds Quasar/Capacitor mobile apps, implements PWA features, and optimises Vite builds. Use when creating Vue 3 applications with Composition API, writing reusable composables, managing state with Pinia, building hybrid mobile apps with Quasar or Capacitor, configuring service workers, or tuning Vite configuration and TypeScript integration.
+    +description: Builds Vue 3 components with Composition API patterns, renders Vue on the server without Nuxt, sets up Pinia stores, scaffolds Quasar/Capacitor mobile apps, implements PWA features, and optimises Vite builds. Use when creating Vue 3 applications with Composition API, writing reusable composables, managing state with Pinia, building hybrid mobile apps with Quasar or Capacitor, configuring service workers, or tuning Vite configuration and TypeScript integration. For Nuxt projects, use nuxt-expert.
+     license: MIT
+     metadata:
+       author: https://github.com/Jeffallan
+       company: https://synergetic.solutions
+    -  version: "1.1.0"
+    +  version: "1.2.0"
+       domain: frontend
+    -  triggers: Vue 3, Composition API, Nuxt, Pinia, Vue composables, reactive, ref, Vue Router, Vite Vue, Quasar, Capacitor, PWA, service worker, Fastify SSR, sourcemap, Vite config, build optimization
+    +  triggers: Vue 3, Composition API, Pinia, Vue composables, reactive, ref, Vue Router, Vite Vue, Quasar, Capacitor, PWA, service worker, Fastify SSR, sourcemap, Vite config, build optimization
+       role: specialist
+       scope: implementation
+       output-format: code
+    -  related-skills: typescript-pro, fullstack-guardian
+    +  related-skills: typescript-pro, fullstack-guardian, nuxt-expert
+     ---
+     
+     # Vue Expert
+    @@ -36,7 +36,7 @@
+     | Composition API | `references/composition-api.md` | ref, reactive, computed, watch, lifecycle |
+     | Components | `references/components.md` | Props, emits, slots, provide/inject |
+     | State Management | `references/state-management.md` | Pinia stores, actions, getters |
+    -| Nuxt 3 | `references/nuxt.md` | SSR, file-based routing, useFetch, Fastify, hydration |
+    +| Vue SSR (non-Nuxt) | `references/ssr.md` | Custom SSR with Fastify, hydration mismatches, lazy hydration; Nuxt apps use `nuxt-expert` |
+     | TypeScript | `references/typescript.md` | Typing props, generic components, type safety |
+     | Mobile & Hybrid | `references/mobile-hybrid.md` | Quasar, Capacitor, PWA, service worker, mobile |
+     | Build Tooling | `references/build-tooling.md` | Vite config, sourcemaps, optimization, bundling |
+    @@ -96,7 +96,7 @@
+     
+     ## Knowledge Reference
+     
+    -Vue 3 Composition API, Pinia, Nuxt 3, Vue Router 4, Vite, VueUse, TypeScript, Vitest, Vue Test Utils, SSR/SSG, reactive programming, performance optimization
+    +Vue 3 Composition API, Pinia, Vue Router 4, Vite, VueUse, TypeScript, Vitest, Vue Test Utils, SSR/SSG, reactive programming, performance optimization
+     
+     Maintained by [@jeffallan](https://github.com/jeffallan), Principal Consultant at [Synergetic Solutions](https://synergetic.solutions)
+     
+  已替换本地内容: /home/runner/work/opencode-skills-hub/opencode-skills-hub/Jeffallan-claude-skills
+
+============================================================
+[zhaoxuya520-reverse-skill] 开始更新 (https://github.com/zhaoxuya520/reverse-skill)
+  Diff 结果（本地 <-> 远程）:
+  无变化
+  已替换本地内容: /home/runner/work/opencode-skills-hub/opencode-skills-hub/zhaoxuya520-reverse-skill
+
+全部仓库更新完成。

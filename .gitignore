@@ -1,0 +1,61 @@
+# ===============================================================
+# AI 编码助手 / Agent 产生的本地目录与状态文件
+# 说明：这些是工具运行产物，不属于仓库内容，提交时应排除。
+# ===============================================================
+
+# WorkBuddy：会话记录、记忆、技能缓存等，任意层级都排除
+.workbuddy/
+
+# 其他 Agent / 编码助手的本地目录
+# 注意：这几个目录名有可能出现在上游 skills 里（技能自带的 agents/commands 等），
+# 所以用前导斜杠只排除仓库根目录下由工具自动生成的同名目录，避免误伤技能内容。
+/.claude/
+/.codex/
+/.cursor/
+/.windsurf/
+/.kiro/
+/.roo/
+/.trae/
+/.gemini/
+/.qodo/
+/.copilot/
+/.continue/
+/.serena/
+/.specstory/
+/.crush/
+/.opencode/
+
+# Aider 的历史记录与索引缓存
+/.aider*
+/.aider.chat.history.md
+/.aider.input.history
+
+# ===============================================================
+# 系统 / 编辑器临时文件
+# ===============================================================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+ehthumbs.db
+desktop.ini
+*~
+*.swp
+*.swo
+
+.idea/
+/.vscode/
+
+# ===============================================================
+# Python 运行产物（skills-updater.py 生成）
+# ===============================================================
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/

@@ -1,6 +1,6 @@
 
 ############################################################
-# skills-updater 运行时间: 2026-11-25 11:39:01
+# skills-updater 运行时间: 2026-11-25 04:45:05
 ############################################################
 
 ============================================================
@@ -8,20 +8,20 @@
   已定位 skills 目录: skills（skills）
   Diff 结果（本地 <-> 远程）:
   无变化
-  本地内容已是最新，无需改动: C:\Data\Git\opencode-skills-hub\anthropics-skills
+  本地内容已是最新，无需改动: /home/runner/work/opencode-skills-hub/opencode-skills-hub/anthropics-skills
 
 ============================================================
 [Jeffallan-claude-skills] 开始更新 (https://github.com/Jeffallan/claude-skills)
   已定位 skills 目录: plugin/skills（plugin/skills）
   Diff 结果（本地 <-> 远程）:
   无变化
-  本地内容已是最新，无需改动: C:\Data\Git\opencode-skills-hub\Jeffallan-claude-skills
+  本地内容已是最新，无需改动: /home/runner/work/opencode-skills-hub/opencode-skills-hub/Jeffallan-claude-skills
 
 ============================================================
 [zhaoxuya520-reverse-skill] 开始更新 (https://github.com/zhaoxuya520/reverse-skill)
   已定位 skills 目录: skills（skills）
   Diff 结果（本地 <-> 远程）:
   无变化
-  本地内容已是最新，无需改动: C:\Data\Git\opencode-skills-hub\zhaoxuya520-reverse-skill
+  本地内容已是最新，无需改动: /home/runner/work/opencode-skills-hub/opencode-skills-hub/zhaoxuya520-reverse-skill
 
 全部仓库更新完成。
